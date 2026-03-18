@@ -27,7 +27,10 @@ export default function RequestsClient() {
     const res = await fetch('https://formspree.io/f/xjgapnjy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({
+        ...form,
+        _subject: `Song Request: ${form.song} by ${form.artist}${form.name ? ` — from ${form.name}` : ''}`,
+      }),
     })
     if (res.ok) setSent(true)
     setLoading(false)
