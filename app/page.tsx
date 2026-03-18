@@ -88,7 +88,7 @@ export default function Home() {
         <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 grid md:grid-cols-2 gap-12 items-center w-full">
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
-              Based in Boise, ID · Teaching Online Worldwide
+              Music Lessons in Boise, ID · Teaching Online Worldwide
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
               Music Lessons<br />
@@ -166,7 +166,7 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Six Paths to Musical Growth</h2>
-            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you.</p>
+            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you — online or in-person in Boise, Idaho.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
@@ -300,7 +300,7 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <span className="text-white font-bold">Steady Steps <span className="text-teal-400">Music</span></span>
           </div>
-          <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Boise, ID</p>
+          <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Music Lessons in Boise, ID</p>
           <div className="flex gap-6 text-slate-400 text-sm">
             <a href="#lessons"      className="hover:text-teal-400 transition-colors">Lessons</a>
             <a href="#pricing"      className="hover:text-teal-400 transition-colors">Pricing</a>
