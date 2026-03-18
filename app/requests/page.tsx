@@ -28,7 +28,7 @@ export default function RequestsPage() {
             href="/"
             className="inline-block px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-colors text-sm"
           >
-            Book a Free Lesson at Steady Steps Music →
+            Book a Free Lesson with Nik →
           </a>
         </div>
 

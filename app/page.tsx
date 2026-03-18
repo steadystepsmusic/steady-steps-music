@@ -13,9 +13,9 @@ const lessons = [
 ]
 
 const steps = [
-  { step: '01', title: 'Book Your Free Lesson',  desc: "Fill out the contact form. I'll reach out within 24 hours to schedule your complimentary 15-minute demo session." },
-  { step: '02', title: 'We Meet & Make a Plan',   desc: "We'll chat about your goals, your experience, and what you want to achieve. Then we'll map out a lesson plan just for you." },
-  { step: '03', title: 'Start Making Progress',   desc: "Each lesson builds on the last. You'll leave every session with something new to practice and a clear sense of progress." },
+  { step: '1', title: 'Book Your Free Lesson',  desc: "Fill out the contact form. I'll reach out within 24 hours to schedule your complimentary 15-minute demo session." },
+  { step: '2', title: 'We Meet & Make a Plan',   desc: "We'll chat about your goals, your experience, and what you want to achieve. Then we'll map out a lesson plan just for you." },
+  { step: '3', title: 'Start Making Progress',   desc: "Each lesson builds on the last. You'll leave every session with something new to practice and a clear sense of progress." },
 ]
 
 const pricing = [
@@ -65,9 +65,9 @@ const testimonials = [
 
 const faqs = [
   { q: 'Do I need my own instrument?',      a: "For in-person lessons, yes — having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
-  { q: 'What ages do you teach?',            a: 'All ages! I work with kids as young as 6 (with parental support), teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
+  { q: 'What ages do you teach?',            a: 'I work with students from around 4th grade (age 9-10) and up — teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
   { q: 'How do online lessons work?',        a: "We meet over Zoom or your preferred video platform. After each lesson I'll send you a summary of what we covered, exercises to practice, and any resources like chord charts or sheet music." },
-  { q: 'Do I need any prior experience?',   a: "Not at all — complete beginners are very welcome. In fact it's often easier to teach someone with no bad habits! I also work with intermediate and advanced students who want to break through a plateau." },
+  { q: 'Do I need any prior experience?',   a: "Not at all — complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau." },
   { q: 'How often should I take lessons?',  a: "Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I'm flexible — we can discuss what works best for your schedule." },
   { q: 'Can I cancel or reschedule?',       a: "Life happens! I ask for at least 24 hours notice to reschedule or cancel. Lessons cancelled with less than 24 hours notice may be charged in full." },
 ]
@@ -92,11 +92,11 @@ export default function Home() {
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
               Music Lessons<br />
-              <span className="text-teal-400">That Actually</span><br />
-              Stick.
+              <span className="text-teal-400">Made for</span><br />
+              You.
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg">
-              Guitar, bass, piano, voice, theory, and songwriting — online or in-person.
+              Guitar, bass, piano, voice, music theory, and songwriting — online or in-person.
               Every lesson is built around <em>your</em> goals, your schedule, and your taste in music.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -107,7 +107,7 @@ export default function Home() {
                 See All Lessons
               </a>
             </div>
-            <p className="text-slate-400 text-sm mt-4">✓ Free 15-min demo &nbsp;·&nbsp; ✓ No commitment &nbsp;·&nbsp; ✓ All ages & levels</p>
+            <p className="text-slate-400 text-sm mt-4">✓ Free 15-min demo &nbsp;·&nbsp; ✓ Student Interest Centered &nbsp;·&nbsp; ✓ All skill levels</p>
           </div>
 
           <div className="animate-fade-up animate-delay-200 flex justify-center">
@@ -126,7 +126,7 @@ export default function Home() {
       </section>
 
       {/* ── About ────────────────────────────────────────────────────── */}
-      <section id="about" className="py-24 bg-white">
+      <section id="about" className="py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1 flex justify-center">
             <div className="w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
@@ -139,7 +139,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>
-                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as the teaching is right for them.
+                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.
               </p>
               <p>
                 My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.
@@ -161,7 +161,7 @@ export default function Home() {
       </section>
 
       {/* ── Lessons ──────────────────────────────────────────────────── */}
-      <section id="lessons" className="py-24 bg-slate-50">
+      <section id="lessons" className="py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
@@ -180,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* ── How It Works ─────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-24 bg-slate-900">
+      <section id="how-it-works" className="py-12 md:py-24 bg-slate-900">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-3">Simple Process</p>
@@ -204,7 +204,7 @@ export default function Home() {
       </section>
 
       {/* ── Pricing ──────────────────────────────────────────────────── */}
-      <section id="pricing" className="py-24 bg-white">
+      <section id="pricing" className="py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Pricing</p>
@@ -243,7 +243,7 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────────────── */}
-      <section id="testimonials" className="py-24 bg-slate-50">
+      <section id="testimonials" className="py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Student Stories</p>
@@ -265,7 +265,7 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
-      <section id="faq" className="py-24 bg-white">
+      <section id="faq" className="py-12 md:py-24 bg-white">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Questions</p>
@@ -283,7 +283,7 @@ export default function Home() {
       </section>
 
       {/* ── Contact ──────────────────────────────────────────────────── */}
-      <section id="contact" className="py-24 bg-slate-900">
+      <section id="contact" className="py-12 md:py-24 bg-slate-900">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
             <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-3">Get In Touch</p>

@@ -25,7 +25,7 @@ export default function Nav() {
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 group">
-          <span className="font-bold text-white text-lg leading-tight">
+          <span className="font-bold text-white text-3xl leading-tight">
             Steady Steps<span className="text-teal-400"> Music</span>
           </span>
         </a>
