@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description:
     'Guitar, bass, piano, voice, music theory, and songwriting lessons for all ages. Online & in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
   keywords: 'music lessons boise idaho, guitar lessons, piano lessons, bass lessons, voice lessons, online music lessons, songwriting lessons, music theory',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

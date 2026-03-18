@@ -24,7 +24,7 @@ const pricing = [
     price: 'Free',
     duration: '15 min intro',
     highlight: true,
-    features: ['No commitment required', 'Meet your teacher first', 'Get a personalised plan', 'Online or in-person'],
+    features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', 'Online or in-person'],
     cta: "Book Now — It's Free",
   },
   {
@@ -49,7 +49,7 @@ const testimonials = [
   {
     name: 'Sarah M.',
     role: 'Guitar student, 6 months',
-    quote: 'I went from not knowing a single chord to playing my favourite songs in just a few months. Nik has a gift for breaking things down so they actually make sense.',
+    quote: 'I went from not knowing a single chord to playing my favorite songs in just a few months. Nik has a gift for breaking things down so they actually make sense.',
   },
   {
     name: 'James T.',
@@ -139,7 +139,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>
-                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialise in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as the teaching is right for them.
+                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as the teaching is right for them.
               </p>
               <p>
                 My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.
@@ -166,7 +166,7 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Six Paths to Musical Growth</h2>
-            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or levelling up an existing skill, there&apos;s a path for you.</p>
+            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
