@@ -107,7 +107,11 @@ export default function Home() {
                 See All Lessons
               </a>
             </div>
-            <p className="text-slate-400 text-sm mt-4">✓ Free 15-min demo<span className="whitespace-nowrap"> &nbsp;·&nbsp; ✓ Student Interest Centered</span><span className="whitespace-nowrap"> &nbsp;·&nbsp; ✓ All skill levels</span></p>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-slate-400 text-sm">
+              <span className="whitespace-nowrap">✓ Free 15-min demo</span>
+              <span className="whitespace-nowrap">✓ Student Interest Centered</span>
+              <span className="whitespace-nowrap">✓ All skill levels</span>
+            </div>
           </div>
 
           <div className="animate-fade-up animate-delay-200 flex justify-center">
