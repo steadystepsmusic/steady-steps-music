@@ -9,10 +9,10 @@ export default function RequestForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    const res = await fetch('https://formspree.io/f/xjgapnjy', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ access_key: '697211a3-d292-481e-946f-aedfed7938d3', ...form }),
     })
     if (res.ok) setSent(true)
     setLoading(false)
