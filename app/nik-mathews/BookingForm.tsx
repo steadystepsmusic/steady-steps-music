@@ -9,12 +9,13 @@ export default function BookingForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    const res = await fetch('https://formspree.io/f/xjgazbee', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, _subject: 'Booking Inquiry — Nik Mathews' }),
+      body: JSON.stringify({ access_key: 'babdd6d6-3df0-4e4a-a08b-e6012c7c8369', subject: 'Booking Inquiry — Nik Mathews', ...form }),
     })
-    if (res.ok) setSent(true)
+    const data = await res.json()
+    if (data.success) setSent(true)
     setLoading(false)
   }
 

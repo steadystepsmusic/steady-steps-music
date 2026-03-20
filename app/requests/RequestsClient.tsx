@@ -8,6 +8,7 @@ export default function RequestsClient() {
   const [form, setForm] = useState({ song: '', artist: '', name: '' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const filtered = songs.filter(s =>
     s.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -24,15 +25,23 @@ export default function RequestsClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    const res = await fetch('https://formspree.io/f/xjgapnjy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        _subject: `Song Request: ${form.song} by ${form.artist}${form.name ? ` — from ${form.name}` : ''}`,
-      }),
-    })
-    if (res.ok) setSent(true)
+    setError('')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '697211a3-d292-481e-946f-aedfed7938d3',
+          subject: `Song Request: ${form.song} by ${form.artist}${form.name ? ` — from ${form.name}` : ''}`,
+          ...form,
+        }),
+      })
+      const data = await res.json()
+      if (data.success) setSent(true)
+      else setError(data.message || 'Something went wrong. Please try again.')
+    } catch {
+      setError('Network error. Please try again.')
+    }
     setLoading(false)
   }
 
@@ -112,6 +121,7 @@ export default function RequestsClient() {
                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors"
               />
             </div>
+            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
             <button
               type="submit" disabled={loading}
               className="w-full py-4 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-black rounded-xl text-lg transition-colors mt-2"
