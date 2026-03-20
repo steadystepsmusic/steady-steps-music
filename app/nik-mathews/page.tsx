@@ -3,9 +3,24 @@ import { songs } from '../requests/songs'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Nik Mathews | Solo Acoustic Guitar & Vocals',
-  description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, and private events in Boise, ID.',
+  title: 'Nik Mathews | Singer & Guitarist',
+  description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
   robots: 'noindex, nofollow',
+  openGraph: {
+    title: 'Nik Mathews | Singer & Guitarist',
+    description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
+    url: 'https://nikmathewsmusic.com',
+    siteName: 'Nik Mathews Music',
+    images: [
+      {
+        url: 'https://nikmathewsmusic.com/images/IMG_4432.jpg',
+        width: 1080,
+        height: 1350,
+        alt: 'Nik Mathews performing solo acoustic',
+      },
+    ],
+    type: 'website',
+  },
 }
 
 export default function NikMathewsPage() {
@@ -34,19 +49,19 @@ export default function NikMathewsPage() {
           }}>
             Nik Mathews
           </h1>
-          <p style={{ marginTop: '1rem', fontSize: 'clamp(0.9rem, 2vw, 1.2rem)', letterSpacing: '0.35em', color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase' }}>
+          <p style={{ marginTop: '1rem', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', letterSpacing: '0.35em', color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase' }}>
             Singer &amp; Guitarist
           </p>
           <div style={{ margin: '1.5rem auto', width: '4rem', height: '1px', backgroundColor: '#c9a84c' }} />
-          <p style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
-            Public &amp; Private Events &nbsp;·&nbsp; Boise, ID
+          <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
+            Public &amp; Private Events &nbsp;·&nbsp; <span style={{ whiteSpace: 'nowrap' }}>Boise, ID</span>
           </p>
         </div>
       </section>
 
       {/* About */}
       <section style={{ maxWidth: '720px', margin: '0 auto', padding: '4rem 1.5rem 2rem', textAlign: 'center' }}>
-        <p style={{ fontSize: '1.1rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.72)', margin: 0 }}>
+        <p style={{ fontSize: '1.25rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.72)', margin: 0 }}>
           Nik Mathews is a Boise-based solo acoustic singer and guitarist with over 20 years of
           performance experience. Drawing from a wide variety of styles and songs spanning rock, country, folk, and pop,
           he delivers a versatile, crowd-pleasing show for bars, restaurants, breweries, and wineries, as well as weddings, corporate events, and private parties.
@@ -58,7 +73,7 @@ export default function NikMathewsPage() {
       {/* Video */}
       <section style={{ padding: '1.5rem 1.5rem 4rem' }}>
         <div style={{ maxWidth: '860px', margin: '0 auto' }}>
-          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem' }}>
+          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1.5rem' }}>
             Watch &amp; Listen
           </p>
           <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
@@ -89,15 +104,36 @@ export default function NikMathewsPage() {
             <Image src="/images/FullSizeRender.jpeg" alt="Nik Mathews performing at a brewery" fill style={{ objectFit: 'cover', objectPosition: 'center 10%' }} />
           </div>
         </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '2rem' }}>
+          <a
+            href="https://www.instagram.com/nikmathewsmusic"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+            </svg>
+            @nikmathewsmusic
+          </a>
+          <a
+            href="mailto:nikmathewsmusic@gmail.com?subject=Booking%20Inquiry%20%E2%80%94%20Nik%20Mathews"
+            style={{ display: 'inline-block', padding: '0.75rem 2rem', border: '1px solid #c9a84c', color: '#c9a84c', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
+          >
+            Get in Touch
+          </a>
+        </div>
       </section>
 
       {/* Setlist */}
       <section style={{ padding: '4rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             Setlist
           </p>
-          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', marginBottom: '2.5rem', marginTop: 0 }}>
+          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '1rem', marginBottom: '2.5rem', marginTop: 0 }}>
             200+ songs available on request
           </p>
           <div style={{
@@ -110,8 +146,8 @@ export default function NikMathewsPage() {
                 key={`${song.title}-${song.artist}`}
                 style={{ padding: '0.6rem 0.75rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
               >
-                <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 500, color: 'rgba(255,255,255,0.88)', lineHeight: 1.3 }}>{song.title}</p>
-                <p style={{ margin: '0.15rem 0 0', fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)' }}>{song.artist}</p>
+                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500, color: 'rgba(255,255,255,0.88)', lineHeight: 1.3 }}>{song.title}</p>
+                <p style={{ margin: '0.15rem 0 0', fontSize: '0.87rem', color: 'rgba(255,255,255,0.35)' }}>{song.artist}</p>
               </div>
             ))}
           </div>
@@ -123,7 +159,7 @@ export default function NikMathewsPage() {
         <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.2em', color: '#c9a84c', textTransform: 'uppercase' }}>
           Nik Mathews
         </p>
-        <p style={{ margin: '0.4rem 0 0', fontSize: '0.75rem', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>
+        <p style={{ margin: '0.4rem 0 0', fontSize: '0.9rem', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>
           Singer &amp; Guitarist
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '1.75rem' }}>
@@ -131,7 +167,7 @@ export default function NikMathewsPage() {
             href="https://www.instagram.com/nikmathewsmusic"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', fontWeight: 600, borderRadius: '2px' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -142,7 +178,7 @@ export default function NikMathewsPage() {
           </a>
           <a
             href="mailto:nikmathewsmusic@gmail.com?subject=Booking%20Inquiry%20%E2%80%94%20Nik%20Mathews"
-            style={{ display: 'inline-block', padding: '0.75rem 2rem', border: '1px solid #c9a84c', color: '#c9a84c', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', fontWeight: 600, borderRadius: '2px' }}
+            style={{ display: 'inline-block', padding: '0.75rem 2rem', border: '1px solid #c9a84c', color: '#c9a84c', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
           >
             Get in Touch
           </a>
