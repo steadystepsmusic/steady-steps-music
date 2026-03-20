@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { songs } from '../requests/songs'
 import type { Metadata } from 'next'
+import BookingForm from './BookingForm'
 
 export const metadata: Metadata = {
   title: 'Nik Mathews | Singer & Guitarist',
@@ -54,7 +55,7 @@ export default function NikMathewsPage() {
           </p>
           <div style={{ margin: '1.5rem auto', width: '4rem', height: '1px', backgroundColor: '#c9a84c' }} />
           <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
-            Public &amp; Private Events &nbsp;·&nbsp; <span style={{ whiteSpace: 'nowrap' }}>Boise, ID</span>
+            Public &amp; Private Events <span className="nik-bullet">&nbsp;·&nbsp;</span> <span style={{ whiteSpace: 'nowrap' }}>Boise, ID</span>
           </p>
         </div>
       </section>
@@ -104,26 +105,11 @@ export default function NikMathewsPage() {
             <Image src="/images/FullSizeRender.jpeg" alt="Nik Mathews performing at a brewery" fill style={{ objectFit: 'cover', objectPosition: 'center 10%' }} />
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '2rem' }}>
-          <a
-            href="https://www.instagram.com/nikmathewsmusic"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-            </svg>
-            @nikmathewsmusic
-          </a>
-          <a
-            href="mailto:nikmathewsmusic@gmail.com?subject=Booking%20Inquiry%20%E2%80%94%20Nik%20Mathews"
-            style={{ display: 'inline-block', padding: '0.75rem 2rem', border: '1px solid #c9a84c', color: '#c9a84c', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
-          >
+        <div style={{ marginTop: '3rem' }}>
+          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1.5rem' }}>
             Get in Touch
-          </a>
+          </p>
+          <BookingForm />
         </div>
       </section>
 
@@ -162,27 +148,19 @@ export default function NikMathewsPage() {
         <p style={{ margin: '0.4rem 0 0', fontSize: '0.9rem', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>
           Singer &amp; Guitarist
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '1.75rem' }}>
-          <a
-            href="https://www.instagram.com/nikmathewsmusic"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-            </svg>
-            @nikmathewsmusic
-          </a>
-          <a
-            href="mailto:nikmathewsmusic@gmail.com?subject=Booking%20Inquiry%20%E2%80%94%20Nik%20Mathews"
-            style={{ display: 'inline-block', padding: '0.75rem 2rem', border: '1px solid #c9a84c', color: '#c9a84c', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
-          >
-            Get in Touch
-          </a>
-        </div>
+        <a
+          href="https://www.instagram.com/nikmathewsmusic"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.75rem', padding: '0.75rem 2rem', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.95rem', fontWeight: 600, borderRadius: '2px' }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+          </svg>
+          @nikmathewsmusic
+        </a>
       </footer>
 
     </main>

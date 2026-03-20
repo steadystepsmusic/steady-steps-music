@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+.nik-bullet { display: none; }
+@media (min-width: 640px) { .nik-bullet { display: inline; } }
+
 html {
   scroll-behavior: smooth;
 }
