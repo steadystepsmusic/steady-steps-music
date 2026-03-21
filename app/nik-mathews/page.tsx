@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { songs } from '../requests/songs'
 import type { Metadata } from 'next'
 import BookingForm from './BookingForm'
+import { genreGroups } from './genreGroups'
 
 export const metadata: Metadata = {
   title: 'Nik Mathews | Singer & Guitarist',
@@ -119,24 +120,45 @@ export default function NikMathewsPage() {
           <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             Setlist
           </p>
-          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '1rem', marginBottom: '2.5rem', marginTop: 0 }}>
-            200+ songs available on request
+          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '1rem', marginBottom: '3rem', marginTop: 0 }}>
+            Over 200 songs available across a variety of genres — plus requests!
           </p>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-            gap: '0',
-          }}>
-            {songs.map((song) => (
-              <div
-                key={`${song.title}-${song.artist}`}
-                style={{ padding: '0.6rem 0.75rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-              >
-                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500, color: 'rgba(255,255,255,0.88)', lineHeight: 1.3 }}>{song.title}</p>
-                <p style={{ margin: '0.15rem 0 0', fontSize: '0.87rem', color: 'rgba(255,255,255,0.35)' }}>{song.artist}</p>
+          {genreGroups.map(({ genre, songs: genreSongs }) => (
+            <div key={genre} style={{ marginBottom: '3rem' }}>
+              <h3 style={{
+                color: '#c9a84c',
+                textTransform: 'uppercase',
+                letterSpacing: '0.2em',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                borderBottom: '1px solid rgba(201,168,76,0.25)',
+                paddingBottom: '0.5rem',
+                marginBottom: '1rem',
+                marginTop: 0,
+              }}>
+                {genre}
+              </h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                gap: '0',
+              }}>
+                {genreSongs.sort((a, b) => a.localeCompare(b)).map((title) => {
+                  const song = songs.find(s => s.title === title)
+                  if (!song) return null
+                  return (
+                    <div
+                      key={title}
+                      style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                    >
+                      <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.88)', lineHeight: 1.3 }}>{song.title}</p>
+                      <p style={{ margin: '0.1rem 0 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.35)' }}>{song.artist}</p>
+                    </div>
+                  )
+                })}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
