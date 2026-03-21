@@ -11,6 +11,14 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL('/nik-mathews', request.url))
   }
 
+  const isSteadyDomain =
+    hostname === 'steadystepsmusic.com' ||
+    hostname === 'www.steadystepsmusic.com'
+
+  if (isSteadyDomain && request.nextUrl.pathname === '/requests') {
+    return NextResponse.redirect(new URL('https://nikmathewsmusic.com/requests'))
+  }
+
   return NextResponse.next()
 }
 
