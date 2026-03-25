@@ -1,37 +1,6 @@
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
 import Image from 'next/image'
-import Nav from '../components/Nav'
-import ContactForm from '../components/ContactForm'
-
-// ─── City Data ─────────────────────────────────────────────────────────────────
-
-const cities: Record<string, {
-  name: string
-  blurb: string
-  context: string
-}> = {
-  'meridian': {
-    name: 'Meridian',
-    blurb: "Meridian is one of Idaho's fastest-growing communities — and it's full of people who've been meaning to finally learn an instrument. Whether you're a busy parent, a student, or an adult who always wanted to play, lessons are available online or in-person to fit your schedule.",
-    context: 'Serving students in Meridian, Eagle, and the surrounding Treasure Valley.',
-  },
-  'eagle': {
-    name: 'Eagle',
-    blurb: "Eagle is a tight-knit community with a strong tradition of family and the arts. Music lessons are a great fit for Eagle students of all ages — from kids picking up their first guitar to adults finally making time for something they love. Online and in-person options available.",
-    context: 'Serving students in Eagle, Meridian, and the surrounding Treasure Valley.',
-  },
-  'nampa': {
-    name: 'Nampa',
-    blurb: "Nampa is Canyon County's largest city and home to students of all backgrounds and musical interests. Whether you want to play for fun, perform, or just finally understand how music works, lessons are tailored to your goals — available online or in-person.",
-    context: 'Serving students in Nampa, Caldwell, and the greater Treasure Valley.',
-  },
-  'garden-city': {
-    name: 'Garden City',
-    blurb: "Garden City sits right along the Boise River Greenbelt with a creative, artistic vibe that makes it a natural home for music. If you've been thinking about starting lessons, there's no better time. Online and in-person options available for all ages and skill levels.",
-    context: 'Serving students in Garden City, Boise, and the surrounding area.',
-  },
-}
+import Nav from './Nav'
+import ContactForm from './ContactForm'
 
 const lessons = [
   { name: 'Guitar',       desc: 'From your first open chord to advanced fingerpicking and lead playing. Acoustic or electric, all styles.' },
@@ -78,42 +47,14 @@ const faqs = [
   { q: 'Can I cancel or reschedule?',      a: "Life happens! I ask for at least 24 hours notice to reschedule or cancel. Lessons cancelled with less than 24 hours notice may be charged in full." },
 ]
 
-// ─── Static Params ─────────────────────────────────────────────────────────────
-
-export function generateStaticParams() {
-  return Object.keys(cities).map(city => ({ city }))
+type Props = {
+  name: string
+  slug: string
+  blurb: string
+  context: string
 }
 
-// ─── Metadata ──────────────────────────────────────────────────────────────────
-
-export function generateMetadata({ params }: { params: { city: string } }): Metadata {
-  const city = cities[params.city]
-  if (!city) return {}
-  return {
-    title: `Music Lessons in ${city.name}, ID | Guitar, Piano, Voice & More | Steady Steps Music`,
-    description: `Expert guitar, bass, piano, voice, music theory, and songwriting lessons in ${city.name}, Idaho — online or in-person. Taught by Nik, 20+ years experience. Book a free 15-minute demo lesson today.`,
-    alternates: {
-      canonical: `https://steadystepsmusic.com/${params.city}`,
-    },
-    openGraph: {
-      title: `Music Lessons in ${city.name}, ID | Steady Steps Music`,
-      description: `Guitar, bass, piano, voice, music theory, and songwriting lessons in ${city.name}, Idaho — online or in-person with Nik. Book a free demo lesson today.`,
-      url: `https://steadystepsmusic.com/${params.city}`,
-      siteName: 'Steady Steps Music',
-      locale: 'en_US',
-      type: 'website',
-    },
-  }
-}
-
-// ─── Page ──────────────────────────────────────────────────────────────────────
-
-export default function CityPage({ params }: { params: { city: string } }) {
-  const cityData = cities[params.city]
-  if (!cityData) notFound()
-
-  const { name, blurb, context } = cityData
-
+export default function CityPage({ name, slug, blurb, context }: Props) {
   return (
     <div className="min-h-screen">
       <Nav />
@@ -133,9 +74,7 @@ export default function CityPage({ params }: { params: { city: string } }) {
               Music Lessons<br />
               <span className="text-teal-400">in {name}.</span>
             </h1>
-            <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg">
-              {blurb}
-            </p>
+            <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg">{blurb}</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
                 Book a Free Lesson →
@@ -153,7 +92,7 @@ export default function CityPage({ params }: { params: { city: string } }) {
 
           <div className="flex justify-center">
             <div className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-2 border-teal-500/20">
-              <Image src="/images/hero.jpeg" alt={`Nik Mathews — music teacher serving ${name}, Idaho`} fill className="object-cover" priority />
+              <Image src="/images/hero.jpeg" alt={`Music lessons in ${name}, Idaho`} fill className="object-cover" priority />
             </div>
           </div>
         </div>
@@ -167,20 +106,13 @@ export default function CityPage({ params }: { params: { city: string } }) {
               <Image src="/images/about.jpeg" alt={`Nik Mathews — music teacher in ${name}, Idaho`} fill className="object-cover" style={{ objectPosition: '50% 25%' }} />
             </div>
           </div>
-
           <div className="order-1 md:order-2">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">About Your Teacher</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
-              <p>
-                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.
-              </p>
-              <p>
-                My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.
-              </p>
-              <p>
-                Based in Boise, Idaho, I work with students in {name} and across the Treasure Valley — online or in-person. {context}
-              </p>
+              <p>I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.</p>
+              <p>My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.</p>
+              <p>Based in Boise, Idaho, I work with students in {name} and across the Treasure Valley — online or in-person. {context}</p>
             </div>
             <div className="mt-8 grid grid-cols-3 gap-4 text-center">
               {[['20+', 'Years Teaching'], ['100+', 'Students Taught'], ['6', 'Musical Subjects']].map(([val, label]) => (
@@ -285,14 +217,14 @@ export default function CityPage({ params }: { params: { city: string } }) {
       {/* ── Footer ───────────────────────────────────────────────────── */}
       <footer className="bg-slate-950 border-t border-slate-800 py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <a href="/" className="flex items-center gap-2">
+          <a href="https://steadystepsmusic.com" className="flex items-center gap-2">
             <span className="text-white font-bold">Steady Steps <span className="text-teal-400">Music</span></span>
           </a>
           <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Music Lessons in {name}, ID</p>
           <div className="flex items-center gap-6 text-slate-400 text-sm">
-            <a href="/#lessons"  className="hover:text-teal-400 transition-colors">Lessons</a>
-            <a href="/#pricing"  className="hover:text-teal-400 transition-colors">Pricing</a>
-            <a href="#contact"   className="hover:text-teal-400 transition-colors">Contact</a>
+            <a href="https://steadystepsmusic.com/#lessons"  className="hover:text-teal-400 transition-colors">Lessons</a>
+            <a href="https://steadystepsmusic.com/#pricing"  className="hover:text-teal-400 transition-colors">Pricing</a>
+            <a href="#contact" className="hover:text-teal-400 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
