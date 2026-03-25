@@ -163,7 +163,7 @@ export default function CityPage({ params }: { params: { city: string } }) {
       <section id="about" className="py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1 flex justify-center">
-            <div className="w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
+            <div className="relative w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
               <Image src="/images/about.jpeg" alt={`Nik Mathews — music teacher in ${name}, Idaho`} fill className="object-cover" style={{ objectPosition: '50% 25%' }} />
             </div>
           </div>
