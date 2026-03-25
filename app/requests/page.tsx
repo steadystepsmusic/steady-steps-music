@@ -12,7 +12,7 @@ export default function RequestsPage() {
 
         {/* Header */}
         <div className="text-center mb-10">
-          <a href="/" className="inline-block mb-6 text-sm text-slate-400 hover:text-teal-400 transition-colors">
+          <a href="https://steadystepsmusic.com" className="inline-block mb-6 text-sm text-slate-400 hover:text-teal-400 transition-colors">
             ← Steady Steps Music
           </a>
           <h1 className="text-4xl font-black text-white mb-2">Request a Song</h1>
@@ -25,7 +25,7 @@ export default function RequestsPage() {
         <div className="mt-6 text-center bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
           <p className="text-slate-300 text-sm mb-3">Want to learn to play music yourself?</p>
           <a
-            href="/"
+            href="https://steadystepsmusic.com"
             className="inline-block px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-colors text-sm"
           >
             Book a Free Lesson with Nik →
