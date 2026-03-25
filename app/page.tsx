@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Nav from './components/Nav'
 import ContactForm from './components/ContactForm'
 
@@ -116,7 +117,7 @@ export default function Home() {
 
           <div className="animate-fade-up animate-delay-200 flex justify-center">
             <div className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-2 border-teal-500/20">
-              <img src="/images/hero.jpeg" alt="Nik — music teacher" className="w-full h-full object-cover" />
+              <Image src="/images/hero.jpeg" alt="Nik Mathews — music teacher in Boise, Idaho" fill className="object-cover" priority />
             </div>
           </div>
         </div>
@@ -134,7 +135,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1 flex justify-center">
             <div className="w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
-              <img src="/images/about.jpeg" alt="Nik — music teacher" className="w-full h-full object-cover" style={{objectPosition: '50% 25%'}} />
+              <Image src="/images/about.jpeg" alt="Nik Mathews — experienced music teacher in Boise, Idaho" fill className="object-cover" style={{objectPosition: '50% 25%'}} />
             </div>
           </div>
 
@@ -281,6 +282,29 @@ export default function Home() {
                 <h3 className="font-bold text-slate-900 mb-2">{f.q}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{f.a}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Areas Served ─────────────────────────────────────────────── */}
+      <section className="py-10 bg-slate-50 border-t border-slate-100">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <p className="text-slate-400 text-sm mb-4">Serving Boise and the surrounding Treasure Valley</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { label: 'Meridian',    href: '/meridian' },
+              { label: 'Eagle',       href: '/eagle' },
+              { label: 'Nampa',       href: '/nampa' },
+              { label: 'Garden City', href: '/garden-city' },
+            ].map(({ label, href }) => (
+              <a
+                key={href}
+                href={href}
+                className="px-4 py-1.5 rounded-full border border-slate-200 text-slate-500 text-sm hover:border-teal-400 hover:text-teal-600 transition-colors"
+              >
+                {label}
+              </a>
             ))}
           </div>
         </div>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /nik-mathews
+
+Sitemap: https://steadystepsmusic.com/sitemap.xml
