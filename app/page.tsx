@@ -33,7 +33,7 @@ const pricing = [
     price: '$50',
     duration: 'per session',
     highlight: false,
-    features: ['Great for beginners & kids', 'Focused, efficient sessions', 'Online via Zoom or in-person', 'Session notes sent after each lesson'],
+    features: ['Great for beginners & kids', 'Focused, efficient sessions', 'Online via Zoom or in-person', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
     cta: 'Get Started',
   },
   {
@@ -41,7 +41,7 @@ const pricing = [
     price: '$90',
     duration: 'per session',
     highlight: false,
-    features: ['Deep dives & faster progress', 'Ideal for dedicated students', 'Online via Zoom or in-person', 'Session notes sent after each lesson'],
+    features: ['Deep dives & faster progress', 'Ideal for dedicated students', 'Online via Zoom or in-person', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
     cta: 'Get Started',
   },
 ]
@@ -243,7 +243,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <p className="text-center text-slate-400 text-sm mt-8">Monthly packages available — just ask!</p>
+          <p className="text-center text-slate-500 text-sm mt-8">Pre-pay for the month and save 10% — mention it when you book.</p>
         </div>
       </section>
 
