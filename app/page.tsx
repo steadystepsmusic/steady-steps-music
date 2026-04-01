@@ -5,12 +5,12 @@ import ContactForm from './components/ContactForm'
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const lessons = [
-  { name: 'Guitar',        desc: 'From your first open chord to advanced fingerpicking and lead playing. Acoustic or electric, all styles.' },
-  { name: 'Bass',          desc: 'Lock in the groove and hold down the low end. Learn technique, theory, and how to play with a band.' },
-  { name: 'Piano',         desc: 'Build a strong foundation in keys — scales, chords, reading music, and playing songs you actually love.' },
-  { name: 'Voice',         desc: 'Develop your tone, range, and confidence. Breath control, pitch, technique, and performance covered.' },
-  { name: 'Music Theory',  desc: 'Understand how music actually works — intervals, scales, chord progressions, and how to apply it all.' },
-  { name: 'Songwriting',   desc: 'Turn your ideas into real songs. Melody, lyrics, structure, and the creative process — all covered.' },
+  { name: 'Guitar',        desc: 'From your first open chord to advanced fingerpicking and lead playing. Acoustic or electric, all styles.', image: '/images/hero.jpeg' },
+  { name: 'Bass',          desc: 'Lock in the groove and hold down the low end. Learn technique, theory, and how to play with a band.', image: '/images/bass.jpg' },
+  { name: 'Piano',         desc: 'Build a strong foundation in keys: scales, chords, reading music, and playing songs you actually love.', image: '/images/piano.jpg' },
+  { name: 'Voice',         desc: 'Develop your tone, range, and confidence. Breath control, pitch, technique, and performance covered.', image: '/images/singer.jpg' },
+  { name: 'Music Theory',  desc: 'Understand how music actually works: intervals, scales, chord progressions, and how to apply it all.', image: '/images/music theory.jpg' },
+  { name: 'Songwriting',   desc: 'Turn your ideas into real songs. Melody, lyrics, structure, and the creative process. All covered.', image: '/images/songwriting.jpg' },
 ]
 
 const steps = [
@@ -26,7 +26,7 @@ const pricing = [
     duration: '15 min intro',
     highlight: true,
     features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', 'Online or in-person'],
-    cta: "Book Now — It's Free",
+    cta: "Book Now. It's Free.",
   },
   {
     name: '30-Minute Lesson',
@@ -60,16 +60,16 @@ const testimonials = [
   {
     name: 'Emily R.',
     role: 'Voice & songwriting student',
-    quote: "Not only am I a better singer — I've written three songs I'm actually proud of. The songwriting sessions are the highlight of my week.",
+    quote: "Not only am I a better singer, I've written three songs I'm actually proud of. The songwriting sessions are the highlight of my week.",
   },
 ]
 
 const faqs = [
-  { q: 'Do I need my own instrument?',      a: "For in-person lessons, yes — having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
-  { q: 'What ages do you teach?',            a: 'I work with students from around 4th grade (age 9-10) and up — teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
+  { q: 'Do I need my own instrument?',      a: "For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
+  { q: 'What ages do you teach?',            a: 'I work with students from around 4th grade (age 9-10) and up: teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
   { q: 'How do online lessons work?',        a: "We meet over Zoom or your preferred video platform. After each lesson I'll send you a summary of what we covered, exercises to practice, and any resources like chord charts or sheet music." },
-  { q: 'Do I need any prior experience?',   a: "Not at all — complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau." },
-  { q: 'How often should I take lessons?',  a: "Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I'm flexible — we can discuss what works best for your schedule." },
+  { q: 'Do I need any prior experience?',   a: "Not at all. Complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau." },
+  { q: 'How often should I take lessons?',  a: "Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I'm flexible. We can discuss what works best for your schedule." },
   { q: 'Can I cancel or reschedule?',       a: "Life happens! I ask for at least 24 hours notice to reschedule or cancel. Lessons cancelled with less than 24 hours notice may be charged in full." },
 ]
 
@@ -84,7 +84,7 @@ export default function Home() {
       <section className="relative min-h-screen bg-slate-900 flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950" />
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 grid md:grid-cols-2 gap-12 items-center w-full">
           <div className="animate-fade-up">
@@ -92,12 +92,11 @@ export default function Home() {
               Music Lessons in Boise, ID · Teaching Online Worldwide
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
-              Music Lessons<br />
-              <span className="text-teal-400">Made for</span><br />
-              You.
+              Music Lessons Made<br />
+              <span className="text-teal-400">for You.</span>
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg">
-              Guitar, bass, piano, voice, music theory, and songwriting — online or in-person.
+              Guitar, bass, piano, voice, music theory, and songwriting, online or in-person.
               Every lesson is built around <em>your</em> goals, your schedule, and your taste in music.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -117,7 +116,7 @@ export default function Home() {
 
           <div className="animate-fade-up animate-delay-200 flex justify-center">
             <div className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-2 border-teal-500/20">
-              <Image src="/images/hero.jpeg" alt="Nik Mathews — music teacher in Boise, Idaho" fill className="object-cover" priority />
+              <Image src="/images/hero.jpeg" alt="Nik Mathews, music teacher in Boise, Idaho" fill className="object-cover" priority />
             </div>
           </div>
         </div>
@@ -135,7 +134,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1 flex justify-center">
             <div className="relative w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
-              <Image src="/images/about.jpeg" alt="Nik Mathews — experienced music teacher in Boise, Idaho" fill className="object-cover" style={{objectPosition: '50% 25%'}} />
+              <Image src="/images/about.jpeg" alt="Nik Mathews, experienced music teacher in Boise, Idaho" fill className="object-cover" style={{objectPosition: '50% 25%'}} />
             </div>
           </div>
 
@@ -144,7 +143,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>
-                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.
+                I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice. I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.
               </p>
               <p>
                 My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.
@@ -171,14 +170,28 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Six Paths to Musical Growth</h2>
-            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you — online or in-person in Boise, Idaho.</p>
+            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, online or in-person in Boise, Idaho.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
-              <div key={l.name} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:border-teal-200 transition-all group cursor-default">
-                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">{l.name}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{l.desc}</p>
-              </div>
+              <a key={l.name} href="#contact" className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md hover:border-teal-200 transition-all group cursor-pointer flex flex-col no-underline">
+                {l.image ? (
+                  <div className="relative w-full h-40 overflow-hidden">
+                    <Image src={l.image} alt={l.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  </div>
+                ) : (
+                  <div className="w-full h-40 bg-slate-100 flex items-center justify-center">
+                    <span className="text-slate-400 text-sm font-medium uppercase tracking-widest">Photo Coming Soon</span>
+                  </div>
+                )}
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">{l.name}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed flex-1">{l.desc}</p>
+                  <span className="mt-4 inline-block text-sm font-semibold text-teal-600 group-hover:text-teal-700 transition-colors">
+                    Start {l.name} Lessons →
+                  </span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
@@ -243,7 +256,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <p className="text-center text-slate-500 text-sm mt-8">Pre-pay for the month and save 10% — mention it when you book.</p>
+          <p className="text-center text-slate-500 text-sm mt-8">Pre-pay for the month and save 10%. Mention it when you book.</p>
         </div>
       </section>
 
