@@ -121,7 +121,7 @@ export default function NikMathewsPage() {
             Setlist
           </p>
           <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '1rem', marginBottom: '3rem', marginTop: 0 }}>
-            Over 200 songs available across a variety of genres — plus requests!
+            Over 200 songs available across a variety of genres, plus requests!
           </p>
           {genreGroups.map(({ genre, songs: genreSongs }) => (
             <div key={genre} style={{ marginBottom: '3rem' }}>

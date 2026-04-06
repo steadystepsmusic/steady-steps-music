@@ -338,8 +338,17 @@ export default function Home() {
       {/* ── Footer ───────────────────────────────────────────────────── */}
       <footer className="bg-slate-950 border-t border-slate-800 py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-white font-bold">Steady Steps <span className="text-teal-400">Music</span></span>
+          <div className="flex items-center gap-3">
+            <svg viewBox="0 0 45 35" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shapeRendering="crispEdges">
+              <rect x="0"  y="30" width="15" height="5" fill="#162D6E"/>
+              <rect x="10" y="25" width="5"  height="5" fill="#162D6E"/>
+              <rect x="10" y="20" width="15" height="5" fill="#2563EB"/>
+              <rect x="20" y="15" width="5"  height="5" fill="#2563EB"/>
+              <rect x="20" y="10" width="15" height="5" fill="#7DD3FC"/>
+              <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
+              <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
+            </svg>
+            <span className="text-white font-bold">Steady <span className="text-teal-400">Steps</span> Music</span>
           </div>
           <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Music Lessons in Boise, ID</p>
           <div className="flex items-center gap-6 text-slate-400 text-sm">

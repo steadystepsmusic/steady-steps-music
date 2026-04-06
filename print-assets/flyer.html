@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steady Steps Music — Flyer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      padding: 48px;
+      gap: 16px;
+    }
+
+    .label {
+      font-size: 13px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    /* 8.5" x 11" at 96dpi = 816 x 1056px */
+    .flyer {
+      width: 816px;
+      min-height: 1056px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top accent bar */
+    .accent-bar {
+      height: 8px;
+      background: linear-gradient(90deg, #0f766e, #2dd4bf);
+      flex-shrink: 0;
+    }
+
+    /* Decorative circles — subtle on white */
+    .deco-circle-1 {
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      opacity: 0.09;
+      z-index: 0;
+    }
+    .deco-circle-2 {
+      position: absolute;
+      top: 248px;
+      left: -80px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: #0f172a;
+      opacity: 0.07;
+      z-index: 0;
+    }
+    .deco-circle-3 {
+      position: absolute;
+      top: 380px;
+      right: -100px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: #f59e0b;
+      opacity: 0.08;
+      z-index: 0;
+    }
+    .deco-circle-4 {
+      position: absolute;
+      bottom: -80px;
+      left: -60px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      opacity: 0.09;
+      z-index: 0;
+    }
+
+    /* Main content */
+    .flyer-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 36px 64px 28px;
+      gap: 22px;
+      position: relative;
+      z-index: 1;
+    }
+    .brand-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .header-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Brand */
+    .brand-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .brand {
+      font-size: 68px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .brand span { color: #0f766e; }
+    .tagline {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+    .tagline span { color: #0f766e; }
+
+    /* Divider */
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, #0f766e, #2dd4bf, transparent);
+    }
+
+    /* Hook — free lesson first */
+    .hook {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hook-free {
+      font-size: 48px;
+      font-weight: 900;
+      color: #f59e0b;
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .hook-instruments {
+      font-size: 30px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    /* Subjects */
+    .subjects-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .subject-pill {
+      background: #0f766e;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Details */
+    .details {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 20px;
+      color: #334155;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .detail-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #0f766e;
+      flex-shrink: 0;
+      margin-top: 9px;
+    }
+
+    /* Contact + QR */
+    .contact-qr-row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .contact-label {
+      font-size: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    .contact-value {
+      font-size: 22px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .cta-button {
+      background: #f59e0b;
+      color: #0f172a;
+      font-size: 20px;
+      font-weight: 900;
+      padding: 14px 24px;
+      border-radius: 10px;
+      letter-spacing: 0.02em;
+      display: inline-block;
+      margin-top: 4px;
+    }
+    .qr-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .qr-block img {
+      width: 192px;
+      height: 192px;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      padding: 6px;
+    }
+    .qr-label {
+      font-size: 13px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+
+    @page { size: letter portrait; margin: 0.25in; }
+    @media print {
+      html, body { margin: 0; padding: 0; background: none; display: block; }
+      .label { display: none; }
+      .flyer {
+        width: 100%;
+        min-height: 0;
+        height: 10.5in;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .flyer-body { padding: 24px 52px 20px; justify-content: space-between; }
+      .contact-qr-row { margin-top: 0; }
+      .brand { font-size: 58px; }
+      .tagline { font-size: 32px; }
+      .hook-free { font-size: 52px; }
+      .hook-instruments { font-size: 32px; }
+      .subject-pill { font-size: 23px; padding: 11px 22px; }
+      .detail-item { font-size: 22px; text-wrap: balance; }
+      .details { gap: 14px; }
+      .qr-block img { width: 180px; height: 180px; }
+      .cta-button { text-align: right; }
+      .deco-circle-1 { opacity: 0.18; }
+      .deco-circle-2 { opacity: 0.14; }
+      .deco-circle-3 { opacity: 0.12; }
+      .deco-circle-4 { opacity: 0.14; }
+    }
+  </style>
+</head>
+<body>
+
+  <p class="label">Steady Steps Music — 8.5" x 11" Bulletin Board Flyer &nbsp;·&nbsp; Print or Save as PDF</p>
+
+  <div class="flyer">
+    <div class="accent-bar"></div>
+    <div class="deco-circle-1"></div>
+    <div class="deco-circle-2"></div>
+    <div class="deco-circle-3"></div>
+    <div class="deco-circle-4"></div>
+
+    <div class="flyer-body">
+
+      <!-- Brand -->
+      <div class="brand-section">
+        <div class="brand-row">
+          <div class="brand">Steady Steps<span> Music</span></div>
+          <div class="tagline">Music Lessons Made <span>for You</span></div>
+        </div>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Hook -->
+      <div class="hook">
+        <div class="hook-free">Your First Lesson Is Free.</div>
+        <div class="hook-instruments">Want to learn music but don't know where to begin? Start with Steady Steps.</div>
+      </div>
+
+      <!-- Subjects -->
+      <div class="subjects-row">
+        <div class="subject-pill">Guitar</div>
+        <div class="subject-pill">Bass</div>
+        <div class="subject-pill">Piano</div>
+        <div class="subject-pill">Voice</div>
+        <div class="subject-pill">Music Theory</div>
+        <div class="subject-pill">Songwriting</div>
+      </div>
+
+      <!-- Details -->
+      <div class="details">
+        <div class="detail-item">
+          <div class="detail-dot"></div>
+          <div>Taught by Nik Mathews: Professional musician with 20+ years performing and teaching</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-dot"></div>
+          <div>All ages welcome, from total beginners to advanced</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-dot"></div>
+          <div>In-person in Boise, Meridian, Garden City & Eagle, or online</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-dot"></div>
+          <div>Flexible scheduling, tailored to your goals and pace</div>
+        </div>
+      </div>
+
+      <!-- Contact + QR -->
+      <div class="contact-qr-row">
+        <div class="contact-block">
+          <div class="contact-item">
+            <div class="contact-label">Website</div>
+            <div class="contact-value">steadystepsmusic.com</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Call or Text</div>
+            <div class="contact-value">208-546-9737</div>
+          </div>
+          <div class="cta-button">Scan the QR code &rarr;<br>Book your free lesson today</div>
+        </div>
+        <div class="qr-block">
+          <img src="qr-code.png" alt="QR Code" />
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</body>
+</html>

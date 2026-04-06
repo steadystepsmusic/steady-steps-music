@@ -1,7 +1,7 @@
 import RequestsClient from './RequestsClient'
 
 export const metadata = {
-  title: 'Song Requests — Steady Steps Music',
+  title: 'Song Requests | Steady Steps Music',
   description: 'Browse the setlist and request a song live!',
 }
 

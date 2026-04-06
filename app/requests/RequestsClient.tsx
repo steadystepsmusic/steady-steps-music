@@ -32,7 +32,7 @@ export default function RequestsClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           access_key: '697211a3-d292-481e-946f-aedfed7938d3',
-          subject: `Song Request: ${form.song} by ${form.artist}${form.name ? ` — from ${form.name}` : ''}`,
+          subject: `Song Request: ${form.song} by ${form.artist}${form.name ? `, from ${form.name}` : ''}`,
           ...form,
         }),
       })
@@ -61,7 +61,7 @@ export default function RequestsClient() {
         </div>
         <div className="max-h-[60vh] overflow-y-auto divide-y divide-slate-700/50">
           {filtered.length === 0 ? (
-            <p className="text-slate-400 text-sm text-center py-8">No songs found — but feel free to request anyway!</p>
+            <p className="text-slate-400 text-sm text-center py-8">No songs found, but feel free to request anyway!</p>
           ) : (
             filtered.map(s => (
               <button

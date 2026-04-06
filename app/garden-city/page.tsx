@@ -3,11 +3,11 @@ import CityPage from '../components/CityPage'
 
 export const metadata: Metadata = {
   title: 'Music Lessons in Garden City, ID | Guitar, Piano, Voice & More | Steady Steps Music',
-  description: 'Expert guitar, bass, piano, voice, music theory, and songwriting lessons in Garden City, Idaho — online or in-person. Taught by Nik, 20+ years experience. Book a free 15-minute demo lesson today.',
+  description: 'Expert guitar, bass, piano, voice, music theory, and songwriting lessons in Garden City, Idaho, online or in-person. Taught by Nik, 20+ years experience. Book a free 15-minute demo lesson today.',
   alternates: { canonical: 'https://steadystepsmusic.com/garden-city' },
   openGraph: {
     title: 'Music Lessons in Garden City, ID | Steady Steps Music',
-    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons in Garden City, Idaho — online or in-person. Book a free demo lesson today.',
+    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons in Garden City, Idaho, online or in-person. Book a free demo lesson today.',
     url: 'https://steadystepsmusic.com/garden-city',
     siteName: 'Steady Steps Music',
     locale: 'en_US',

@@ -12,7 +12,7 @@ export default function BookingForm() {
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ access_key: 'babdd6d6-3df0-4e4a-a08b-e6012c7c8369', subject: 'Booking Inquiry — Nik Mathews', ...form }),
+      body: JSON.stringify({ access_key: 'babdd6d6-3df0-4e4a-a08b-e6012c7c8369', subject: 'Booking Inquiry | Nik Mathews', ...form }),
     })
     const data = await res.json()
     if (data.success) setSent(true)
@@ -44,7 +44,7 @@ export default function BookingForm() {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <p style={{ color: '#c9a84c', fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.1em' }}>Message sent!</p>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', marginTop: '0.5rem' }}>Thanks {form.name} — I&apos;ll be in touch soon.</p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', marginTop: '0.5rem' }}>Thanks {form.name}, I&apos;ll be in touch soon.</p>
       </div>
     )
   }

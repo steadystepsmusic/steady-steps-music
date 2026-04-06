@@ -24,7 +24,7 @@ export default function SongList() {
       </div>
       <div className="max-h-72 overflow-y-auto divide-y divide-slate-700/50">
         {filtered.length === 0 ? (
-          <p className="text-slate-400 text-sm text-center py-8">No songs found — but feel free to request anyway!</p>
+          <p className="text-slate-400 text-sm text-center py-8">No songs found, but feel free to request anyway!</p>
         ) : (
           filtered.map(s => (
             <div key={`${s.title}-${s.artist}`} className="px-4 py-3 flex justify-between items-center gap-4">

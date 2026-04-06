@@ -5,10 +5,10 @@ import ContactForm from './ContactForm'
 const lessons = [
   { name: 'Guitar',       desc: 'From your first open chord to advanced fingerpicking and lead playing. Acoustic or electric, all styles.' },
   { name: 'Bass',         desc: 'Lock in the groove and hold down the low end. Learn technique, theory, and how to play with a band.' },
-  { name: 'Piano',        desc: 'Build a strong foundation in keys — scales, chords, reading music, and playing songs you actually love.' },
+  { name: 'Piano',        desc: 'Build a strong foundation in keys: scales, chords, reading music, and playing songs you actually love.' },
   { name: 'Voice',        desc: 'Develop your tone, range, and confidence. Breath control, pitch, technique, and performance covered.' },
-  { name: 'Music Theory', desc: 'Understand how music actually works — intervals, scales, chord progressions, and how to apply it all.' },
-  { name: 'Songwriting',  desc: 'Turn your ideas into real songs. Melody, lyrics, structure, and the creative process — all covered.' },
+  { name: 'Music Theory', desc: 'Understand how music actually works: intervals, scales, chord progressions, and how to apply it all.' },
+  { name: 'Songwriting',  desc: 'Turn your ideas into real songs. Melody, lyrics, structure, and the creative process. All covered.' },
 ]
 
 const pricing = [
@@ -18,7 +18,7 @@ const pricing = [
     duration: '15 min intro',
     highlight: true,
     features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', 'Online or in-person'],
-    cta: "Book Now — It's Free",
+    cta: "Book Now. It's Free.",
   },
   {
     name: '30-Minute Lesson',
@@ -39,11 +39,11 @@ const pricing = [
 ]
 
 const faqs = [
-  { q: 'Do I need my own instrument?',     a: "For in-person lessons, yes — having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
-  { q: 'What ages do you teach?',           a: 'I work with students from around 4th grade (age 9-10) and up — teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
+  { q: 'Do I need my own instrument?',     a: "For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
+  { q: 'What ages do you teach?',           a: 'I work with students from around 4th grade (age 9-10) and up: teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
   { q: 'How do online lessons work?',       a: "We meet over Zoom or your preferred video platform. After each lesson I'll send you a summary of what we covered, exercises to practice, and any resources like chord charts or sheet music." },
-  { q: 'Do I need any prior experience?',  a: "Not at all — complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau." },
-  { q: 'How often should I take lessons?', a: "Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I'm flexible — we can discuss what works best for your schedule." },
+  { q: 'Do I need any prior experience?',  a: "Not at all. Complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau." },
+  { q: 'How often should I take lessons?', a: "Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I'm flexible. We can discuss what works best for your schedule." },
   { q: 'Can I cancel or reschedule?',      a: "Life happens! I ask for at least 24 hours notice to reschedule or cancel. Lessons cancelled with less than 24 hours notice may be charged in full." },
 ]
 
@@ -103,16 +103,16 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1 flex justify-center">
             <div className="relative w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
-              <Image src="/images/about.jpeg" alt={`Nik Mathews — music teacher in ${name}, Idaho`} fill className="object-cover" style={{ objectPosition: '50% 25%' }} />
+              <Image src="/images/about.jpeg" alt={`Nik Mathews, music teacher in ${name}, Idaho`} fill className="object-cover" style={{ objectPosition: '50% 25%' }} />
             </div>
           </div>
           <div className="order-1 md:order-2">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">About Your Teacher</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
-              <p>I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice — and I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.</p>
+              <p>I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice. I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.</p>
               <p>My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.</p>
-              <p>Based in Boise, Idaho, I work with students in {name} and across the Treasure Valley — online or in-person. {context}</p>
+              <p>Based in Boise, Idaho, I work with students in {name} and across the Treasure Valley, online or in-person. {context}</p>
             </div>
             <div className="mt-8 grid grid-cols-3 gap-4 text-center">
               {[['20+', 'Years Teaching'], ['100+', 'Students Taught'], ['6', 'Musical Subjects']].map(([val, label]) => (
@@ -132,7 +132,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Music Lessons in {name}</h2>
-            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you — online or in-person.</p>
+            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, online or in-person.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
@@ -180,7 +180,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
               </div>
             ))}
           </div>
-          <p className="text-center text-slate-400 text-sm mt-8">Monthly packages available — just ask!</p>
+          <p className="text-center text-slate-400 text-sm mt-8">Monthly packages available. Just ask!</p>
         </div>
       </section>
 

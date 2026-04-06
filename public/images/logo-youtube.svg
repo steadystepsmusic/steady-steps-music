@@ -1,0 +1,38 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1920" height="1080" fill="#0f172a"/>
+
+  <!-- Staircase mark — centered at x=960, u=48px, tread=144px wide -->
+  <!-- Step 1: dark navy -->
+  <rect x="744" y="544" width="144" height="48" fill="#162D6E"/>
+  <rect x="840" y="496" width="48" height="48" fill="#162D6E"/>
+  <!-- Step 2: blue -->
+  <rect x="840" y="448" width="144" height="48" fill="#2563EB"/>
+  <rect x="936" y="400" width="48" height="48" fill="#2563EB"/>
+  <!-- Step 3: sky blue -->
+  <rect x="936" y="352" width="144" height="48" fill="#7DD3FC"/>
+  <rect x="1032" y="304" width="48" height="48" fill="#7DD3FC"/>
+  <!-- Step 4: teal -->
+  <rect x="1032" y="256" width="144" height="48" fill="#2DD4BF"/>
+
+  <!-- Wordmark -->
+  <text
+    x="960"
+    y="724"
+    text-anchor="middle"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="96"
+    font-weight="700"
+  ><tspan fill="#ffffff">Steady</tspan><tspan fill="#2DD4BF">Steps</tspan></text>
+
+  <text
+    x="960"
+    y="820"
+    text-anchor="middle"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="68"
+    font-weight="300"
+    fill="#ffffff"
+    style="letter-spacing: 0.22em"
+  >MUSIC</text>
+</svg>

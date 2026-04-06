@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Music Lessons in Boise, ID | Guitar, Piano, Voice & More | Steady Steps Music',
   description:
-    'Expert guitar, bass, piano, voice, music theory, and songwriting lessons in Boise, Idaho — online or in-person. Taught by Nik, 20+ years experience. Book a free 15-minute demo lesson today. All skill levels welcome.',
+    'Expert guitar, bass, piano, voice, music theory, and songwriting lessons in Boise, Idaho, online or in-person. Taught by Nik, 20+ years experience. Book a free 15-minute demo lesson today. All skill levels welcome.',
   keywords: 'music lessons boise idaho, guitar lessons boise, piano lessons boise, voice lessons boise, bass lessons boise, online music lessons, songwriting lessons, music theory lessons, music teacher boise, beginner guitar lessons, adult music lessons boise, kids music lessons boise',
   metadataBase: new URL('https://steadystepsmusic.com'),
   alternates: {
@@ -15,24 +15,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Music Lessons in Boise, ID | Steady Steps Music',
-    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons — online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
+    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons, online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
     url: 'https://steadystepsmusic.com',
     siteName: 'Steady Steps Music',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: '/images/hero.jpeg',
+        url: '/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Steady Steps Music — Music Lessons in Boise, Idaho',
+        alt: 'Steady Steps Music: Music Lessons in Boise, Idaho',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Music Lessons in Boise, ID | Steady Steps Music',
-    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons — online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
+    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons, online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
   },
   icons: {
     icon: '/favicon.ico',
@@ -43,7 +43,7 @@ const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'MusicSchool',
   name: 'Steady Steps Music',
-  description: 'Expert guitar, bass, piano, voice, music theory, and songwriting lessons in Boise, Idaho — online or in-person. All ages and skill levels welcome.',
+  description: 'Expert guitar, bass, piano, voice, music theory, and songwriting lessons in Boise, Idaho, online or in-person. All ages and skill levels welcome.',
   url: 'https://steadystepsmusic.com',
   address: {
     '@type': 'PostalAddress',
@@ -96,7 +96,7 @@ const faqSchema = {
       name: 'Do I need my own instrument?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'For in-person lessons, yes — having your own instrument to practice at home is important. For online lessons you\'ll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget.',
+        text: 'For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you\'ll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget.',
       },
     },
     {
@@ -104,7 +104,7 @@ const faqSchema = {
       name: 'What ages do you teach?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'I work with students from around 4th grade (age 9-10) and up — teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.',
+        text: 'I work with students from around 4th grade (age 9-10) and up: teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.',
       },
     },
     {
@@ -120,7 +120,7 @@ const faqSchema = {
       name: 'Do I need any prior experience?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Not at all — complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau.',
+        text: 'Not at all. Complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau.',
       },
     },
     {
@@ -128,7 +128,7 @@ const faqSchema = {
       name: 'How often should I take lessons?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I\'m flexible — we can discuss what works best for your schedule.',
+        text: 'Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I\'m flexible. We can discuss what works best for your schedule.',
       },
     },
     {

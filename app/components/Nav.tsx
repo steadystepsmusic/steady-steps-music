@@ -24,9 +24,18 @@ export default function Nav() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur shadow-lg' : 'bg-transparent'}`}>
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 group">
-          <span className="font-bold text-white text-3xl leading-tight">
-            Steady Steps<span className="text-teal-400"> Music</span>
+        <a href="#" className="flex items-center gap-3 group">
+          <svg viewBox="0 0 45 35" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shapeRendering="crispEdges">
+            <rect x="0"  y="30" width="15" height="5" fill="#162D6E"/>
+            <rect x="10" y="25" width="5"  height="5" fill="#162D6E"/>
+            <rect x="10" y="20" width="15" height="5" fill="#2563EB"/>
+            <rect x="20" y="15" width="5"  height="5" fill="#2563EB"/>
+            <rect x="20" y="10" width="15" height="5" fill="#7DD3FC"/>
+            <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
+            <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
+          </svg>
+          <span className="font-bold text-white text-2xl leading-tight">
+            Steady <span className="text-teal-400">Steps</span> Music
           </span>
         </a>
 

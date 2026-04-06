@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Card Print</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 48px;
+      font-family: 'Inter', sans-serif;
+      padding: 48px;
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        gap: 0;
+        display: block;
+      }
+      .bleed {
+        page-break-after: always;
+        break-after: page;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .card {
+        box-shadow: none;
+      }
+    }
+
+    /* Card dimensions: 3.5" x 2" + 0.125" bleed on each side = 3.75" x 2.25" at 96dpi x2 = 720 x 432px */
+    /* Bleed wrapper adds 1" (96px at 96dpi, 192px at 2x) of background on all sides */
+    .bleed {
+      padding: 96px;
+    }
+    .bleed-front { background: #0f172a; }
+    .bleed-back  { background: #0f766e; }
+    .card {
+      width: 720px;
+      height: 432px;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    /* ── FRONT ── */
+    .front {
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 42px 40px 52px;
+    }
+    .front-top {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .brand {
+      font-size: 46px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+    .brand span { color: #2dd4bf; }
+    .tagline {
+      font-size: 20px;
+      color: #b8c9d9;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    .lesson-tiles {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      width: 100%;
+    }
+    .tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1;
+      height: 120px;
+      background: rgba(45, 212, 191, 0.1);
+      border: 1px solid rgba(45, 212, 191, 0.25);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+    }
+    .front-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .name {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .subjects {
+      font-size: 17px;
+      color: #2dd4bf;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #0f766e, #2dd4bf);
+    }
+    .accent-dot {
+      position: absolute;
+      bottom: 48px;
+      right: 56px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #0f766e;
+      opacity: 0.15;
+    }
+    .accent-dot-2 {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      opacity: 0.1;
+    }
+
+    /* ── BACK ── */
+    .back {
+      background: #0f766e;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 36px 68px;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .back::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      z-index: 0;
+    }
+    .back::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -40px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      z-index: 0;
+    }
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .contact-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    .contact-value {
+      font-size: 23px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .cta {
+      margin-top: 8px;
+      background: #f59e0b;
+      color: #0f172a;
+      font-size: 19px;
+      font-weight: 800;
+      padding: 14px 26px;
+      border-radius: 8px;
+      letter-spacing: 0.02em;
+    }
+    .back-inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .back-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .qr-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .qr-block img {
+      width: 180px;
+      height: 180px;
+      border-radius: 8px;
+      background: #fff;
+      padding: 6px;
+    }
+    .qr-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bleed bleed-front">
+  <div class="card front">
+    <div class="accent-bar"></div>
+    <div class="accent-dot"></div>
+    <div class="accent-dot-2"></div>
+    <div class="front-top">
+      <div class="brand">Steady Steps<span> Music</span></div>
+      <div class="tagline">Music Lessons Made <span style="color:#2dd4bf;">for You</span></div>
+    </div>
+    <div class="lesson-tiles">
+      <div class="tile">
+        <img src="public/images/hero.jpeg" alt="Guitar" />
+      </div>
+      <div class="tile">
+        <img src="public/images/bass.jpg" alt="Bass" />
+      </div>
+      <div class="tile">
+        <img src="public/images/piano.jpg" alt="Piano" />
+      </div>
+      <div class="tile">
+        <img src="public/images/singer.jpg" alt="Voice" />
+      </div>
+    </div>
+    <div class="front-bottom">
+      <div class="name">Nik Mathews &mdash; Teacher</div>
+      <div class="subjects">Guitar &nbsp;·&nbsp; Bass &nbsp;·&nbsp; Piano &nbsp;·&nbsp; Voice &nbsp;·&nbsp; Theory &nbsp;·&nbsp; Songwriting</div>
+    </div>
+  </div>
+  </div>
+
+  <div class="bleed bleed-back">
+  <div class="card back">
+    <div class="back-inner">
+      <div class="back-left">
+        <div class="contact-item">
+          <div class="contact-label">Website</div>
+          <div class="contact-value">steadystepsmusic.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">208-546-9737</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Email</div>
+          <div class="contact-value">steadystepsmusic@gmail.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Location</div>
+          <div class="contact-value">Boise, ID &nbsp;·&nbsp; Online Anywhere</div>
+        </div>
+        <div class="cta">Book a Free Lesson &rarr; Visit steadystepsmusic.com</div>
+      </div>
+      <div class="qr-block">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://steadystepsmusic.com" alt="QR Code" />
+        <div class="qr-label">Scan to book</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</body>
+</html>
