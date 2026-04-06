@@ -348,7 +348,7 @@ export default function Home() {
               <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
               <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
             </svg>
-            <span className="text-white font-bold">Steady <span className="text-teal-400">Steps</span> Music</span>
+            <span className="text-white font-bold text-2xl">Steady <span className="text-teal-400">Steps</span> Music</span>
           </div>
           <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Music Lessons in Boise, ID</p>
           <div className="flex items-center gap-6 text-slate-400 text-sm">

@@ -34,7 +34,7 @@ export default function Nav() {
             <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
             <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
           </svg>
-          <span className="font-bold text-white text-2xl leading-tight">
+          <span className="font-bold text-white text-4xl leading-tight">
             Steady <span className="text-teal-400">Steps</span> Music
           </span>
         </a>
