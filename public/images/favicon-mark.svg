@@ -1,11 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="512" height="512" fill="#0f172a"/>
-  <!-- Staircase mark centered at 256,256 — u=52, tread=156, ha=104 -->
-  <rect x="22"  y="386" width="156" height="52" fill="#162D6E"/>
-  <rect x="126" y="334" width="52"  height="52" fill="#162D6E"/>
-  <rect x="126" y="282" width="156" height="52" fill="#2563EB"/>
-  <rect x="230" y="230" width="52"  height="52" fill="#2563EB"/>
-  <rect x="230" y="178" width="156" height="52" fill="#7DD3FC"/>
-  <rect x="334" y="126" width="52"  height="52" fill="#7DD3FC"/>
-  <rect x="334" y="74"  width="156" height="52" fill="#2DD4BF"/>
+  <!-- Staircase mark — L-shaped paths, no seams -->
+  <path d="M22 438 L22 386 L126 386 L126 334 L178 334 L178 438 Z" fill="#162D6E"/>
+  <path d="M126 334 L126 282 L230 282 L230 230 L282 230 L282 334 Z" fill="#2563EB"/>
+  <path d="M230 230 L230 178 L334 178 L334 126 L386 126 L386 230 Z" fill="#7DD3FC"/>
+  <rect x="334" y="74" width="156" height="52" fill="#2DD4BF"/>
 </svg>

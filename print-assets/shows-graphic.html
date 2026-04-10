@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nik Mathews — Shows</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 1080px;
+      height: 1350px;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .frame {
+      position: relative;
+      width: 1080px;
+      height: 1350px;
+      overflow: hidden;
+    }
+
+    /* ── BACKGROUND PHOTO ── */
+    /* Swap src to any photo of your choice */
+    .photo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 65%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 75% top;
+    }
+
+    /* ── LEFT PANEL ── */
+    .panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        #0a0a0a 0%,
+        #0a0a0a 88%,
+        transparent 100%
+      );
+      padding: 90px 60px 90px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    /* ── NAME ── */
+    .artist-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 72px;
+      text-transform: uppercase;
+      color: #ffffff;
+      line-height: 1.05;
+      margin-bottom: 36px;
+      letter-spacing: 2px;
+    }
+
+    /* ── DIVIDER ── */
+    .rule {
+      width: 100%;
+      height: 1px;
+      background: #c9a84c;
+      margin-bottom: 30px;
+    }
+
+    /* ── HEADING ── */
+    .week-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* ── SHOW LIST ── */
+    .shows {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      margin-top: 4px;
+    }
+
+    .show {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 0 18px;
+      align-items: start;
+    }
+
+    .show-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #c9a84c;
+      padding-top: 3px;
+      white-space: nowrap;
+    }
+
+    .show-details {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 17px;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    .show-details .venue {
+      font-weight: 600;
+    }
+
+    .show-details .location {
+      font-weight: 300;
+      color: rgba(255,255,255,0.80);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: auto;
+      padding-top: 40px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+<div class="frame">
+
+  <!--
+    PHOTO: swap this src to whichever photo you want in the background.
+    Portrait/vertical shots work best.
+    Options already in the project:
+      ../public/images/IMG_4493.jpeg
+      ../public/images/IMG_4432.jpg
+      ../public/images/IMG_2584.JPG
+      ../public/images/IMG_0765.JPG
+      ../public/images/FullSizeRender.jpeg
+  -->
+  <img class="photo" src="../public/images/IMG_4432.jpg" alt="">
+
+  <div class="panel">
+
+    <div class="artist-name">Nik Mathews</div>
+    <div class="rule"></div>
+    <div class="week-label">THIS WEEK!</div>
+    <div class="rule"></div>
+
+    <div class="shows">
+
+      <!--
+        SHOWS: edit, duplicate, or delete these blocks.
+        One .show div = one gig.
+      -->
+
+      <div class="show">
+        <div class="show-date">04/09:</div>
+        <div class="show-details">
+          <div class="venue">Brown Beard Brewing</div>
+          <div class="location">Boise, ID @ 6:00 PM</div>
+        </div>
+      </div>
+
+      <div class="show">
+        <div class="show-date">04/11:</div>
+        <div class="show-details">
+          <div class="venue">Venue Name</div>
+          <div class="location">City, ID @ 7:00 PM</div>
+        </div>
+      </div>
+
+      <div class="show">
+        <div class="show-date">04/12:</div>
+        <div class="show-details">
+          <div class="venue">Venue Name</div>
+          <div class="location">City, ID @ 6:00 PM</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">nikmathewsmusic.com</div>
+
+  </div>
+</div>
+</body>
+</html>

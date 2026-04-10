@@ -32,10 +32,10 @@ export default function NikMathewsPage() {
       {/* Hero */}
       <section style={{ position: 'relative', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
         <Image
-          src="/images/IMG_4432.jpg"
+          src="/images/nik-mathews-hero.jpeg"
           alt="Nik Mathews performing solo acoustic"
           fill
-          style={{ objectFit: 'cover', objectPosition: 'center 20%', opacity: 0.45 }}
+          style={{ objectFit: 'cover', objectPosition: '15% 10%', opacity: 0.45 }}
           priority
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 100%)' }} />
@@ -64,8 +64,7 @@ export default function NikMathewsPage() {
       {/* About */}
       <section style={{ maxWidth: '720px', margin: '0 auto', padding: '4rem 1.5rem 2rem', textAlign: 'center' }}>
         <p style={{ fontSize: '1.25rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.72)', margin: 0 }}>
-          Nik Mathews is a Boise-based solo acoustic singer and guitarist with over 20 years of
-          performance experience. Drawing from a wide variety of styles and songs spanning rock, country, folk, and pop,
+          Nik Mathews is a Boise-based singer and guitarist with over 20 years of performance experience. Drawing from a wide variety of styles and songs spanning rock, country, folk, and pop,
           he delivers a versatile, crowd-pleasing show for bars, restaurants, breweries, and wineries, as well as weddings, corporate events, and private parties.
           Using a live loop pedal to layer guitar parts in real time, he creates a full, dynamic sound that goes well beyond a typical solo act.
           Fully self-contained with professional PA.
@@ -80,7 +79,7 @@ export default function NikMathewsPage() {
           </p>
           <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
             <iframe
-              src="https://www.youtube.com/embed/WVxCpbQP9YQ"
+              src="https://www.youtube.com/embed/nRV2XqenyKc"
               title="Nik Mathews Live Performance"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -103,7 +102,7 @@ export default function NikMathewsPage() {
             <Image src="/images/IMG_0765.JPG" alt="Nik Mathews performing at a bar" fill style={{ objectFit: 'cover', objectPosition: 'center 15%' }} />
           </div>
           <div style={{ position: 'relative', aspectRatio: '1/1', overflow: 'hidden', borderRadius: '4px' }}>
-            <Image src="/images/FullSizeRender.jpeg" alt="Nik Mathews performing at a brewery" fill style={{ objectFit: 'cover', objectPosition: 'center 10%' }} />
+            <Image src="/images/IMG_4432.jpg" alt="Nik Mathews performing live" fill style={{ objectFit: 'cover', objectPosition: 'center 10%' }} />
           </div>
         </div>
         <div style={{ marginTop: '3rem' }}>
