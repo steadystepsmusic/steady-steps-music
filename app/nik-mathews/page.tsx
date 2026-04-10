@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     siteName: 'Nik Mathews Music',
     images: [
       {
-        url: 'https://nikmathewsmusic.com/images/IMG_4432.jpg',
-        width: 1080,
-        height: 1350,
+        url: 'https://nikmathewsmusic.com/images/nik-mathews-hero.jpeg',
+        width: 1920,
+        height: 1080,
         alt: 'Nik Mathews performing solo acoustic',
       },
     ],
