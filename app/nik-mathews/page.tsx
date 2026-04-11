@@ -105,7 +105,7 @@ export default function NikMathewsPage() {
             <Image src="/images/IMG_4432.jpg" alt="Nik Mathews performing live" fill style={{ objectFit: 'cover', objectPosition: 'center 10%' }} />
           </div>
         </div>
-        <div style={{ marginTop: '3rem' }}>
+        <div id="booking" style={{ marginTop: '3rem' }}>
           <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1.5rem' }}>
             Get in Touch
           </p>

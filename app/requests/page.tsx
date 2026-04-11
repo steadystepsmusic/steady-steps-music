@@ -62,7 +62,7 @@ export default function RequestsPage() {
 
         {/* Book for event */}
         <a
-          href="https://nikmathewsmusic.com"
+          href="https://nikmathewsmusic.com/#booking"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-4 flex items-center gap-4 bg-slate-800/50 border border-slate-700 rounded-2xl px-5 py-4 hover:bg-slate-800 transition-colors"
