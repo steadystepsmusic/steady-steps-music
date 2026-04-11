@@ -21,6 +21,22 @@ export default function RequestsPage() {
 
         <RequestsClient />
 
+        {/* Tip link */}
+        <div className="mt-6 text-center bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+          <p className="text-slate-300 text-sm mb-3">Feeling generous? Send Nik a tip for your request.</p>
+          <a
+            href="https://venmo.com/code?user_id=2009457366138880646&created=1710189721.169592&printed=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-6 py-3 bg-[#3D95CE] hover:bg-[#2e7db5] text-white font-bold rounded-xl transition-colors text-sm"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.4 2C20.1 3.3 20.4 4.6 20.4 6.3c0 5.1-4.3 11.7-7.8 16.3H4.9L2 3.1l6.7-.6 1.6 12.9c1.5-2.5 3.3-6.4 3.3-9.1 0-1.5-.3-2.5-.7-3.3L19.4 2z"/>
+            </svg>
+            Tip Nik on Venmo
+          </a>
+        </div>
+
         {/* Funnel link */}
         <div className="mt-6 text-center bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
           <p className="text-slate-300 text-sm mb-3">Want to learn to play music yourself?</p>
