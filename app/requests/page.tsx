@@ -2,7 +2,7 @@ import Image from 'next/image'
 import RequestsClient from './RequestsClient'
 
 export const metadata = {
-  title: 'Song Requests | Steady Steps Music',
+  title: 'Song Requests | Nik Mathews Music',
   description: 'Browse the setlist and request a song live!',
 }
 
