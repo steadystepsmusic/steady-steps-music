@@ -31,7 +31,7 @@ export default function RequestsPage() {
 
         {/* Tip link */}
         <div className="mt-6 text-center bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
-          <p className="text-slate-300 text-sm mb-3">Feeling generous? Send Nik a tip for your request.</p>
+          <p className="text-slate-300 text-sm mb-3">Feeling generous?<br />Send Nik a tip for your request.</p>
           <a
             href="https://venmo.com/code?user_id=2009457366138880646&created=1710189721.169592&printed=1"
             target="_blank"
