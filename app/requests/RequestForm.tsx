@@ -15,7 +15,7 @@ export default function RequestForm() {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_key: '697211a3-d292-481e-946f-aedfed7938d3', ...form }),
+        body: JSON.stringify({ access_key: '697211a3-d292-481e-946f-aedfed7938d3', song: form.song, artist: form.artist, guest_name: form.name }),
       })
       const data = await res.json()
       if (data.success) setSent(true)
