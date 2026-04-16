@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Print design files — not website assets
+print-assets/
+
+# Standalone chord/graphic SVGs generated for YouTube — not website assets
+public/images/chord-*.svg
