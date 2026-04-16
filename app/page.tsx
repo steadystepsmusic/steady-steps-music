@@ -227,7 +227,7 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Pricing</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Clear, Simple Pricing</h2>
-            <p className="text-slate-500 mt-4">Start with a free demo. No pressure, no commitment.</p>
+            <p className="text-slate-600 mt-4">Start with a free demo. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {pricing.map(p => (
@@ -240,7 +240,7 @@ export default function Home() {
                 <h3 className={`text-lg font-bold mb-1 ${p.highlight ? 'text-white' : 'text-slate-900'}`}>{p.name}</h3>
                 <div className="mb-6">
                   <span className={`text-4xl font-black ${p.highlight ? 'text-white' : 'text-slate-900'}`}>{p.price}</span>
-                  <span className={`text-sm ml-2 ${p.highlight ? 'text-teal-100' : 'text-slate-400'}`}>{p.duration}</span>
+                  <span className={`text-sm ml-2 ${p.highlight ? 'text-teal-100' : 'text-slate-600'}`}>{p.duration}</span>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {p.features.map(f => (
@@ -256,7 +256,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <p className="text-center text-slate-500 text-sm mt-8">Pre-pay for the month and save 10%. Mention it when you book.</p>
+          <p className="text-center text-slate-600 text-sm mt-8">Pre-pay for the month and save 10%. Mention it when you book.</p>
         </div>
       </section>
 
@@ -274,7 +274,7 @@ export default function Home() {
                 <p className="text-slate-600 leading-relaxed mb-6 italic flex-1">&ldquo;{t.quote}&rdquo;</p>
                 <div>
                   <div className="font-bold text-slate-900">{t.name}</div>
-                  <div className="text-slate-400 text-sm">{t.role}</div>
+                  <div className="text-slate-600 text-sm">{t.role}</div>
                 </div>
               </div>
             ))}

@@ -132,13 +132,13 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Music Lessons in {name}</h2>
-            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, online or in-person.</p>
+            <p className="text-slate-600 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, online or in-person.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
               <div key={l.name} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:border-teal-200 transition-all group cursor-default">
                 <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">{l.name} Lessons in {name}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{l.desc}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{l.desc}</p>
               </div>
             ))}
           </div>
@@ -151,7 +151,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Pricing</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Clear, Simple Pricing</h2>
-            <p className="text-slate-500 mt-4">Start with a free demo. No pressure, no commitment.</p>
+            <p className="text-slate-600 mt-4">Start with a free demo. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {pricing.map(p => (
@@ -164,7 +164,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
                 <h3 className={`text-lg font-bold mb-1 ${p.highlight ? 'text-white' : 'text-slate-900'}`}>{p.name}</h3>
                 <div className="mb-6">
                   <span className={`text-4xl font-black ${p.highlight ? 'text-white' : 'text-slate-900'}`}>{p.price}</span>
-                  <span className={`text-sm ml-2 ${p.highlight ? 'text-teal-100' : 'text-slate-400'}`}>{p.duration}</span>
+                  <span className={`text-sm ml-2 ${p.highlight ? 'text-teal-100' : 'text-slate-600'}`}>{p.duration}</span>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {p.features.map(f => (
@@ -180,7 +180,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
               </div>
             ))}
           </div>
-          <p className="text-center text-slate-400 text-sm mt-8">Monthly packages available. Just ask!</p>
+          <p className="text-center text-slate-600 text-sm mt-8">Monthly packages available. Just ask!</p>
         </div>
       </section>
 
@@ -195,7 +195,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
             {faqs.map(f => (
               <div key={f.q} className="bg-white rounded-2xl p-6 border border-slate-100">
                 <h3 className="font-bold text-slate-900 mb-2">{f.q}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{f.a}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{f.a}</p>
               </div>
             ))}
           </div>

@@ -31,8 +31,9 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Your Name</label>
+          <label htmlFor="contact-name" className="block text-sm font-medium text-slate-300 mb-1">Your Name</label>
           <input
+            id="contact-name"
             required type="text" value={form.name}
             onChange={e => setForm({ ...form, name: e.target.value })}
             placeholder="Jane Smith"
@@ -40,8 +41,9 @@ export default function ContactForm() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
+          <label htmlFor="contact-email" className="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
           <input
+            id="contact-email"
             required type="email" value={form.email}
             onChange={e => setForm({ ...form, email: e.target.value })}
             placeholder="jane@example.com"
@@ -50,8 +52,9 @@ export default function ContactForm() {
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">I&apos;m interested in…</label>
+        <label htmlFor="contact-instrument" className="block text-sm font-medium text-slate-300 mb-1">I&apos;m interested in…</label>
         <select
+          id="contact-instrument"
           value={form.instrument}
           onChange={e => setForm({ ...form, instrument: e.target.value })}
           className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:border-teal-400 transition-colors"
@@ -67,8 +70,9 @@ export default function ContactForm() {
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-1">Anything else? (optional)</label>
+        <label htmlFor="contact-message" className="block text-sm font-medium text-slate-300 mb-1">Anything else? (optional)</label>
         <textarea
+          id="contact-message"
           rows={4} value={form.message}
           onChange={e => setForm({ ...form, message: e.target.value })}
           placeholder="Tell me a bit about your experience level, goals, or any questions you have..."

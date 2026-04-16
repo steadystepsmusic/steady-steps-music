@@ -54,7 +54,7 @@ export default function Nav() {
         </div>
 
         {/* Mobile hamburger */}
-        <button onClick={() => setOpen(!open)} className="md:hidden text-white p-2">
+        <button onClick={() => setOpen(!open)} aria-label={open ? 'Close menu' : 'Open menu'} className="md:hidden text-white p-2">
           <div className={`w-6 h-0.5 bg-white transition-all mb-1.5 ${open ? 'rotate-45 translate-y-2' : ''}`} />
           <div className={`w-6 h-0.5 bg-white transition-all mb-1.5 ${open ? 'opacity-0' : ''}`} />
           <div className={`w-6 h-0.5 bg-white transition-all ${open ? '-rotate-45 -translate-y-2' : ''}`} />
