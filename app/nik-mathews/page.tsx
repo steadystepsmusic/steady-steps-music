@@ -3,6 +3,7 @@ import { songs } from '../requests/songs'
 import type { Metadata } from 'next'
 import BookingForm from './BookingForm'
 import { genreGroups } from './genreGroups'
+import NikNav from './NikNav'
 
 export const metadata: Metadata = {
   title: 'Nik Mathews | Singer & Guitarist',
@@ -28,6 +29,8 @@ export const metadata: Metadata = {
 export default function NikMathewsPage() {
   return (
     <main style={{ backgroundColor: '#0a0a0a', color: '#ffffff', minHeight: '100vh', fontFamily: 'Inter, sans-serif' }}>
+
+      <NikNav />
 
       {/* Hero */}
       <section style={{ position: 'relative', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
@@ -72,7 +75,7 @@ export default function NikMathewsPage() {
       </section>
 
       {/* Video */}
-      <section style={{ padding: '1.5rem 1.5rem 4rem' }}>
+      <section id="video" style={{ padding: '1.5rem 1.5rem 4rem' }}>
         <div style={{ maxWidth: '860px', margin: '0 auto' }}>
           <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1.5rem' }}>
             Watch &amp; Listen
