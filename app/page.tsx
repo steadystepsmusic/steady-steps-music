@@ -86,8 +86,8 @@ export default function Home() {
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl" />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 grid md:grid-cols-2 gap-12 items-center w-full">
-          <div className="animate-fade-up">
+        <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 flex flex-col items-center text-center w-full">
+          <div className="animate-fade-up max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
               Music Lessons in Boise, ID · Teaching Online Worldwide
             </div>
@@ -99,7 +99,7 @@ export default function Home() {
               Guitar, bass, piano, voice, music theory, and songwriting, online or in-person.
               Every lesson is built around <em>your</em> goals, your schedule, and your taste in music.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
                 Book a Free Lesson →
               </a>
@@ -107,18 +107,13 @@ export default function Home() {
                 See All Lessons
               </a>
             </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-slate-400 text-sm">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-slate-400 text-sm justify-center">
               <span className="whitespace-nowrap">✓ Free 15-min demo</span>
               <span className="whitespace-nowrap">✓ Student Interest Centered</span>
               <span className="whitespace-nowrap">✓ All skill levels</span>
             </div>
           </div>
 
-          <div className="animate-fade-up animate-delay-200 flex justify-center">
-            <div className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-2 border-teal-500/20">
-              <Image src="/images/hero.jpeg" alt="Nik Mathews, music teacher in Boise, Idaho" fill className="object-cover" priority />
-            </div>
-          </div>
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-400 animate-bounce">
