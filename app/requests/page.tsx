@@ -4,6 +4,11 @@ import RequestsClient from './RequestsClient'
 export const metadata = {
   title: 'Song Requests | Nik Mathews Music',
   description: 'Browse the setlist and request a song live!',
+  openGraph: {
+    title: 'Request a Song — Nik Mathews Music',
+    description: 'Browse the setlist and request a song live!',
+    images: [{ url: '/images/nmm-requests-og.png', width: 1200, height: 630 }],
+  },
 }
 
 export default function RequestsPage() {
