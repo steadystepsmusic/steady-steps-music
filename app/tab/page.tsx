@@ -209,8 +209,8 @@ export default function TabPage() {
               </a>
             </div>
 
-            {'lines' in tab && tab.lines && (
-              <TabLines lines={tab.lines} />
+            {'lines' in tab && !!(tab as {lines?: string[]}).lines && (
+              <TabLines lines={(tab as {lines: string[]}).lines} />
             )}
 
             {'sections' in tab && tab.sections && tab.sections.map((section, si) => (
