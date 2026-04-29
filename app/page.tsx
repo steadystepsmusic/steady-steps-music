@@ -124,6 +124,21 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Intro Video ──────────────────────────────────────────────── */}
+      <section className="py-12 md:py-20 bg-slate-900">
+        <div className="max-w-3xl mx-auto px-6">
+          <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '12px', overflow: 'hidden' }}>
+            <iframe
+              src="https://www.youtube.com/embed/rrrnBaHFfa8?rel=0"
+              title="Welcome to Steady Steps Music"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* ── About ────────────────────────────────────────────────────── */}
       <section id="about" className="py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
