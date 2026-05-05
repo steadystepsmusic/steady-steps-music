@@ -89,11 +89,11 @@ export default function Home() {
         <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 flex flex-col items-center text-center w-full">
           <div className="animate-fade-up max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
-              Music Lessons in Boise, ID · Teaching Online Anywhere
+              Music Lessons in Boise, ID
+              <span className="hidden sm:inline"> · Teaching Online Anywhere</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
-              Music Lessons Made<br />
-              <span className="text-teal-400">for You.</span>
+              Music Lessons Made <span className="text-teal-400">for You.</span>
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg mx-auto">
               Guitar, bass, piano, voice, music theory, and songwriting, online or in-person.

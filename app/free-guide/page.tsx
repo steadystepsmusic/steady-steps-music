@@ -30,7 +30,7 @@ export default function FreeGuidePage() {
   return (
     <div className="min-h-screen bg-slate-900 text-white">
 
-      {/* Minimal header */}
+      {/* Header */}
       <header className="border-b border-slate-800 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group">
@@ -43,13 +43,14 @@ export default function FreeGuidePage() {
               <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
               <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
             </svg>
-            <span className="text-white font-bold text-2xl md:text-4xl leading-tight group-hover:text-teal-400 transition-colors">
+            <span className="text-white font-bold text-xl sm:text-2xl md:text-4xl leading-tight whitespace-nowrap group-hover:text-teal-400 transition-colors">
               Steady <span className="text-teal-400">Steps</span> Music
             </span>
           </Link>
+          {/* Only show on desktop — mobile gets footer CTA instead */}
           <Link
             href="https://steadystepsmusic.com/#contact"
-            className="text-sm border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="hidden sm:inline-flex text-sm border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             Book a free lesson
           </Link>
@@ -67,7 +68,7 @@ export default function FreeGuidePage() {
         </h1>
 
         {/* Image below headline */}
-        <div className="relative w-2/3 mx-auto aspect-[3/2] rounded-2xl overflow-hidden shadow-2xl mb-10">
+        <div className="relative w-full sm:w-2/3 mx-auto aspect-[3/2] rounded-2xl overflow-hidden shadow-2xl mb-10">
           <Image
             src="/images/lead-magnet.jpg"
             alt="Nik Mathews teaching guitar — Steady Steps Music"
@@ -100,7 +101,14 @@ export default function FreeGuidePage() {
 
       {/* Footer nudge */}
       <footer className="border-t border-slate-800 py-8 px-6 mt-8">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center space-y-4">
+          {/* Mobile-only CTA button */}
+          <Link
+            href="https://steadystepsmusic.com/#contact"
+            className="sm:hidden block border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold py-3 px-6 rounded-lg transition-colors"
+          >
+            Book a free lesson
+          </Link>
           <p className="text-slate-400 text-sm">
             Ready to start?{' '}
             <Link href="https://steadystepsmusic.com/#contact" className="text-teal-400 hover:text-teal-300 underline transition-colors">
