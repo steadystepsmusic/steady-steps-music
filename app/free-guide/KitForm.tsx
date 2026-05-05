@@ -26,7 +26,7 @@ export default function KitForm() {
         body: JSON.stringify({
           access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6',
           email,
-          _subject: 'New Guide Download Request — Steady Steps Music',
+          _subject: 'New Guide Download Request - Steady Steps Music',
           _template: 'basic',
         }),
       })
