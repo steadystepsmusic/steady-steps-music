@@ -95,7 +95,7 @@ export default function Home() {
               Music Lessons Made<br />
               <span className="text-teal-400">for You.</span>
             </h1>
-            <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg mx-auto text-center">
+            <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg mx-auto">
               Guitar, bass, piano, voice, music theory, and songwriting, online or in-person.
               Every lesson is built around <em>your</em> goals, your schedule, and your taste in music.
             </p>
