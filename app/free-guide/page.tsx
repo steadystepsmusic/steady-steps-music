@@ -78,23 +78,16 @@ export default function FreeGuidePage() {
       {/* Footer nudge */}
       <footer className="border-t border-slate-800 py-8 px-6 mt-8">
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          {/* Mobile-only CTA button */}
+          <p className="text-slate-300 font-semibold text-lg">Ready to Get Started?</p>
           <Link
             href="https://steadystepsmusic.com/#contact"
-            className="sm:hidden block border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold py-3 px-6 rounded-lg transition-colors"
+            className="block border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold py-3 px-6 rounded-lg transition-colors"
           >
             Book a free lesson
           </Link>
-          <p className="text-slate-400 text-sm">
-            Ready to start?{' '}
-            <Link href="https://steadystepsmusic.com/#contact" className="text-teal-400 hover:text-teal-300 underline transition-colors">
-              Book a free intro lesson
-            </Link>{' '}
-            at{' '}
-            <Link href="https://steadystepsmusic.com" className="text-teal-400 hover:text-teal-300 underline transition-colors">
-              steadystepsmusic.com
-            </Link>
-          </p>
+          <Link href="https://steadystepsmusic.com" className="block text-slate-500 text-sm hover:text-slate-400 transition-colors">
+            steadystepsmusic.com
+          </Link>
         </div>
       </footer>
 
