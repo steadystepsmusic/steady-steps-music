@@ -1,18 +1,19 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-const links = [
-  { href: '#about',        label: 'About' },
-  { href: '#lessons',      label: 'Lessons' },
-  { href: '#how-it-works', label: 'How It Works' },
-  { href: '#pricing',      label: 'Pricing' },
-  { href: '#testimonials', label: 'Testimonials' },
-  { href: '#contact',      label: 'Contact' },
+const linkSlugs = [
+  { slug: '#about',        label: 'About' },
+  { slug: '#lessons',      label: 'Lessons' },
+  { slug: '#how-it-works', label: 'How It Works' },
+  { slug: '#pricing',      label: 'Pricing' },
+  { slug: '#testimonials', label: 'Testimonials' },
+  { slug: '#contact',      label: 'Contact' },
 ]
 
-export default function Nav() {
+export default function Nav({ basePath = '' }: { basePath?: string }) {
   const [open, setOpen]       = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const links = linkSlugs.map(l => ({ ...l, href: `${basePath}${l.slug}` }))
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20)
@@ -24,7 +25,7 @@ export default function Nav() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur shadow-lg' : 'bg-transparent'}`}>
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group">
+        <a href={basePath || '#'} className="flex items-center gap-3 group">
           <svg viewBox="0 0 45 35" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shapeRendering="crispEdges">
             <rect x="0"  y="30" width="15" height="5" fill="#162D6E"/>
             <rect x="10" y="25" width="5"  height="5" fill="#162D6E"/>
@@ -47,7 +48,7 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
-          <a href="#contact"
+          <a href={`${basePath}#contact`}
             className="ml-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-sm transition-colors">
             Book Free Lesson
           </a>
@@ -70,7 +71,7 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
-          <a href="#contact" onClick={() => setOpen(false)}
+          <a href={`${basePath}#contact`} onClick={() => setOpen(false)}
             className="px-4 py-3 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-center transition-colors">
             Book Free Lesson
           </a>

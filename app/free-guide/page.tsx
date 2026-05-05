@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import Nav from '../components/Nav'
 import KitForm from './KitForm'
 
 export const metadata: Metadata = {
@@ -30,35 +31,10 @@ export default function FreeGuidePage() {
   return (
     <div className="min-h-screen bg-slate-900 text-white">
 
-      {/* Header */}
-      <header className="border-b border-slate-800 px-6 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <svg viewBox="0 0 45 35" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shapeRendering="crispEdges">
-              <rect x="0"  y="30" width="15" height="5" fill="#162D6E"/>
-              <rect x="10" y="25" width="5"  height="5" fill="#162D6E"/>
-              <rect x="10" y="20" width="15" height="5" fill="#2563EB"/>
-              <rect x="20" y="15" width="5"  height="5" fill="#2563EB"/>
-              <rect x="20" y="10" width="15" height="5" fill="#7DD3FC"/>
-              <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
-              <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
-            </svg>
-            <span className="text-white font-bold text-xl sm:text-2xl md:text-4xl leading-tight whitespace-nowrap group-hover:text-teal-400 transition-colors">
-              Steady <span className="text-teal-400">Steps</span> Music
-            </span>
-          </Link>
-          {/* Only show on desktop — mobile gets footer CTA instead */}
-          <Link
-            href="https://steadystepsmusic.com/#contact"
-            className="hidden sm:inline-flex text-sm border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold px-4 py-2 rounded-lg transition-colors"
-          >
-            Book a free lesson
-          </Link>
-        </div>
-      </header>
+      <Nav basePath="https://steadystepsmusic.com" />
 
       {/* Hero */}
-      <main className="max-w-3xl mx-auto px-6 py-12 lg:py-20 text-center">
+      <main className="max-w-3xl mx-auto px-6 pt-28 pb-12 lg:pt-32 lg:pb-20 text-center">
 
         <p className="text-teal-400 text-base font-semibold uppercase tracking-wider mb-4">
           Free guide
