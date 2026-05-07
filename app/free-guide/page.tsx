@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     siteName: 'Steady Steps Music',
     locale: 'en_US',
     type: 'website',
+    images: [{ url: 'https://steadystepsmusic.com/images/og-image.png', width: 1200, height: 630 }],
   },
 }
 
