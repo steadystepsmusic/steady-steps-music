@@ -35,6 +35,7 @@ export default function KitForm() {
       <div className="bg-teal-900/40 border border-teal-700 rounded-xl p-6 text-center">
         <p className="text-teal-300 font-semibold text-lg mb-1">You're in.</p>
         <p className="text-slate-400 text-sm">Check your inbox. The guide is on its way.</p>
+        <p className="text-slate-500 text-sm mt-2">Don't see it? Check your Promotions or Spam folder.</p>
       </div>
     )
   }
