@@ -46,7 +46,7 @@ export default function FreeGuidePage() {
         {/* Image below headline */}
         <div className="relative w-full sm:w-2/3 mx-auto aspect-[3/2] rounded-2xl overflow-hidden shadow-2xl mb-10">
           <Image
-            src="/images/lead-magnet.jpg"
+            src="/images/lead-magnet.png"
             alt="Nik Mathews teaching guitar — Steady Steps Music"
             fill
             className="object-cover object-center"

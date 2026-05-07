@@ -2,13 +2,6 @@
 
 import { useState } from 'react'
 
-// When Kit is set up:
-// 1. Create a form in Kit, copy the embed script (data-uid + src)
-// 2. Delete this entire component
-// 3. In page.tsx, replace <KitForm /> with a <div> and a next/script tag:
-//    <Script async data-uid="XXXXXXXX" src="https://[account].kit.com/XXXXXXXX/index.js" />
-//    Kit will render the form inside the nearest container div.
-
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
 export default function KitForm() {
@@ -20,15 +13,10 @@ export default function KitForm() {
     setStatus('loading')
 
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6',
-          email,
-          _subject: 'New Guide Download Request - Steady Steps Music',
-          _template: 'basic',
-        }),
+        body: JSON.stringify({ email }),
       })
 
       if (res.ok) {
