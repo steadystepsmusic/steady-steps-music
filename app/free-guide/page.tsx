@@ -81,7 +81,7 @@ export default function FreeGuidePage() {
           <p className="text-slate-300 font-semibold text-lg">Ready to Get Started?</p>
           <Link
             href="https://steadystepsmusic.com/#contact"
-            className="block border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold py-3 px-6 rounded-lg transition-colors"
+            className="inline-block border border-teal-500 text-teal-400 hover:bg-teal-500/10 font-semibold py-3 px-8 rounded-lg transition-colors"
           >
             Book a free lesson
           </Link>
