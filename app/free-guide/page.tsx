@@ -34,7 +34,6 @@ export default function FreeGuidePage() {
 
       <Nav basePath="https://steadystepsmusic.com" />
 
-      {/* Hero */}
       <main className="max-w-3xl mx-auto px-6 pt-28 pb-12 lg:pt-32 lg:pb-20 text-center">
 
         <p className="text-teal-400 text-base font-semibold uppercase tracking-wider mb-4">
@@ -43,17 +42,6 @@ export default function FreeGuidePage() {
         <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-8">
           Your first step to understanding the guitar.
         </h1>
-
-        {/* Image below headline */}
-        <div className="relative w-full sm:w-2/3 mx-auto aspect-[3/2] rounded-2xl overflow-hidden shadow-2xl mb-10">
-          <Image
-            src="/images/lead-magnet.jpg"
-            alt="Nik Mathews teaching guitar — Steady Steps Music"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
 
         <p className="text-slate-400 text-xl leading-relaxed mb-8">
           The Steady Steps Beginner's Guitar Guide covers everything a new guitarist
@@ -73,6 +61,16 @@ export default function FreeGuidePage() {
         <p className="text-slate-500 text-sm mt-4 text-center">
           Zero spam. One email when the guide lands, then weekly tips if you want them. Unsubscribe anytime.
         </p>
+
+        {/* Photo below email capture */}
+        <div className="relative w-full sm:w-2/3 mx-auto aspect-[3/2] rounded-2xl overflow-hidden shadow-2xl mt-14">
+          <Image
+            src="/images/lead-magnet.jpg"
+            alt="Nik Mathews teaching guitar — Steady Steps Music"
+            fill
+            className="object-cover object-center"
+          />
+        </div>
 
       </main>
 
