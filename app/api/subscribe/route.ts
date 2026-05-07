@@ -7,28 +7,39 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
   }
 
-  const res = await fetch('https://api.brevo.com/v3/contacts', {
-    method: 'POST',
-    headers: {
-      'api-key': process.env.BREVO_API_KEY!,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email,
-      listIds: [2],
-      updateEnabled: true,
-    }),
-  })
-
-  if (res.ok || res.status === 204) {
-    return NextResponse.json({ ok: true })
+  if (!process.env.BREVO_API_KEY) {
+    console.error('BREVO_API_KEY is not set')
+    return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
   }
 
-  const body = await res.json()
-  // 400 with code DUPLICATE_PARAMETER means already subscribed — treat as success
-  if (body.code === 'DUPLICATE_PARAMETER') {
-    return NextResponse.json({ ok: true })
-  }
+  try {
+    const res = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        listIds: [2],
+        updateEnabled: true,
+      }),
+    })
 
-  return NextResponse.json({ error: 'Subscription failed' }, { status: 500 })
+    if (res.ok || res.status === 204) {
+      return NextResponse.json({ ok: true })
+    }
+
+    const body = await res.json().catch(() => ({}))
+    console.error('Brevo error:', res.status, body)
+
+    if (body.code === 'DUPLICATE_PARAMETER') {
+      return NextResponse.json({ ok: true })
+    }
+
+    return NextResponse.json({ error: 'Subscription failed' }, { status: 500 })
+  } catch (err) {
+    console.error('Subscribe route error:', err)
+    return NextResponse.json({ error: 'Subscription failed' }, { status: 500 })
+  }
 }
