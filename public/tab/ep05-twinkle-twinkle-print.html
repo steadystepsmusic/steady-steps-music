@@ -10,115 +10,38 @@
     background: #ffffff;
     color: #0f172a;
     font-family: 'Montserrat', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 48px 24px;
+    display: flex;
+    justify-content: center;
   }
-  .card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 24px;
-    padding: 48px;
-    max-width: 720px;
-    width: 100%;
-  }
-  .label {
-    color: #0f766e;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  h1 {
-    font-size: 28px;
-    font-weight: 900;
-    color: #0f172a;
-    margin-bottom: 4px;
-  }
-  .subtitle {
-    color: #64748b;
-    font-size: 14px;
-    margin-bottom: 36px;
-  }
-  .section-title {
-    color: #0f766e;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    margin-top: 32px;
-  }
-  .version-label {
-    color: #d97706;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    margin-top: 28px;
-  }
-  .tab-block {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 24px;
-    font-family: 'Source Code Pro', monospace;
-    font-size: 15px;
-    line-height: 2;
-    color: #1e293b;
-    letter-spacing: 0.02em;
-    overflow-x: auto;
-    margin-bottom: 8px;
-  }
-  .tab-block .string-label {
-    color: #0f766e;
-    font-weight: 600;
-  }
-  .tip {
-    background: #f0fdfa;
-    border-left: 3px solid #2dd4bf;
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    margin-top: 28px;
-    color: #475569;
-    font-size: 13px;
-    line-height: 1.6;
-  }
-  .tip strong { color: #0f172a; }
-  .divider {
-    border: none;
-    border-top: 1px solid #e2e8f0;
-    margin: 36px 0;
-  }
-  .cta {
-    margin-top: 40px;
-    text-align: center;
-    padding-top: 32px;
-    border-top: 1px solid #e2e8f0;
-  }
-  .cta p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
-  .cta a {
-    display: inline-block;
-    background: #f59e0b;
-    color: #0f172a;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 14px 32px;
-    border-radius: 14px;
-    text-decoration: none;
-  }
+  .card { max-width: 720px; width: 100%; }
   .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
-  .logo span { font-size: 16px; font-weight: 700; color: #0f172a; }
-  .logo span em { color: #0f766e; font-style: normal; }
-  @media print {
-    body { padding: 24px; }
-    .card { border: none; padding: 0; }
-    .cta a { border: 2px solid #0f172a; }
+  .logo span { font-size: 18px; font-weight: 700; color: #0f172a; }
+  .label { color: #0f172a; font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  h1 { font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 4px; }
+  .subtitle { color: #0f172a; font-size: 15px; margin-bottom: 36px; }
+  .section-title { color: #0f172a; font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; margin-top: 32px; }
+  .tab-block {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 20px 24px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+    line-height: 1.9;
+    margin-bottom: 24px;
   }
+  .phrase-label { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 2px; white-space: nowrap; }
+  .tab-line { white-space: nowrap; }
+  .str  { color: #0f766e; font-weight: 600; }
+  .pipe { color: #94a3b8; }
+  .dash { color: #cbd5e1; }
+  .num  { color: #0f172a; font-weight: 700; }
+  .gap  { display: block; height: 12px; }
+  .tip { color: #0f172a; font-size: 15px; line-height: 1.6; margin-bottom: 12px; }
+  .divider { border: none; border-top: 1px solid #e2e8f0; margin: 32px 0; }
+  .cta { margin-top: 32px; padding-top: 24px; border-top: 1px solid #e2e8f0; font-size: 14px; color: #0f172a; }
+  .cta a { color: #0f172a; }
+  @media print { body { padding: 24px; } }
 </style>
 </head>
 <body>
@@ -133,7 +56,7 @@
       <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
       <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
     </svg>
-    <span>Steady <em>Steps</em> Music</span>
+    <span>Steady Steps Music</span>
   </div>
 
   <div class="label">EP05 — Tab Sheet</div>
@@ -142,72 +65,134 @@
 
   <div class="section-title">Version 1 — High e String Only</div>
 
-  <div class="version-label">Phrase 1 &nbsp;·&nbsp; Twinkle Twinkle Little Star</div>
-  <div class="tab-block">
-<span class="string-label">e</span>|--0--0--7--7--9--9--7--5--5--4--4--2--2--0--|<br>
-<span class="string-label">B</span>|---------------------------------------------|<br>
-<span class="string-label">G</span>|---------------------------------------------|<br>
-<span class="string-label">D</span>|---------------------------------------------|<br>
-<span class="string-label">A</span>|---------------------------------------------|<br>
-<span class="string-label">E</span>|---------------------------------------------|
-  </div>
+<pre class="tab-block">Phrase 1: Twinkle Twinkle Little Star
+e|--0--0--7--7--9--9--7--5--5--4--4--2--2--0---|
+B|---------------------------------------------|
+G|---------------------------------------------|
+D|---------------------------------------------|
+A|---------------------------------------------|
+E|---------------------------------------------|
 
-  <div class="version-label">Phrase 2 &nbsp;·&nbsp; How I Wonder What You Are</div>
-  <div class="tab-block">
-<span class="string-label">e</span>|--7--7--5--5--4--4--2--7--7--5--5--4--4--2--|<br>
-<span class="string-label">B</span>|---------------------------------------------|<br>
-<span class="string-label">G</span>|---------------------------------------------|<br>
-<span class="string-label">D</span>|---------------------------------------------|<br>
-<span class="string-label">A</span>|---------------------------------------------|<br>
-<span class="string-label">E</span>|---------------------------------------------|
-  </div>
+Phrase 2: How I Wonder What You Are (play twice)
+e|--7--7--5--5--4--4--2--7--7--5--5--4--4--2---|
+B|---------------------------------------------|
+G|---------------------------------------------|
+D|---------------------------------------------|
+A|---------------------------------------------|
+E|---------------------------------------------|
 
-  <div class="version-label">Phrase 3 &nbsp;·&nbsp; Twinkle Twinkle Little Star (repeat)</div>
-  <div class="tab-block">
-<span class="string-label">e</span>|--0--0--7--7--9--9--7--5--5--4--4--2--2--0--|<br>
-<span class="string-label">B</span>|---------------------------------------------|<br>
-<span class="string-label">G</span>|---------------------------------------------|<br>
-<span class="string-label">D</span>|---------------------------------------------|<br>
-<span class="string-label">A</span>|---------------------------------------------|<br>
-<span class="string-label">E</span>|---------------------------------------------|
-  </div>
+Phrase 3: Twinkle Twinkle Little Star (repeat)
+e|--0--0--7--7--9--9--7--5--5--4--4--2--2--0---|
+B|---------------------------------------------|
+G|---------------------------------------------|
+D|---------------------------------------------|
+A|---------------------------------------------|
+E|---------------------------------------------|</pre>
 
   <hr class="divider">
 
   <div class="section-title">Version 2 — High e + B String</div>
 
-  <div class="version-label">Phrase 1 &nbsp;·&nbsp; Twinkle Twinkle Little Star</div>
-  <div class="tab-block">
-<span class="string-label">e</span>|--------2--2--4--4--2--|<br>
-<span class="string-label">B</span>|--0--0-----------------|<br>
-<span class="string-label">G</span>|-----------------------|<br>
-<span class="string-label">D</span>|-----------------------|<br>
-<span class="string-label">A</span>|-----------------------|<br>
-<span class="string-label">E</span>|-----------------------|
-  </div>
+<pre class="tab-block">Phrase 1: Twinkle Twinkle Little Star
+e|--------2--2--4--4--2--|
+B|--0--0-----------------|
+G|-----------------------|
+D|-----------------------|
+A|-----------------------|
+E|-----------------------|
 
-  <div class="version-label">Phrase 2 &nbsp;·&nbsp; How I Wonder What You Are</div>
-  <div class="tab-block">
-<span class="string-label">e</span>|--0--0-----------------|<br>
-<span class="string-label">B</span>|--------4--4--2--2--0--|<br>
-<span class="string-label">G</span>|-----------------------|<br>
-<span class="string-label">D</span>|-----------------------|<br>
-<span class="string-label">A</span>|-----------------------|<br>
-<span class="string-label">E</span>|-----------------------|
-  </div>
+Phrase 2: How I Wonder What You Are
+e|--0--0-----------------|
+B|--------4--4--2--2--0--|
+G|-----------------------|
+D|-----------------------|
+A|-----------------------|
+E|-----------------------|
 
-  <div class="tip">
-    <strong>Why two versions?</strong> The same melody can be played in different positions on the guitar. Version 1 stays on one string -- great for understanding how fret numbers relate to pitch. Version 2 spreads across two strings -- great for building the feel of moving between strings. Both sound the same. Try both and see which feels more natural.
-  </div>
+Phrase 3: Up Above the World So High
+e|--2--2--0--0-----------|
+B|--------------4--4--2--|
+G|-----------------------|
+D|-----------------------|
+A|-----------------------|
+E|-----------------------|
 
-  <div class="tip" style="margin-top: 12px;">
-    <strong>How to read this:</strong> 0 = open string. Number = fret that string. Play one note at a time, left to right.
-  </div>
+Phrase 4: Like a Diamond in the Sky
+e|--2--2--0--0-----------|
+B|--------------4--4--2--|
+G|-----------------------|
+D|-----------------------|
+A|-----------------------|
+E|-----------------------|
 
-  <div class="cta">
-    <p>Ready to put this into practice with a real teacher?</p>
-    <a href="https://steadystepsmusic.com/#contact">Book Your Free Lesson</a>
-  </div>
+Phrase 5: Twinkle Twinkle Little Star (repeat)
+e|--------2--2--4--4--2--|
+B|--0--0-----------------|
+G|-----------------------|
+D|-----------------------|
+A|-----------------------|
+E|-----------------------|
+
+Phrase 6: How I Wonder What You Are (repeat)
+e|--0--0-----------------|
+B|--------4--4--2--2--0--|
+G|-----------------------|
+D|-----------------------|
+A|-----------------------|
+E|-----------------------|</pre>
+
+  <div class="tip"><strong>Why two versions?</strong> Version 1 stays on one string -- great for understanding how fret numbers relate to pitch. Version 2 spreads across two strings -- great for building the feel of moving between strings. Both sound the same.</div>
+  <div class="tip"><strong>How to read this:</strong> 0 = open string. Number = fret that string. Play one note at a time, left to right.</div>
+
+  <div class="cta">Ready to put this into practice? Book a free intro lesson at <a href="https://steadystepsmusic.com">steadystepsmusic.com</a></div>
 </div>
+
+<script>
+function styleLine(line) {
+  if (!/^[eEBGDA]\|/.test(line)) {
+    return '<div class="phrase-label">' + line + '</div>';
+  }
+  var str = line[0];
+  var html = '<span class="str">' + str + '</span>';
+  var i = 1;
+  while (i < line.length) {
+    var ch = line[i];
+    if (ch === '|') {
+      html += '<span class="pipe">|</span>';
+      i++;
+    } else if (ch === '-') {
+      var j = i;
+      while (j < line.length && line[j] === '-') j++;
+      html += '<span class="dash">' + line.slice(i, j) + '</span>';
+      i = j;
+    } else if (ch >= '0' && ch <= '9') {
+      var j = i;
+      while (j < line.length && line[j] >= '0' && line[j] <= '9') j++;
+      html += '<span class="num">' + line.slice(i, j) + '</span>';
+      i = j;
+    } else {
+      html += ch;
+      i++;
+    }
+  }
+  return '<div class="tab-line">' + html + '</div>';
+}
+
+document.querySelectorAll('pre.tab-block').forEach(function(pre) {
+  var lines = pre.textContent.split('\n');
+  var div = document.createElement('div');
+  div.className = 'tab-block';
+  var inner = '';
+  lines.forEach(function(line) {
+    if (line === '') {
+      inner += '<span class="gap"></span>';
+    } else {
+      inner += styleLine(line);
+    }
+  });
+  div.innerHTML = inner;
+  pre.replaceWith(div);
+});
+</script>
 </body>
 </html>
