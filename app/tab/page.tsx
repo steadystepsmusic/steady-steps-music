@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { CombinedSection } from './TabDisplay'
 
 export const metadata: Metadata = {
   title: 'Free Guitar Tab Sheets — Steady Steps Music',
@@ -73,7 +74,7 @@ const tabs = [
         label: 'Version 1 — High e String Only',
         phrases: [
           {
-            name: 'Phrase 1 — Twinkle Twinkle Little Star',
+            name: 'Phrase 1: Twinkle Twinkle Little Star',
             lines: [
               'e|--0--0--7--7--9--9--7--5--5--4--4--2--2--0--|',
               'B|---------------------------------------------|',
@@ -84,7 +85,7 @@ const tabs = [
             ],
           },
           {
-            name: 'Phrase 2 — How I Wonder What You Are (repeat x2)',
+            name: 'Phrase 2: How I Wonder What You Are (play twice)',
             lines: [
               'e|--7--7--5--5--4--4--2--7--7--5--5--4--4--2--|',
               'B|---------------------------------------------|',
@@ -95,7 +96,7 @@ const tabs = [
             ],
           },
           {
-            name: 'Phrase 3 — Twinkle Twinkle Little Star (repeat)',
+            name: 'Phrase 3: Twinkle Twinkle Little Star (repeat)',
             lines: [
               'e|--0--0--7--7--9--9--7--5--5--4--4--2--2--0--|',
               'B|---------------------------------------------|',
@@ -111,7 +112,7 @@ const tabs = [
         label: 'Version 2 — High e + B String',
         phrases: [
           {
-            name: 'Phrase 1 — Twinkle Twinkle Little Star',
+            name: 'Phrase 1: Twinkle Twinkle Little Star',
             lines: [
               'e|--------2--2--4--4--2--|',
               'B|--0--0-----------------|',
@@ -122,7 +123,51 @@ const tabs = [
             ],
           },
           {
-            name: 'Phrase 2 — How I Wonder What You Are',
+            name: 'Phrase 2: How I Wonder What You Are',
+            lines: [
+              'e|--0--0-----------------|',
+              'B|--------4--4--2--2--0--|',
+              'G|-----------------------|',
+              'D|-----------------------|',
+              'A|-----------------------|',
+              'E|-----------------------|',
+            ],
+          },
+          {
+            name: 'Phrase 3: Up Above the World So High',
+            lines: [
+              'e|--2--2--0--0-----------|',
+              'B|--------------4--4--2--|',
+              'G|-----------------------|',
+              'D|-----------------------|',
+              'A|-----------------------|',
+              'E|-----------------------|',
+            ],
+          },
+          {
+            name: 'Phrase 4: Like a Diamond in the Sky',
+            lines: [
+              'e|--2--2--0--0-----------|',
+              'B|--------------4--4--2--|',
+              'G|-----------------------|',
+              'D|-----------------------|',
+              'A|-----------------------|',
+              'E|-----------------------|',
+            ],
+          },
+          {
+            name: 'Phrase 5: Twinkle Twinkle Little Star (repeat)',
+            lines: [
+              'e|--------2--2--4--4--2--|',
+              'B|--0--0-----------------|',
+              'G|-----------------------|',
+              'D|-----------------------|',
+              'A|-----------------------|',
+              'E|-----------------------|',
+            ],
+          },
+          {
+            name: 'Phrase 6: How I Wonder What You Are (repeat)',
             lines: [
               'e|--0--0-----------------|',
               'B|--------4--4--2--2--0--|',
@@ -140,28 +185,6 @@ const tabs = [
   },
 ]
 
-function normalizeLines(lines: string[]): string[] {
-  const maxLen = Math.max(...lines.map(l => l.length))
-  return lines.map(l => {
-    if (l.length >= maxLen) return l
-    const lastPipe = l.lastIndexOf('|')
-    return l.slice(0, lastPipe) + '-'.repeat(maxLen - l.length) + '|'
-  })
-}
-
-function TabLines({ lines }: { lines: string[] }) {
-  const normalized = normalizeLines(lines)
-  return (
-    <div className="bg-slate-950 rounded-xl p-5 font-mono text-sm leading-7 overflow-x-auto">
-      {normalized.map((line, i) => (
-        <div key={i}>
-          <span className="text-teal-400 font-semibold">{line[0]}</span>
-          <span className="text-slate-300">{line.slice(1)}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function TabPage() {
   return (
@@ -194,7 +217,7 @@ export default function TabPage() {
       <div className="max-w-3xl mx-auto px-6 py-12 space-y-10">
         {tabs.map((tab, i) => (
           <div key={i} className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
-            <div className="flex items-start justify-between gap-4 mb-5">
+            <div className="flex items-start justify-between gap-4 mb-6">
               <div>
                 <span className="text-teal-400 text-xs font-bold uppercase tracking-widest">{tab.episode}</span>
                 <h2 className="text-white font-black text-xl mt-1">{tab.title}</h2>
@@ -209,21 +232,12 @@ export default function TabPage() {
               </a>
             </div>
 
-            {'lines' in tab && !!(tab as {lines?: string[]}).lines && (
-              <TabLines lines={(tab as {lines: string[]}).lines} />
-            )}
-
-            {'sections' in tab && tab.sections && tab.sections.map((section, si) => (
+            {tab.sections.map((section, si) => (
               <div key={si} className={si > 0 ? 'mt-8' : ''}>
-                <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-4">{section.label}</p>
-                <div className="space-y-5">
-                  {section.phrases.map((phrase, pi) => (
-                    <div key={pi}>
-                      <p className="text-slate-500 text-xs mb-2">{phrase.name}</p>
-                      <TabLines lines={phrase.lines} />
-                    </div>
-                  ))}
-                </div>
+                {section.label && (
+                  <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">{section.label}</p>
+                )}
+                <CombinedSection phrases={section.phrases} />
               </div>
             ))}
 
