@@ -141,7 +141,8 @@ export default function PayPage() {
             </a>
           ))}
         </div>
-        <p className="text-slate-400 text-xs mt-4">Monthly pre-pay covers 4 lessons in one payment. Scheduling is coordinated separately.</p>
+        <p className="text-slate-400 text-xs mt-4">Monthly pre-pay covers 4 lessons per billing cycle. In months with 5 weeks, additional lessons can be booked at the single-session rate.</p>
+        <p className="text-slate-400 text-xs mt-2">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
       </div>
 
       {/* Trust footer */}
