@@ -56,17 +56,11 @@ export default function VideoSection() {
         </p>
 
         {/* Hosted vertical montage */}
-        <style>{`
-          .montage-wrap { width: min(380px, 100%); }
-          @media (min-width: 640px) { .montage-wrap { width: auto; height: min(60vh, 520px); aspect-ratio: 9/16; } }
-        `}</style>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
           <div
-            className="montage-wrap"
             onClick={handleClick}
-            style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer' }}
+            style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer', maxWidth: '380px', width: '100%' }}
           >
-            <div style={{ paddingBottom: '177.78%' }} />
             <video
               ref={hostedVideo}
               src={MONTAGE_URL}
@@ -76,7 +70,7 @@ export default function VideoSection() {
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onEnded={() => setPlaying(false)}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              style={{ display: 'block', width: '100%', maxHeight: '70vh', objectFit: 'cover' }}
             />
             {/* Play/pause overlay */}
             <div style={{
