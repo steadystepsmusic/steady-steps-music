@@ -16,7 +16,7 @@ const YOUTUBE_ID = 'nRVzXqenyKc'
 export default function VideoSection() {
   const ytPlayer = useRef<any>(null)
   const hostedVideo = useRef<HTMLVideoElement>(null)
-  const [playing, setPlaying] = useState(false)
+  const [hasPlayed, setHasPlayed] = useState(false)
 
   useEffect(() => {
     const tag = document.createElement('script')
@@ -37,15 +37,10 @@ export default function VideoSection() {
     }
   }, [])
 
-  function handleClick() {
-    const v = hostedVideo.current
-    if (!v) return
-    if (v.paused) {
-      if (ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
-      v.play()
-    } else {
-      v.pause()
-    }
+  function handleOverlayClick() {
+    if (ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
+    hostedVideo.current?.play()
+    setHasPlayed(true)
   }
 
   return (
@@ -55,43 +50,41 @@ export default function VideoSection() {
           Watch &amp; Listen
         </p>
 
-        {/* Hosted vertical montage with custom play button */}
+        {/* Hosted vertical montage */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-          <div
-            onClick={handleClick}
-            style={{ position: 'relative', width: '100%', maxWidth: '380px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer' }}
-          >
+          <div style={{ position: 'relative', width: '100%', maxWidth: '380px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
             <video
               ref={hostedVideo}
               src={MONTAGE_URL}
               poster={POSTER_URL}
-              controls={playing}
+              controls
               playsInline
               preload="none"
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
-              onEnded={() => setPlaying(false)}
               style={{ display: 'block', width: '100%' }}
             />
-            <div style={{
-              position: 'absolute', inset: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              opacity: playing ? 0 : 1,
-              transition: 'opacity 0.25s',
-              background: playing ? 'transparent' : 'rgba(0,0,0,0.2)',
-              pointerEvents: 'none',
-            }}>
-              <div style={{
-                width: '72px', height: '72px', borderRadius: '50%',
-                background: 'rgba(201,168,76,0.9)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-              }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a0a">
-                  <polygon points="6,3 20,12 6,21" />
-                </svg>
+            {/* Gold play overlay -- only shown before first play */}
+            {!hasPlayed && (
+              <div
+                onClick={handleOverlayClick}
+                style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: 'rgba(0,0,0,0.2)',
+                  cursor: 'pointer',
+                }}
+              >
+                <div style={{
+                  width: '72px', height: '72px', borderRadius: '50%',
+                  background: 'rgba(201,168,76,0.9)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a0a">
+                    <polygon points="6,3 20,12 6,21" />
+                  </svg>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
