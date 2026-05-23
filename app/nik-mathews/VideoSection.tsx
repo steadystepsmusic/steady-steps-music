@@ -70,7 +70,7 @@ export default function VideoSection() {
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onEnded={() => setPlaying(false)}
-              style={{ display: 'block', width: '100%', maxHeight: '70vh', objectFit: 'cover' }}
+              style={{ display: 'block', width: '100%', aspectRatio: '9/16', maxHeight: '70vh', objectFit: 'cover' }}
             />
             {/* Play/pause overlay */}
             <div style={{
