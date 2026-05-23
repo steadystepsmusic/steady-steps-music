@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-const MONTAGE_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage.mp4'
+const MONTAGE_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%20-%20Vertical%20Web.mp4'
 const YOUTUBE_ID = 'nRVzXqenyKc'
 
 export default function VideoSection() {
