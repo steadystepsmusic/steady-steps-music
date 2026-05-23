@@ -65,6 +65,7 @@ export default function VideoSection() {
               ref={hostedVideo}
               src={MONTAGE_URL}
               poster={POSTER_URL}
+              controls={playing}
               playsInline
               preload="none"
               onPlay={() => setPlaying(true)}
