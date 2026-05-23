@@ -51,7 +51,8 @@ export default function VideoSection() {
 
         {/* Hosted vertical montage */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ width: '100%', maxWidth: '380px', aspectRatio: '9/16', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+          <div style={{ width: 'min(380px, 100%)', position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+            <div style={{ paddingBottom: '177.78%' }} />
             <video
               ref={hostedVideo}
               src={MONTAGE_URL}
@@ -59,7 +60,7 @@ export default function VideoSection() {
               playsInline
               preload="metadata"
               onPlay={handleHostedPlay}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
           </div>
         </div>
