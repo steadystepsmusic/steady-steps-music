@@ -70,8 +70,9 @@ export default function VideoSection() {
             <video
               ref={hostedVideo}
               src={MONTAGE_URL}
+              poster="https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/montage-poster.jpg"
               playsInline
-              preload="auto"
+              preload="none"
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onEnded={() => setPlaying(false)}
