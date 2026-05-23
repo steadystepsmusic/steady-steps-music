@@ -66,7 +66,7 @@ export default function VideoSection() {
               ref={hostedVideo}
               src={MONTAGE_URL}
               playsInline
-              preload="metadata"
+              preload="auto"
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onEnded={() => setPlaying(false)}
