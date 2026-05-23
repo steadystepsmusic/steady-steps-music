@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 declare global {
   interface Window {
@@ -15,6 +15,7 @@ const YOUTUBE_ID = 'nRVzXqenyKc'
 export default function VideoSection() {
   const ytPlayer = useRef<any>(null)
   const hostedVideo = useRef<HTMLVideoElement>(null)
+  const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
     const tag = document.createElement('script')
@@ -24,9 +25,7 @@ export default function VideoSection() {
     window.onYouTubeIframeAPIReady = () => {
       ytPlayer.current = new window.YT.Player('yt-player', {
         events: {
-          onReady: (e: any) => {
-            e.target.setPlaybackQuality('hd1080')
-          },
+          onReady: (e: any) => { e.target.setPlaybackQuality('hd1080') },
           onStateChange: (e: any) => {
             if (e.data === window.YT.PlayerState.PLAYING) {
               e.target.setPlaybackQuality('hd1080')
@@ -38,8 +37,15 @@ export default function VideoSection() {
     }
   }, [])
 
-  function handleHostedPlay() {
-    if (ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
+  function handleClick() {
+    const v = hostedVideo.current
+    if (!v) return
+    if (v.paused) {
+      if (ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
+      v.play()
+    } else {
+      v.pause()
+    }
   }
 
   return (
@@ -51,17 +57,41 @@ export default function VideoSection() {
 
         {/* Hosted vertical montage */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ width: 'min(380px, 100%)', position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+          <div
+            onClick={handleClick}
+            style={{ width: 'min(380px, 100%)', position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer' }}
+          >
             <div style={{ paddingBottom: '177.78%' }} />
             <video
               ref={hostedVideo}
               src={MONTAGE_URL}
-              controls
               playsInline
               preload="metadata"
-              onPlay={handleHostedPlay}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              onEnded={() => setPlaying(false)}
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
+            {/* Play/pause overlay */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: playing ? 0 : 1,
+              transition: 'opacity 0.25s',
+              background: playing ? 'transparent' : 'rgba(0,0,0,0.25)',
+              pointerEvents: 'none',
+            }}>
+              <div style={{
+                width: '72px', height: '72px', borderRadius: '50%',
+                background: 'rgba(201,168,76,0.9)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+              }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a0a">
+                  <polygon points="6,3 20,12 6,21" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
