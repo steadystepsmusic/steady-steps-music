@@ -56,10 +56,15 @@ export default function VideoSection() {
         </p>
 
         {/* Hosted vertical montage */}
+        <style>{`
+          .montage-wrap { width: min(380px, 100%); }
+          @media (min-width: 640px) { .montage-wrap { width: auto; height: min(60vh, 520px); aspect-ratio: 9/16; } }
+        `}</style>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
           <div
+            className="montage-wrap"
             onClick={handleClick}
-            style={{ width: 'min(380px, 100%)', position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer' }}
+            style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer' }}
           >
             <div style={{ paddingBottom: '177.78%' }} />
             <video
