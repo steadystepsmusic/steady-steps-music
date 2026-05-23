@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 declare global {
   interface Window {
@@ -15,6 +15,8 @@ const YOUTUBE_ID = 'nRVzXqenyKc'
 
 export default function VideoSection() {
   const ytPlayer = useRef<any>(null)
+  const hostedVideo = useRef<HTMLVideoElement>(null)
+  const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
     const tag = document.createElement('script')
@@ -27,12 +29,24 @@ export default function VideoSection() {
           onStateChange: (e: any) => {
             if (e.data === window.YT.PlayerState.PLAYING) {
               e.target.setPlaybackQuality('hd1080')
+              hostedVideo.current?.pause()
             }
           },
         },
       })
     }
   }, [])
+
+  function handleClick() {
+    const v = hostedVideo.current
+    if (!v) return
+    if (v.paused) {
+      if (ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
+      v.play()
+    } else {
+      v.pause()
+    }
+  }
 
   return (
     <section id="video" style={{ padding: '1.5rem 1.5rem 4rem' }}>
@@ -41,15 +55,46 @@ export default function VideoSection() {
           Watch &amp; Listen
         </p>
 
-        <video
-          src={MONTAGE_URL}
-          poster={POSTER_URL}
-          controls
-          playsInline
-          preload="none"
-          style={{ display: 'block', width: '100%', maxWidth: '380px', margin: '0 auto 1.5rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)' }}
-        />
+        {/* Hosted vertical montage with custom play button */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+          <div
+            onClick={handleClick}
+            style={{ position: 'relative', width: '100%', maxWidth: '380px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)', cursor: 'pointer' }}
+          >
+            <video
+              ref={hostedVideo}
+              src={MONTAGE_URL}
+              poster={POSTER_URL}
+              playsInline
+              preload="none"
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              onEnded={() => setPlaying(false)}
+              style={{ display: 'block', width: '100%' }}
+            />
+            <div style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: playing ? 0 : 1,
+              transition: 'opacity 0.25s',
+              background: playing ? 'transparent' : 'rgba(0,0,0,0.2)',
+              pointerEvents: 'none',
+            }}>
+              <div style={{
+                width: '72px', height: '72px', borderRadius: '50%',
+                background: 'rgba(201,168,76,0.9)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+              }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a0a">
+                  <polygon points="6,3 20,12 6,21" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        {/* YouTube second video */}
         <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
           <iframe
             id="yt-player"
