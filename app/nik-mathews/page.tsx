@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { songs } from '../requests/songs'
 import type { Metadata } from 'next'
 import BookingForm from './BookingForm'
+import VideoSection from './VideoSection'
 import { genreGroups } from './genreGroups'
 import NikNav from './NikNav'
 
@@ -74,23 +75,7 @@ export default function NikMathewsPage() {
         </p>
       </section>
 
-      {/* Video */}
-      <section id="video" style={{ padding: '1.5rem 1.5rem 4rem' }}>
-        <div style={{ maxWidth: '860px', margin: '0 auto' }}>
-          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1.5rem' }}>
-            Watch &amp; Listen
-          </p>
-          <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
-            <iframe
-              src="https://www.youtube.com/embed/nRVzXqenyKc?rel=0"
-              title="Nik Mathews Live Performance"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
-            />
-          </div>
-        </div>
-      </section>
+      <VideoSection />
 
       {/* Photos */}
       <section style={{ padding: '2rem 1.5rem 5rem' }}>
