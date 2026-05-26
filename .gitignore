@@ -45,3 +45,7 @@ print-assets/
 
 # Standalone chord/graphic SVGs generated for YouTube — not website assets
 public/images/chord-*.svg
+
+# OG image generator tools
+nmm-og-generator.html
+nmm-og-preview.png
