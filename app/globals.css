@@ -25,3 +25,15 @@ body {
 .animate-delay-100 { animation-delay: 0.1s; }
 .animate-delay-200 { animation-delay: 0.2s; }
 .animate-delay-300 { animation-delay: 0.3s; }
+
+.privacy-content h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 1rem; color: #0f172a; }
+.privacy-content h2 { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 0.75rem; color: #0f172a; }
+.privacy-content h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: #0f172a; }
+.privacy-content p { margin: 0.75rem 0; line-height: 1.6; color: #334155; }
+.privacy-content ul, .privacy-content ol { margin: 0.75rem 0 0.75rem 1.5rem; line-height: 1.6; color: #334155; }
+.privacy-content ul { list-style: disc; }
+.privacy-content ol { list-style: decimal; }
+.privacy-content li { margin: 0.35rem 0; }
+.privacy-content a { color: #0d9488; text-decoration: underline; word-break: break-word; }
+.privacy-content a:hover { color: #0f766e; }
+.privacy-content strong { color: #0f172a; }
