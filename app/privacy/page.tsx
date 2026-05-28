@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     canonical: 'https://steadystepsmusic.com/privacy',
   },
   robots: {
-    index: true,
+    index: false,
     follow: true,
   },
 }
