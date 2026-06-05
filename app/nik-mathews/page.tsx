@@ -102,7 +102,7 @@ export default function NikMathewsPage() {
       </section>
 
       {/* Setlist */}
-      <section style={{ padding: '4rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+      <section id="setlist" style={{ padding: '4rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             Setlist
