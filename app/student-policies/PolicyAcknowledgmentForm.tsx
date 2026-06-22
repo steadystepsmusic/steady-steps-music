@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { jsPDF } from 'jspdf'
 
 const POLICY_TEXT = `STEADY STEPS MUSIC — LESSON POLICIES
 
@@ -14,6 +15,33 @@ A properly-noticed, excused cancellation can be rescheduled within the same week
 
 By signing below, I acknowledge that I have read, understood, and agree to these policies.`
 
+function downloadPolicyPdf(studentName: string, signerName: string, date: string) {
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' })
+  const margin = 56
+  const maxWidth = 612 - margin * 2
+  let y = margin
+
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(16)
+  doc.text('Steady Steps Music — Lesson Policy Acknowledgment', margin, y)
+  y += 28
+
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(11)
+  const lines = doc.splitTextToSize(POLICY_TEXT, maxWidth)
+  doc.text(lines, margin, y)
+  y += lines.length * 14 + 24
+
+  doc.setFont('helvetica', 'bold')
+  doc.text(`Student: ${studentName}`, margin, y)
+  y += 18
+  doc.text(`Signed by: ${signerName}`, margin, y)
+  y += 18
+  doc.text(`Date: ${date}`, margin, y)
+
+  doc.save(`Steady Steps Music - Policy Acknowledgment - ${studentName}.pdf`)
+}
+
 export default function PolicyAcknowledgmentForm() {
   const [form, setForm] = useState({ studentName: '', signerName: '', email: '', agree: false })
   const [sent, setSent] = useState(false)
@@ -22,30 +50,32 @@ export default function PolicyAcknowledgmentForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(false)
+    const date = new Date().toLocaleDateString()
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6',
         subject: `Policy Acknowledgment — ${form.studentName}`,
-        cc: form.email,
         student_name: form.studentName,
         signed_by: form.signerName,
         email: form.email,
-        date: new Date().toLocaleDateString(),
+        date,
         agreed_policies: POLICY_TEXT,
       }),
     })
     const data = await res.json()
-    if (data.success) setSent(true)
-    else setError(true)
+    if (data.success) {
+      downloadPolicyPdf(form.studentName, form.signerName, date)
+      setSent(true)
+    } else setError(true)
   }
 
   if (sent) {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Thanks, {form.signerName}!</h2>
-        <p className="text-slate-500">Your acknowledgment has been received. A copy of the policies has been emailed to {form.email} for your records.</p>
+        <p className="text-slate-500">Your acknowledgment has been received. A PDF copy of the signed policies has been downloaded to your device for your records.</p>
       </div>
     )
   }

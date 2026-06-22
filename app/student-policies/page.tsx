@@ -44,7 +44,7 @@ export default function StudentPoliciesPage() {
 
       <div className="border-t border-slate-200 bg-white py-6 px-6 text-center">
         <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
-          A copy of these policies will be emailed to you for your records.
+          A PDF copy of these policies will download automatically once you submit.
         </div>
       </div>
 
