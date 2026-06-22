@@ -2,42 +2,118 @@
 import { useState } from 'react'
 import { jsPDF } from 'jspdf'
 
-const POLICY_TEXT = `STEADY STEPS MUSIC — LESSON POLICIES
+const POLICY_SECTIONS = [
+  {
+    heading: '1. Payment',
+    body: 'You may pay lesson-by-lesson or pre-pay for the month (4 lessons, 10% discount) at steadystepsmusic.com/pay. Payment must be completed before each lesson begins.',
+  },
+  {
+    heading: '2. Cancellations and Rescheduling',
+    body: 'Cancellations require at least 24 hours notice. If less than 24 hours notice is given (or in the case of a no-show), the session fee is still due. Reschedules are welcome anytime, as long as we can find a time that works within the same week.',
+  },
+  {
+    heading: '3. Makeup Lessons',
+    body: 'A properly-noticed, excused cancellation can be rescheduled within the same week when a slot is available. Lessons missed without proper notice are not eligible for a makeup.',
+  },
+]
 
-1. Payment
-You may pay lesson-by-lesson or pre-pay for the month (4 lessons, 10% discount) at steadystepsmusic.com/pay. Payment must be completed before each lesson begins.
+const POLICY_CLOSING = 'By signing below, I acknowledge that I have read, understood, and agree to these policies.'
 
-2. Cancellations & Rescheduling
-Cancellations require at least 24 hours notice. If less than 24 hours notice is given (or in the case of a no-show), the session fee is still due. Reschedules are welcome anytime, as long as we can find a time that works within the same week.
+const POLICY_TEXT =
+  POLICY_SECTIONS.map(s => `${s.heading}\n${s.body}`).join('\n\n') + `\n\n${POLICY_CLOSING}`
 
-3. Makeup Lessons
-A properly-noticed, excused cancellation can be rescheduled within the same week when a slot is available. Lessons missed without proper notice are not eligible for a makeup.
+const BRAND = {
+  navyText: '#0f172a',
+  teal: '#0d9488',
+  slate: '#475569',
+  staircase: ['#162D6E', '#162D6E', '#2563EB', '#2563EB', '#7DD3FC', '#7DD3FC', '#2DD4BF'] as const,
+}
 
-By signing below, I acknowledge that I have read, understood, and agree to these policies.`
+function drawLogo(doc: jsPDF, x: number, y: number, scale: number) {
+  const rects: [number, number, number, number][] = [
+    [0, 30, 15, 5], [10, 25, 5, 5], [10, 20, 15, 5], [20, 15, 5, 5],
+    [20, 10, 15, 5], [30, 5, 5, 5], [30, 0, 15, 5],
+  ]
+  rects.forEach(([rx, ry, rw, rh], i) => {
+    doc.setFillColor(BRAND.staircase[i])
+    doc.rect(x + rx * scale, y + ry * scale, rw * scale, rh * scale, 'F')
+  })
+}
 
 function downloadPolicyPdf(studentName: string, signerName: string, date: string) {
   const doc = new jsPDF({ unit: 'pt', format: 'letter' })
+  const pageWidth = 612
   const margin = 56
-  const maxWidth = 612 - margin * 2
+  const maxWidth = pageWidth - margin * 2
   let y = margin
 
-  doc.setFont('helvetica', 'bold')
-  doc.setFontSize(16)
-  doc.text('Steady Steps Music — Lesson Policy Acknowledgment', margin, y)
-  y += 28
+  const logoScale = 0.8
+  const logoWidth = 45 * logoScale
+  const logoHeight = 35 * logoScale
+  drawLogo(doc, margin, y, logoScale)
 
+  const wordmarkY = y + logoHeight * 0.7
+  let textX = margin + logoWidth + 12
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(18)
+  doc.setTextColor(BRAND.navyText)
+  doc.text('Steady ', textX, wordmarkY)
+  textX += doc.getTextWidth('Steady ')
+  doc.setTextColor(BRAND.teal)
+  doc.text('Steps', textX, wordmarkY)
+  textX += doc.getTextWidth('Steps')
+  doc.setTextColor(BRAND.slate)
   doc.setFont('helvetica', 'normal')
+  doc.text(' Music', textX, wordmarkY)
+
+  y += logoHeight + 14
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(13)
+  doc.setTextColor(BRAND.slate)
+  doc.text('Lesson Policy Acknowledgment', margin, y)
+
+  y += 14
+  doc.setDrawColor(BRAND.teal)
+  doc.setLineWidth(2)
+  doc.line(margin, y, pageWidth - margin, y)
+  y += 30
+
   doc.setFontSize(11)
-  const lines = doc.splitTextToSize(POLICY_TEXT, maxWidth)
-  doc.text(lines, margin, y)
-  y += lines.length * 14 + 24
+  POLICY_SECTIONS.forEach(section => {
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(BRAND.navyText)
+    doc.text(section.heading, margin, y)
+    y += 16
+
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(BRAND.slate)
+    const lines = doc.splitTextToSize(section.body, maxWidth)
+    doc.text(lines, margin, y)
+    y += lines.length * 14 + 18
+  })
+
+  doc.setFont('helvetica', 'italic')
+  doc.setTextColor(BRAND.slate)
+  const closingLines = doc.splitTextToSize(POLICY_CLOSING, maxWidth)
+  doc.text(closingLines, margin, y)
+  y += closingLines.length * 14 + 36
 
   doc.setFont('helvetica', 'bold')
+  doc.setTextColor(BRAND.navyText)
   doc.text(`Student: ${studentName}`, margin, y)
   y += 18
   doc.text(`Signed by: ${signerName}`, margin, y)
   y += 18
   doc.text(`Date: ${date}`, margin, y)
+
+  const footerY = 792 - 40
+  doc.setDrawColor(BRAND.teal)
+  doc.setLineWidth(1)
+  doc.line(margin, footerY, pageWidth - margin, footerY)
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9)
+  doc.setTextColor(BRAND.slate)
+  doc.text('steadystepsmusic.com', margin, footerY + 16)
 
   doc.save(`Steady Steps Music - Policy Acknowledgment - ${studentName}.pdf`)
 }
@@ -56,7 +132,7 @@ export default function PolicyAcknowledgmentForm() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6',
-        subject: `Policy Acknowledgment — ${form.studentName}`,
+        subject: `Policy Acknowledgment - ${form.studentName}`,
         student_name: form.studentName,
         signed_by: form.signerName,
         email: form.email,
@@ -133,7 +209,7 @@ export default function PolicyAcknowledgmentForm() {
         className="w-full py-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl text-lg transition-colors">
         Submit Acknowledgment
       </button>
-      {error && <p className="text-center text-red-500 text-sm">Something went wrong — please try again or email steadystepsmusic@gmail.com.</p>}
+      {error && <p className="text-center text-red-500 text-sm">Something went wrong, please try again or email steadystepsmusic@gmail.com.</p>}
     </form>
   )
 }
