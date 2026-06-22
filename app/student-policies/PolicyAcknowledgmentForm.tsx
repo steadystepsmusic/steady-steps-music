@@ -63,7 +63,7 @@ export default function PolicyAcknowledgmentForm() {
             id="student-name"
             required type="text" value={form.studentName}
             onChange={e => setForm({ ...form, studentName: e.target.value })}
-            placeholder="Allie Gregg"
+            placeholder="Student's full name"
             className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors"
           />
         </div>
@@ -94,7 +94,7 @@ export default function PolicyAcknowledgmentForm() {
           id="signer-name"
           required type="text" value={form.signerName}
           onChange={e => setForm({ ...form, signerName: e.target.value })}
-          placeholder="Jane Gregg"
+          placeholder="Your full name"
           className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 transition-colors font-[cursive] text-lg"
         />
       </div>
