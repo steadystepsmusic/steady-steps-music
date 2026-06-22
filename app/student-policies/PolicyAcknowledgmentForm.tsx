@@ -133,6 +133,7 @@ export default function PolicyAcknowledgmentForm() {
   const [sent, setSent] = useState(false)
   const [error, setError] = useState(false)
   const [pdfDoc, setPdfDoc] = useState<jsPDF | null>(null)
+  const [downloaded, setDownloaded] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -164,13 +165,27 @@ export default function PolicyAcknowledgmentForm() {
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Thanks, {form.signerName}!</h2>
         <p className="text-slate-500 mb-6">Your acknowledgment has been received. Click below to download a PDF copy of the signed policies for your records.</p>
         <button
-          onClick={() => pdfDoc?.save(`Steady Steps Music - Policy Acknowledgment - ${form.studentName}.pdf`)}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl text-lg transition-colors"
+          disabled={downloaded}
+          onClick={() => {
+            pdfDoc?.save(`Steady Steps Music - Policy Acknowledgment - ${form.studentName}.pdf`)
+            setDownloaded(true)
+          }}
+          className={`inline-flex items-center gap-2 px-8 py-4 font-bold rounded-xl text-lg transition-all ${
+            downloaded
+              ? 'bg-slate-200 text-slate-500 cursor-default'
+              : 'bg-teal-600 hover:bg-teal-500 active:bg-teal-700 active:scale-95 text-white'
+          }`}
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Download PDF
+          {downloaded ? (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          )}
+          {downloaded ? 'Downloaded' : 'Download PDF'}
         </button>
       </div>
     )
