@@ -52,8 +52,8 @@ export default function PayInHomePrepayPage() {
         <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lessons</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Monthly Prepay</h1>
         <p className="text-slate-500 leading-relaxed">
-          Prepay for 4 lessons and save 10% on the lesson fee. Prices below include the $15 travel fee per session
-          (not discounted) on top of the reduced lesson rate. Pay securely with any major credit or debit card.
+          Prepay for 4 lessons and save 10% on the lesson fee. Prices below include the $15/session travel fee.
+          Pay securely with any major credit or debit card.
           Questions? Reach out at <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-600 hover:underline">steadystepsmusic@gmail.com</a>.
         </p>
       </div>
@@ -78,9 +78,9 @@ export default function PayInHomePrepayPage() {
                 </div>
               )}
               <div className={`text-sm font-semibold mb-1 ${p.highlight ? 'text-teal-100' : 'text-slate-500'}`}>{p.label}</div>
-              <div className="flex items-baseline gap-2 mb-5">
+              <div className="mb-5">
                 <span className={`text-4xl font-black ${p.highlight ? 'text-white' : 'text-slate-900'}`}>{p.price}</span>
-                <span className={`text-sm ${p.highlight ? 'text-teal-100' : 'text-slate-500'}`}>{p.note}</span>
+                <div className={`text-sm ${p.highlight ? 'text-teal-100' : 'text-slate-500'}`}>{p.note}</div>
               </div>
               <div className={`w-full text-center py-2.5 rounded-xl font-bold text-sm transition-colors ${
                 p.highlight
@@ -93,8 +93,7 @@ export default function PayInHomePrepayPage() {
           ))}
         </div>
         <p className="text-slate-400 text-xs mt-6">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
-        <p className="text-slate-400 text-xs mt-2">The $15 travel fee is in addition to standard lesson rates and covers travel within the Boise/Eagle/Meridian area. Travel fee is not discounted.</p>
-        <p className="text-slate-400 text-xs mt-2">10% discount applies to the lesson fee for monthly prepay; it does not reduce the travel fee.</p>
+        <p className="text-slate-400 text-xs mt-2">The $15 travel fee covers travel within the Boise/Eagle/Meridian area; the 10% prepay discount applies to the lesson fee only.</p>
       </div>
 
       {/* Trust footer */}
