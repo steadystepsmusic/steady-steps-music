@@ -193,8 +193,14 @@ export default function PolicyAcknowledgmentForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-sm text-slate-600 whitespace-pre-line leading-relaxed">
-        {POLICY_TEXT}
+      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-sm text-slate-600 leading-relaxed flex flex-col gap-4">
+        {POLICY_SECTIONS.map(section => (
+          <div key={section.heading}>
+            <p className="font-bold text-slate-900">{section.heading}</p>
+            <p>{section.body}</p>
+          </div>
+        ))}
+        <p>{POLICY_CLOSING}</p>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
