@@ -35,8 +35,6 @@ export default function RequestsPage() {
 
         <RequestsClient />
 
-        <FanSignupForm />
-
         {/* Tip link */}
         <div className="mt-6 text-center bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
           <p className="text-slate-300 text-sm mb-3">Feeling generous?<br />Send Nik a tip for your request.</p>
@@ -52,6 +50,8 @@ export default function RequestsPage() {
             Tip Nik on Venmo
           </a>
         </div>
+
+        <FanSignupForm />
 
         {/* Instagram */}
         <a
