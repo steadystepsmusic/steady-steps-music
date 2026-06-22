@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import RequestsClient from './RequestsClient'
+import FanSignupForm from './FanSignupForm'
 
 export const metadata = {
   title: 'Song Requests | Nik Mathews Music',
@@ -33,6 +34,8 @@ export default function RequestsPage() {
         </div>
 
         <RequestsClient />
+
+        <FanSignupForm />
 
         {/* Tip link */}
         <div className="mt-6 text-center bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
