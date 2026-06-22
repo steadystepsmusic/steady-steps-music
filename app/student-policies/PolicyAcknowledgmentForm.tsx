@@ -29,18 +29,24 @@ const BRAND = {
   staircase: ['#162D6E', '#162D6E', '#2563EB', '#2563EB', '#7DD3FC', '#7DD3FC', '#2DD4BF'] as const,
 }
 
-function drawLogo(doc: jsPDF, x: number, y: number, scale: number) {
+function renderLogoToDataUrl(): string {
+  const pixelScale = 8
+  const canvas = document.createElement('canvas')
+  canvas.width = 45 * pixelScale
+  canvas.height = 35 * pixelScale
+  const ctx = canvas.getContext('2d')!
   const rects: [number, number, number, number][] = [
     [0, 30, 15, 5], [10, 25, 5, 5], [10, 20, 15, 5], [20, 15, 5, 5],
     [20, 10, 15, 5], [30, 5, 5, 5], [30, 0, 15, 5],
   ]
   rects.forEach(([rx, ry, rw, rh], i) => {
-    doc.setFillColor(BRAND.staircase[i])
-    doc.rect(x + rx * scale, y + ry * scale, rw * scale, rh * scale, 'F')
+    ctx.fillStyle = BRAND.staircase[i]
+    ctx.fillRect(rx * pixelScale, ry * pixelScale, rw * pixelScale, rh * pixelScale)
   })
+  return canvas.toDataURL('image/png')
 }
 
-function downloadPolicyPdf(studentName: string, signerName: string, date: string) {
+function openPolicyPdf(studentName: string, signerName: string, date: string) {
   const doc = new jsPDF({ unit: 'pt', format: 'letter' })
   const pageWidth = 612
   const margin = 56
@@ -50,10 +56,11 @@ function downloadPolicyPdf(studentName: string, signerName: string, date: string
   const logoScale = 0.8
   const logoWidth = 45 * logoScale
   const logoHeight = 35 * logoScale
-  drawLogo(doc, margin, y, logoScale)
+  doc.addImage(renderLogoToDataUrl(), 'PNG', margin, y, logoWidth, logoHeight)
 
   const wordmarkY = y + logoHeight * 0.7
-  let textX = margin + logoWidth + 12
+  const textStartX = margin + logoWidth + 12
+  let textX = textStartX
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(18)
   doc.setTextColor(BRAND.navyText)
@@ -70,7 +77,7 @@ function downloadPolicyPdf(studentName: string, signerName: string, date: string
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(13)
   doc.setTextColor(BRAND.slate)
-  doc.text('Lesson Policy Acknowledgment', margin, y)
+  doc.text('Lesson Policy Acknowledgment', textStartX, y)
 
   y += 14
   doc.setDrawColor(BRAND.teal)
@@ -115,7 +122,8 @@ function downloadPolicyPdf(studentName: string, signerName: string, date: string
   doc.setTextColor(BRAND.slate)
   doc.text('steadystepsmusic.com', margin, footerY + 16)
 
-  doc.save(`Steady Steps Music - Policy Acknowledgment - ${studentName}.pdf`)
+  doc.setProperties({ title: `Steady Steps Music - Policy Acknowledgment - ${studentName}` })
+  window.open(doc.output('bloburl'), '_blank')
 }
 
 export default function PolicyAcknowledgmentForm() {
@@ -142,7 +150,7 @@ export default function PolicyAcknowledgmentForm() {
     })
     const data = await res.json()
     if (data.success) {
-      downloadPolicyPdf(form.studentName, form.signerName, date)
+      openPolicyPdf(form.studentName, form.signerName, date)
       setSent(true)
     } else setError(true)
   }
@@ -151,7 +159,7 @@ export default function PolicyAcknowledgmentForm() {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Thanks, {form.signerName}!</h2>
-        <p className="text-slate-500">Your acknowledgment has been received. A PDF copy of the signed policies has been downloaded to your device for your records.</p>
+        <p className="text-slate-500">Your acknowledgment has been received. A PDF copy of the signed policies has opened in a new tab, where you can save or print it for your records.</p>
       </div>
     )
   }
