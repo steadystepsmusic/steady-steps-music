@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-const cities = ['meridian', 'eagle', 'nampa', 'garden-city']
+const cities = ['meridian', 'eagle', 'nampa', 'garden-city', 'star', 'kuna', 'caldwell']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

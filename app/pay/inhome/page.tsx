@@ -91,7 +91,7 @@ export default function PayInHomePage() {
           ))}
         </div>
         <p className="text-slate-400 text-xs mt-6">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
-        <p className="text-slate-400 text-xs mt-2">The $15 travel fee is in addition to standard lesson rates and covers travel within the Boise/Eagle/Meridian area.</p>
+        <p className="text-slate-400 text-xs mt-2">The $15 travel fee is in addition to standard lesson rates and covers travel within the Boise/Eagle/Meridian/Garden City area.</p>
       </div>
 
       {/* Trust footer */}

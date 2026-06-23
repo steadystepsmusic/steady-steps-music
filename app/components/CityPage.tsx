@@ -11,32 +11,35 @@ const lessons = [
   { name: 'Songwriting',  desc: 'Turn your ideas into real songs. Melody, lyrics, structure, and the creative process. All covered.' },
 ]
 
-const pricing = [
-  {
-    name: 'Demo Lesson',
-    price: 'Free',
-    duration: '15 min intro',
-    highlight: true,
-    features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', 'Online or in-person'],
-    cta: "Book Now. It's Free.",
-  },
-  {
-    name: '30-Minute Lesson',
-    price: '$50',
-    duration: 'per session',
-    highlight: false,
-    features: ['Great for beginners & kids', 'Focused, efficient sessions', 'Online via Zoom or in-person', 'Session notes sent after each lesson'],
-    cta: 'Get Started',
-  },
-  {
-    name: '60-Minute Lesson',
-    price: '$90',
-    duration: 'per session',
-    highlight: false,
-    features: ['Deep dives & faster progress', 'Ideal for dedicated students', 'Online via Zoom or in-person', 'Session notes sent after each lesson'],
-    cta: 'Get Started',
-  },
-]
+function getPricing(onlineOnly: boolean) {
+  const mode = onlineOnly ? 'Online via Zoom' : 'Online or in-person'
+  return [
+    {
+      name: 'Demo Lesson',
+      price: 'Free',
+      duration: '15 min intro',
+      highlight: true,
+      features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', mode],
+      cta: "Book Now. It's Free.",
+    },
+    {
+      name: '30-Minute Lesson',
+      price: '$50',
+      duration: 'per session',
+      highlight: false,
+      features: ['Great for beginners & kids', 'Focused, efficient sessions', mode, 'Session notes sent after each lesson'],
+      cta: 'Get Started',
+    },
+    {
+      name: '60-Minute Lesson',
+      price: '$90',
+      duration: 'per session',
+      highlight: false,
+      features: ['Deep dives & faster progress', 'Ideal for dedicated students', mode, 'Session notes sent after each lesson'],
+      cta: 'Get Started',
+    },
+  ]
+}
 
 const faqs = [
   { q: 'Do I need my own instrument?',     a: "For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
@@ -52,9 +55,10 @@ type Props = {
   slug: string
   blurb: string
   context: string
+  onlineOnly?: boolean
 }
 
-export default function CityPage({ name, slug, blurb, context }: Props) {
+export default function CityPage({ name, slug, blurb, context, onlineOnly = false }: Props) {
   return (
     <div className="min-h-screen">
       <Nav />
@@ -68,7 +72,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
         <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 grid md:grid-cols-2 gap-12 items-center w-full">
           <div>
             <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
-              Music Lessons in {name}, ID · Online Worldwide
+              Music Lessons in {name}, ID{onlineOnly ? ' · Online via Zoom' : ''}
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
               Music Lessons<br />
@@ -112,7 +116,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice. I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.</p>
               <p>My approach is simple: we start with <strong className="text-slate-800">what you actually want to play</strong>. No boring exercises for the sake of it. No one-size-fits-all curriculum. Just clear, steady progress toward goals that matter to you.</p>
-              <p>Based in Boise, Idaho, I work with students in {name} and across the Treasure Valley, online or in-person. {context}</p>
+              <p>Based in Boise, Idaho, I work with students in {name} and across the Treasure Valley, {onlineOnly ? 'online via Zoom' : 'online or in-person'}. {context}</p>
             </div>
             <div className="mt-8 grid grid-cols-3 gap-4 text-center">
               {[['20+', 'Years Teaching'], ['100+', 'Students Taught'], ['6', 'Musical Subjects']].map(([val, label]) => (
@@ -132,7 +136,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Music Lessons in {name}</h2>
-            <p className="text-slate-600 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, online or in-person.</p>
+            <p className="text-slate-600 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, {onlineOnly ? 'online via Zoom' : 'online or in-person'}.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
@@ -154,7 +158,7 @@ export default function CityPage({ name, slug, blurb, context }: Props) {
             <p className="text-slate-600 mt-4">Start with a free demo. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
-            {pricing.map(p => (
+            {getPricing(onlineOnly).map(p => (
               <div key={p.name} className={`rounded-2xl p-8 border-2 transition-all ${p.highlight ? 'bg-teal-600 border-teal-600 shadow-2xl shadow-teal-500/20 md:scale-105' : 'bg-white border-slate-200 hover:border-teal-200'}`}>
                 {p.highlight && (
                   <div className="text-center mb-4">

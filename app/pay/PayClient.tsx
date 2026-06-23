@@ -58,15 +58,21 @@ function ToggleGroup<T extends string>({
   onChange: (v: T) => void
 }) {
   return (
-    <div className="inline-flex bg-slate-100 rounded-xl p-1">
+    <div className="relative inline-flex bg-slate-100 rounded-xl p-1">
+      <div
+        className="absolute top-1 bottom-1 rounded-lg bg-white shadow-sm transition-transform duration-300 ease-out"
+        style={{
+          width: `${100 / options.length}%`,
+          left: '4px',
+          transform: `translateX(${options.findIndex(o => o.value === value) * 100}%)`,
+        }}
+      />
       {options.map(opt => (
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
-          className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
-            value === opt.value
-              ? 'bg-white text-slate-900 shadow-sm'
-              : 'text-slate-500 hover:text-slate-700'
+          className={`relative z-10 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
+            value === opt.value ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           {opt.label}
@@ -170,7 +176,7 @@ export default function PayClient() {
           <p className="text-slate-400 text-xs mt-4">Monthly prepay covers 4 lessons per billing cycle. In months with 5 weeks, additional lessons can be booked at the single-session rate.</p>
         )}
         {location === 'inhome' && (
-          <p className="text-slate-400 text-xs mt-2">The $15 travel fee covers travel within the Boise/Eagle/Meridian area{plan === 'monthly' ? '; the 10% prepay discount applies to the lesson fee only' : ''}.</p>
+          <p className="text-slate-400 text-xs mt-2">The $15 travel fee covers travel within the Boise/Eagle/Meridian/Garden City area{plan === 'monthly' ? '; the 10% prepay discount applies to the lesson fee only' : ''}.</p>
         )}
         <p className="text-slate-400 text-xs mt-2">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
       </div>

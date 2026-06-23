@@ -93,7 +93,7 @@ export default function PayInHomePrepayPage() {
           ))}
         </div>
         <p className="text-slate-400 text-xs mt-6">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
-        <p className="text-slate-400 text-xs mt-2">The $15 travel fee covers travel within the Boise/Eagle/Meridian area; the 10% prepay discount applies to the lesson fee only.</p>
+        <p className="text-slate-400 text-xs mt-2">The $15 travel fee covers travel within the Boise/Eagle/Meridian/Garden City area; the 10% prepay discount applies to the lesson fee only.</p>
       </div>
 
       {/* Trust footer */}

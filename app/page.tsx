@@ -33,7 +33,7 @@ const pricing = [
     price: '$50',
     duration: 'per session',
     highlight: false,
-    features: ['Great for beginners & kids', 'Focused, efficient sessions', 'Online via Zoom or in-person', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
+    features: ['Great for beginners & kids', 'Focused, efficient sessions', 'Online via Zoom or in-person*', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
     cta: 'Get Started',
   },
   {
@@ -41,7 +41,7 @@ const pricing = [
     price: '$90',
     duration: 'per session',
     highlight: false,
-    features: ['Deep dives & faster progress', 'Ideal for dedicated students', 'Online via Zoom or in-person', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
+    features: ['Deep dives & faster progress', 'Ideal for dedicated students', 'Online via Zoom or in-person*', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
     cta: 'Get Started',
   },
 ]
@@ -268,6 +268,7 @@ export default function Home() {
             ))}
           </div>
           <p className="text-center text-slate-600 text-sm mt-8">Pre-pay for the month and save 10%. Mention it when you book.</p>
+          <p className="text-center text-slate-400 text-xs mt-3">* In-home lessons include an additional $15 travel fee per session, on top of the prices shown above.</p>
         </div>
       </section>
 
@@ -319,7 +320,6 @@ export default function Home() {
             {[
               { label: 'Meridian',    href: '/meridian' },
               { label: 'Eagle',       href: '/eagle' },
-              { label: 'Nampa',       href: '/nampa' },
               { label: 'Garden City', href: '/garden-city' },
             ].map(({ label, href }) => (
               <a
