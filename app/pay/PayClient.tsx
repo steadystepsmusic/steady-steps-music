@@ -58,11 +58,11 @@ function ToggleGroup<T extends string>({
   onChange: (v: T) => void
 }) {
   return (
-    <div className="relative inline-flex bg-slate-100 rounded-xl p-1">
+    <div className="relative flex w-full max-w-md bg-slate-100 rounded-xl p-1">
       <div
         className="absolute top-1 bottom-1 rounded-lg bg-white shadow-sm transition-transform duration-300 ease-out"
         style={{
-          width: `${100 / options.length}%`,
+          width: `calc(${100 / options.length}% - 4px)`,
           left: '4px',
           transform: `translateX(${options.findIndex(o => o.value === value) * 100}%)`,
         }}
@@ -71,7 +71,7 @@ function ToggleGroup<T extends string>({
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
-          className={`relative z-10 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
+          className={`relative z-10 flex-1 px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors ${
             value === opt.value ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
           }`}
         >
