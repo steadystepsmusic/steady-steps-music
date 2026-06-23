@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 // Create these in Stripe when a student requests in-home lessons, then paste the
 // links here and redeploy.
 const STRIPE = {
-  single30: '#', // $65 — 30-min in-home (replace before sending to student)
-  single45: '#', // $85 — 45-min in-home (replace before sending to student)
-  single60: '#', // $105 — 60-min in-home (replace before sending to student)
+  single30: 'https://buy.stripe.com/fZu7sDfTq2EA2Re2of1RC0b', // $65 — 30-min in-home
+  single45: 'https://buy.stripe.com/00w6oz5eMcfabnK1kb1RC0a', // $85 — 45-min in-home
+  single60: 'https://buy.stripe.com/3cI8wHaz6bb6ajGaUL1RC09', // $105 — 60-min in-home
 }
 
 // ─── Plan data ────────────────────────────────────────────────────────────────
