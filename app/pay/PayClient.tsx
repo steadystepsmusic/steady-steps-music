@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 
 // ─── Stripe Payment Links ─────────────────────────────────────────────────────
 const STRIPE = {
@@ -57,8 +57,18 @@ function ToggleGroup<T extends string>({
   value: T
   onChange: (v: T) => void
 }) {
+  const handleBarClick = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const ratio = (e.clientX - rect.left) / rect.width
+    const index = Math.min(options.length - 1, Math.max(0, Math.floor(ratio * options.length)))
+    onChange(options[index].value)
+  }
+
   return (
-    <div className="relative flex w-full max-w-md bg-slate-100 rounded-xl p-1">
+    <div
+      onClick={handleBarClick}
+      className="relative flex w-full max-w-md bg-slate-100 rounded-xl p-1 cursor-pointer"
+    >
       <div
         className="absolute top-1 bottom-1 rounded-lg bg-white shadow-sm transition-transform duration-300 ease-out"
         style={{
@@ -68,15 +78,14 @@ function ToggleGroup<T extends string>({
         }}
       />
       {options.map(opt => (
-        <button
+        <div
           key={opt.value}
-          onClick={() => onChange(opt.value)}
-          className={`relative z-10 flex-1 px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors ${
-            value === opt.value ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
+          className={`relative z-10 flex-1 px-4 py-2 text-center text-sm font-bold whitespace-nowrap transition-colors ${
+            value === opt.value ? 'text-slate-900' : 'text-slate-500'
           }`}
         >
           {opt.label}
-        </button>
+        </div>
       ))}
     </div>
   )
