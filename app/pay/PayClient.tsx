@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type MouseEvent } from 'react'
+import { useState } from 'react'
 
 // ─── Stripe Payment Links ─────────────────────────────────────────────────────
 const STRIPE = {
@@ -57,11 +57,10 @@ function ToggleGroup<T extends string>({
   value: T
   onChange: (v: T) => void
 }) {
-  const handleBarClick = (e: MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const ratio = (e.clientX - rect.left) / rect.width
-    const index = Math.min(options.length - 1, Math.max(0, Math.floor(ratio * options.length)))
-    onChange(options[index].value)
+  const handleBarClick = () => {
+    const currentIndex = options.findIndex(o => o.value === value)
+    const nextIndex = (currentIndex + 1) % options.length
+    onChange(options[nextIndex].value)
   }
 
   return (
@@ -80,7 +79,7 @@ function ToggleGroup<T extends string>({
       {options.map(opt => (
         <div
           key={opt.value}
-          className={`relative z-10 flex-1 px-4 py-2 text-center text-sm font-bold whitespace-nowrap transition-colors ${
+          className={`relative z-10 flex-1 px-2 sm:px-4 py-2 text-center text-[13px] sm:text-sm font-bold whitespace-nowrap transition-colors ${
             value === opt.value ? 'text-slate-900' : 'text-slate-500'
           }`}
         >
