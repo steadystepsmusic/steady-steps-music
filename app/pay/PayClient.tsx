@@ -120,7 +120,7 @@ export default function PayClient() {
           onChange={setLocation}
           options={[
             { value: 'studio', label: 'Studio / Online' },
-            { value: 'inhome', label: 'In-Home (+$15 travel)' },
+            { value: 'inhome', label: 'In-Home' },
           ]}
         />
         <ToggleGroup
