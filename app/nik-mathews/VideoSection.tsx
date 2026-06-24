@@ -9,14 +9,80 @@ declare global {
   }
 }
 
+const MONTAGE2_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%202%20-%20Vertical%20Web.mp4'
+const POSTER2_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/montage-2-poster.jpg'
 const MONTAGE_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%20-%20Vertical%20Web.mp4'
 const POSTER_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/montage-poster.jpg'
 const YOUTUBE_ID = 'nRVzXqenyKc'
 
+function HostedVideo({
+  src,
+  poster,
+  songs,
+  videoRef,
+  onPlay,
+}: {
+  src: string
+  poster: string
+  songs: string
+  videoRef: React.RefObject<HTMLVideoElement | null>
+  onPlay: () => void
+}) {
+  const [hasPlayed, setHasPlayed] = useState(false)
+
+  function handleOverlayClick() {
+    onPlay()
+    videoRef.current?.play()
+    setHasPlayed(true)
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div style={{ position: 'relative', width: '100%', maxWidth: '380px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          controls
+          playsInline
+          preload="none"
+          onPlay={onPlay}
+          style={{ display: 'block', width: '100%' }}
+        />
+        {!hasPlayed && (
+          <div
+            onClick={handleOverlayClick}
+            style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.2)',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{
+              width: '72px', height: '72px', borderRadius: '50%',
+              background: 'rgba(201,168,76,0.9)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+            }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a0a">
+                <polygon points="6,3 20,12 6,21" />
+              </svg>
+            </div>
+          </div>
+        )}
+      </div>
+      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', letterSpacing: '0.05em', marginTop: '0.75rem', textAlign: 'center' }}>
+        {songs}
+      </p>
+    </div>
+  )
+}
+
 export default function VideoSection() {
   const ytPlayer = useRef<any>(null)
-  const hostedVideo = useRef<HTMLVideoElement>(null)
-  const [hasPlayed, setHasPlayed] = useState(false)
+  const montage2Video = useRef<HTMLVideoElement>(null)
+  const montageVideo = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const tag = document.createElement('script')
@@ -29,7 +95,8 @@ export default function VideoSection() {
           onStateChange: (e: any) => {
             if (e.data === window.YT.PlayerState.PLAYING) {
               e.target.setPlaybackQuality('hd1080')
-              hostedVideo.current?.pause()
+              montage2Video.current?.pause()
+              montageVideo.current?.pause()
             }
           },
         },
@@ -37,10 +104,10 @@ export default function VideoSection() {
     }
   }, [])
 
-  function handleOverlayClick() {
-    if (ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
-    hostedVideo.current?.play()
-    setHasPlayed(true)
+  function pauseOthersFor(playing: 'montage2' | 'montage' | 'youtube') {
+    if (playing !== 'youtube' && ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
+    if (playing !== 'montage2') montage2Video.current?.pause()
+    if (playing !== 'montage') montageVideo.current?.pause()
   }
 
   return (
@@ -50,46 +117,27 @@ export default function VideoSection() {
           Watch &amp; Listen
         </p>
 
-        {/* Hosted vertical montage */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ position: 'relative', width: '100%', maxWidth: '380px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
-            <video
-              ref={hostedVideo}
-              src={MONTAGE_URL}
-              poster={POSTER_URL}
-              controls
-              playsInline
-              preload="none"
-              style={{ display: 'block', width: '100%' }}
-            />
-            {/* Gold play overlay -- only shown before first play */}
-            {!hasPlayed && (
-              <div
-                onClick={handleOverlayClick}
-                style={{
-                  position: 'absolute', inset: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'rgba(0,0,0,0.2)',
-                  cursor: 'pointer',
-                }}
-              >
-                <div style={{
-                  width: '72px', height: '72px', borderRadius: '50%',
-                  background: 'rgba(201,168,76,0.9)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-                }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#0a0a0a">
-                    <polygon points="6,3 20,12 6,21" />
-                  </svg>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+        <HostedVideo
+          src={MONTAGE2_URL}
+          poster={POSTER2_URL}
+          songs="Something in the Orange &middot; Lovely Day &middot; Black Water"
+          videoRef={montage2Video}
+          onPlay={() => pauseOthersFor('montage2')}
+        />
 
-        {/* YouTube second video */}
-        <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+        <HostedVideo
+          src={MONTAGE_URL}
+          poster={POSTER_URL}
+          songs="The Joker &middot; Peaceful Easy Feeling &middot; Norwegian Wood &middot; Free Fallin'"
+          videoRef={montageVideo}
+          onPlay={() => pauseOthersFor('montage')}
+        />
+
+        {/* YouTube video */}
+        <div
+          onClick={() => pauseOthersFor('youtube')}
+          style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}
+        >
           <iframe
             id="yt-player"
             src={`https://www.youtube.com/embed/${YOUTUBE_ID}?rel=0&enablejsapi=1`}
