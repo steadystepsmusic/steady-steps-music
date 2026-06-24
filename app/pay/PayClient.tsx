@@ -79,7 +79,7 @@ function ToggleGroup<T extends string>({
       {options.map(opt => (
         <div
           key={opt.value}
-          className={`relative z-10 flex-1 flex items-center justify-center text-center min-h-[44px] px-1.5 sm:px-4 py-1.5 text-[12px] sm:text-sm leading-tight font-bold transition-colors ${
+          className={`relative z-10 flex-1 flex items-center justify-center text-center min-h-[44px] px-1.5 sm:px-4 py-1.5 text-[12px] sm:text-sm leading-tight font-bold whitespace-pre-line transition-colors ${
             value === opt.value ? 'text-slate-900' : 'text-slate-500'
           }`}
         >
@@ -142,7 +142,7 @@ export default function PayClient() {
           onChange={setPlan}
           options={[
             { value: 'single', label: 'Pay Per Session' },
-            { value: 'monthly', label: 'Monthly Prepay (Save 10%)' },
+            { value: 'monthly', label: 'Monthly Prepay\n(Save 10%)' },
           ]}
         />
       </div>
