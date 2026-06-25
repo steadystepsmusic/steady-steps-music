@@ -15,7 +15,12 @@ export default function ContactForm() {
       body: JSON.stringify({ access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6', subject: 'New Lesson Inquiry | Steady Steps Music', ...form }),
     })
     const data = await res.json()
-    if (data.success) setSent(true)
+    if (data.success) {
+      if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+        ;(window as any).gtag('event', 'generate_lead', { event_category: 'contact_form' })
+      }
+      setSent(true)
+    }
   }
 
   if (sent) {
