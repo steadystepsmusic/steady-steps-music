@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Strategic context (load before significant changes)
+
+This site has **two jobs**, and as of the 2026-05-26 strategy update the second one is rising in priority:
+
+1. Convert visitors to **lesson bookings** (the in-person/local lesson business — current revenue)
+2. Convert visitors to **Steady Steps app installs** (the long-term internet-money pillar — see `~/.claude/plans/steady-steps-app-strategy.md`)
+
+The app is meant to overtake lessons as Nik's largest income leg. That makes this site the **top of the app's funnel** — every page should consider whether it routes traffic toward the app, not just toward lesson bookings. When proposing changes, ask which of the two jobs the change serves; if it serves neither, push back.
+
+Related memory pointers: `~/.claude/projects/-Users-nikmathews/memory/project_marketing_site.md`, `~/.claude/projects/-Users-nikmathews/memory/project_student_app.md`.
+
 ## Commands
 
 ```bash
