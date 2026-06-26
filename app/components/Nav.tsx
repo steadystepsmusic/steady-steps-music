@@ -11,17 +11,24 @@ const linkSlugs = [
 ]
 
 export default function Nav({ basePath = '' }: { basePath?: string }) {
-  const [open, setOpen]       = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen]           = useState(false)
+  const [scrolled, setScrolled]   = useState(false)
+  const [pastHero, setPastHero]   = useState(false)
   const links = linkSlugs.map(l => ({ ...l, href: `${basePath}${l.slug}` }))
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20)
+    const handler = () => {
+      const scrollY = window.scrollY
+      const nearBottom = scrollY + window.innerHeight > document.body.scrollHeight - 300
+      setScrolled(scrollY > 20)
+      setPastHero(scrollY > 500 && !nearBottom)
+    }
     window.addEventListener('scroll', handler)
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
   return (
+    <>
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur shadow-lg' : 'bg-transparent'}`}>
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
@@ -78,5 +85,15 @@ export default function Nav({ basePath = '' }: { basePath?: string }) {
         </div>
       )}
     </header>
+
+    {/* Mobile sticky bottom CTA — slides up after hero CTA scrolls off screen */}
+    <div style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }} className={`md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-700 px-3 pt-3 transition-all duration-300 ${pastHero ? 'translate-y-0 opacity-100 pointer-events-auto' : 'translate-y-full opacity-0 pointer-events-none'}`}>
+      <a href={`${basePath}#contact`}
+        style={{ touchAction: 'manipulation' }}
+        className="block w-full py-3 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold rounded-xl text-center text-base transition-colors">
+        Book a Free Lesson →
+      </a>
+    </div>
+    </>
   )
 }
