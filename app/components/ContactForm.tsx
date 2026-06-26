@@ -4,22 +4,33 @@ import { useState } from 'react'
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', instrument: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: replace YOUR_FORM_ID with a Formspree endpoint (https://formspree.io)
-    // or wire up to any backend/email service
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6', subject: 'New Lesson Inquiry | Steady Steps Music', ...form }),
-    })
-    const data = await res.json()
-    if (data.success) {
-      if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-        ;(window as any).gtag('event', 'generate_lead', { event_category: 'contact_form' })
+    if (submitting) return
+    setSubmitting(true)
+    setError(false)
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6', subject: 'New Lesson Inquiry | Steady Steps Music', ...form }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+          ;(window as any).gtag('event', 'generate_lead', { event_category: 'contact_form' })
+        }
+        setSent(true)
+      } else {
+        setError(true)
+        setSubmitting(false)
       }
-      setSent(true)
+    } catch {
+      setError(true)
+      setSubmitting(false)
     }
   }
 
@@ -84,10 +95,13 @@ export default function ContactForm() {
           className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors resize-none"
         />
       </div>
-      <button type="submit"
-        className="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-lg transition-colors">
-        Book My Free Lesson →
+      <button type="submit" disabled={submitting}
+        className="w-full py-4 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 active:scale-95 text-slate-900 font-bold rounded-xl text-lg transition-all duration-100 disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100">
+        {submitting ? 'Sending…' : 'Book My Free Lesson →'}
       </button>
+      {error && (
+        <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email me directly.</p>
+      )}
       <p className="text-center text-slate-400 text-sm">No commitment. I&apos;ll reply within 24 hours.</p>
     </form>
   )
