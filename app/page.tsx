@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Nav from './components/Nav'
 import ContactForm from './components/ContactForm'
+import YouTubeFacade from './components/YouTubeFacade'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -81,63 +82,48 @@ export default function Home() {
       <Nav />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen bg-slate-900 flex items-center overflow-hidden">
+      <section className="relative bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950" />
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl" />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-20 md:pt-24 pb-28 md:pb-16 flex flex-col items-center text-center w-full">
-          <div className="animate-fade-up max-w-2xl">
-            <div className="inline-flex flex-col sm:flex-row items-center gap-0.5 sm:gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
-              <span>Music Lessons in Boise, ID</span>
-              <span className="hidden sm:inline">·</span>
-              <span>Teaching Online by Zoom</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
-              Music Lessons Made <span className="text-teal-400">for You.</span>
-            </h1>
-            <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg mx-auto">
-              Guitar, bass, piano, voice, music theory, and songwriting, online or in-person.
-              Every lesson is built around <em>your</em> goals, your schedule, and your taste in music.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
-                Book a Free Lesson →
-              </a>
-              <a href="#lessons" className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-lg transition-colors text-center border border-white/10">
-                See All Lessons
-              </a>
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-slate-400 text-sm justify-center">
-              <span className="whitespace-nowrap">✓ Free 15-min demo</span>
-              <span className="whitespace-nowrap">✓ Student Interest Centered</span>
-              <span className="whitespace-nowrap">✓ All skill levels</span>
-            </div>
+        <div className="relative max-w-3xl mx-auto px-6 pt-20 pb-12 flex flex-col items-center text-center w-full gap-6">
+          {/* Badge */}
+          <div className="inline-flex flex-col sm:flex-row items-center gap-0.5 sm:gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full">
+            <span>Music Lessons in Boise, ID</span>
+            <span className="hidden sm:inline">·</span>
+            <span>Teaching Online by Zoom</span>
           </div>
 
-        </div>
+          {/* Headline */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
+            Music Lessons<br /><span className="text-teal-400">Made for You.</span>
+          </h1>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-400 animate-bounce">
-          <span className="text-xs">Scroll</span>
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </section>
-
-      {/* ── Intro Video ──────────────────────────────────────────────── */}
-      <section className="py-12 md:py-20 bg-slate-900">
-        <div className="max-w-3xl mx-auto px-6">
-          <div style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '12px', overflow: 'hidden' }}>
-            <iframe
-              src="https://www.youtube.com/embed/rrrnBaHFfa8?rel=0"
-              title="Welcome to Steady Steps Music"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
-            />
+          {/* Video */}
+          <div className="w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10">
+            <YouTubeFacade videoId="rrrnBaHFfa8" title="Welcome to Steady Steps Music" />
           </div>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
+              Book a Free Lesson →
+            </a>
+            <a href="#lessons" className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-lg transition-colors text-center border border-white/10">
+              See All Lessons
+            </a>
+          </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400 text-sm justify-center">
+            <span className="whitespace-nowrap">✓ Free 15-min demo</span>
+            <span className="whitespace-nowrap">✓ Student Interest Centered</span>
+            <span className="whitespace-nowrap">✓ All skill levels</span>
+          </div>
+          <p className="text-white text-base">
+            Guitar &middot; Bass &middot; Piano &middot; Voice &middot; Songwriting &middot; Music Theory
+          </p>
         </div>
+
       </section>
 
       {/* ── About ────────────────────────────────────────────────────── */}
