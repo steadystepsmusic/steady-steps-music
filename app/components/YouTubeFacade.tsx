@@ -10,7 +10,7 @@ export default function YouTubeFacade({ videoId, title }: { videoId: string; tit
     return (
       <div style={{ position: 'relative', paddingBottom: '56.25%' }}>
         <iframe
-          src={`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`}
+          src={`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1&playsinline=1`}
           title={title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
