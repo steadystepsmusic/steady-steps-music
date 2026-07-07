@@ -161,7 +161,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
-      <body className={`${inter.className} pb-28 md:pb-0`}>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ThankYouPage() {
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col">
+    <div className="min-h-dvh bg-slate-900 flex flex-col">
       <Nav />
 
       <main className="flex-1 flex items-center justify-center px-6 py-24">

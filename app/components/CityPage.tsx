@@ -95,6 +95,9 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             <span className="whitespace-nowrap">✓ Student Interest Centered</span>
             <span className="whitespace-nowrap">✓ All skill levels</span>
           </div>
+          <p className="text-white text-base">
+            Guitar &middot; Bass &middot; Piano &middot; Voice &middot; Songwriting &middot; Music Theory
+          </p>
         </div>
       </section>
 
