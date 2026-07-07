@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Nav from './Nav'
 import ContactForm from './ContactForm'
+import YouTubeFacade from './YouTubeFacade'
 
 const lessons = [
   { name: 'Guitar',       desc: 'From your first open chord to advanced fingerpicking and lead playing. Acoustic or electric, all styles.' },
@@ -64,40 +65,35 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       <Nav />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen bg-slate-900 flex items-center overflow-hidden">
+      <section className="relative bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950" />
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl" />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16 grid md:grid-cols-2 gap-12 items-center w-full">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full mb-6">
-              Music Lessons in {name}, ID{onlineOnly ? ' · Online via Zoom' : ''}
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
-              Music Lessons<br />
-              <span className="text-teal-400">in {name}.</span>
-            </h1>
-            <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-lg">{blurb}</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
-                Book a Free Lesson →
-              </a>
-              <a href="#lessons" className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-lg transition-colors text-center border border-white/10">
-                See All Lessons
-              </a>
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-4 text-slate-400 text-sm">
-              <span className="whitespace-nowrap">✓ Free 15-min demo</span>
-              <span className="whitespace-nowrap">✓ Student Interest Centered</span>
-              <span className="whitespace-nowrap">✓ All skill levels</span>
-            </div>
+        <div className="relative max-w-3xl mx-auto px-6 pt-24 pb-16 flex flex-col items-center text-center w-full gap-6">
+          <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium px-4 py-2 rounded-full">
+            Music Lessons in {name}, ID{onlineOnly ? ' · Online via Zoom' : ''}
           </div>
-
-          <div className="flex justify-center">
-            <div className="relative w-full h-72 sm:h-96 md:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-2 border-teal-500/20">
-              <Image src="/images/hero.jpeg" alt={`Music lessons in ${name}, Idaho`} fill className="object-cover" priority />
-            </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
+            Music Lessons<br />
+            <span className="text-teal-400">in {name}.</span>
+          </h1>
+          <p className="text-slate-300 text-lg leading-relaxed max-w-lg">{blurb}</p>
+          <div className="w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10">
+            <YouTubeFacade videoId="rrrnBaHFfa8" title="Welcome to Steady Steps Music" />
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
+              Book a Free Lesson →
+            </a>
+            <a href="#lessons" className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-lg transition-colors text-center border border-white/10">
+              See All Lessons
+            </a>
+          </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400 text-sm justify-center">
+            <span className="whitespace-nowrap">✓ Free 15-min demo</span>
+            <span className="whitespace-nowrap">✓ Student Interest Centered</span>
+            <span className="whitespace-nowrap">✓ All skill levels</span>
           </div>
         </div>
       </section>

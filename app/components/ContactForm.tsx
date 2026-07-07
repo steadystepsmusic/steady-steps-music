@@ -1,9 +1,10 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ContactForm() {
+  const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '', instrument: '', message: '' })
-  const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(false)
 
@@ -23,7 +24,7 @@ export default function ContactForm() {
         if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
           ;(window as any).gtag('event', 'generate_lead', { event_category: 'contact_form' })
         }
-        setSent(true)
+        router.push('/thank-you')
       } else {
         setError(true)
         setSubmitting(false)
@@ -32,15 +33,6 @@ export default function ContactForm() {
       setError(true)
       setSubmitting(false)
     }
-  }
-
-  if (sent) {
-    return (
-      <div className="text-center py-12">
-        <h3 className="text-2xl font-bold text-white mb-2">Message received!</h3>
-        <p className="text-slate-300">I&apos;ll get back to you within 24 hours to schedule your free lesson.</p>
-      </div>
-    )
   }
 
   return (
