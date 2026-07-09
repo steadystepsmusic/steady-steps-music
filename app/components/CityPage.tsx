@@ -20,7 +20,7 @@ function getPricing(onlineOnly: boolean) {
       price: 'Free',
       duration: '15 min intro',
       highlight: true,
-      features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', mode],
+      features: ['No commitment required', 'Meet your teacher first', 'Get a personalized plan', 'Online via Zoom'],
       cta: "Book Now. It's Free.",
     },
     {
