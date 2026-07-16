@@ -133,7 +133,7 @@ export default function PayClient() {
           value={location}
           onChange={setLocation}
           options={[
-            { value: 'studio', label: 'Studio / Online' },
+            { value: 'studio', label: 'Online / In-Person' },
             { value: 'inhome', label: 'In-Home' },
           ]}
         />
@@ -154,6 +154,8 @@ export default function PayClient() {
             <a
               key={p.label}
               href={p.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`group block rounded-2xl p-6 border-2 transition-all hover:shadow-md ${
                 p.highlight
                   ? 'bg-teal-600 border-teal-600 hover:bg-teal-500 hover:border-teal-500'
