@@ -133,7 +133,7 @@ export default function PayClient() {
           value={location}
           onChange={setLocation}
           options={[
-            { value: 'studio', label: 'Online / In-Person' },
+            { value: 'studio', label: 'Online' },
             { value: 'inhome', label: 'In-Home' },
           ]}
         />
