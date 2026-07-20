@@ -22,6 +22,29 @@ const POLICY_CLOSING = 'By signing below, I acknowledge that I have read, unders
 const POLICY_TEXT =
   POLICY_SECTIONS.map(s => `${s.heading}\n${s.body}`).join('\n\n') + `\n\n${POLICY_CLOSING}`
 
+const PAY_URL = 'steadystepsmusic.com/pay'
+
+function renderBodyWithLink(text: string) {
+  const parts = text.split(PAY_URL)
+  if (parts.length === 1) return text
+  return parts.flatMap((part, i) =>
+    i === 0
+      ? [part]
+      : [
+          <a
+            key={i}
+            href="https://steadystepsmusic.com/pay"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-teal-600 underline hover:no-underline"
+          >
+            {PAY_URL}
+          </a>,
+          part,
+        ]
+  )
+}
+
 const BRAND = {
   navyText: '#0f172a',
   teal: '#0d9488',
@@ -197,7 +220,7 @@ export default function PolicyAcknowledgmentForm() {
         {POLICY_SECTIONS.map(section => (
           <div key={section.heading}>
             <p className="font-bold text-slate-900">{section.heading}</p>
-            <p>{section.body}</p>
+            <p>{renderBodyWithLink(section.body)}</p>
           </div>
         ))}
         <p>{POLICY_CLOSING}</p>
