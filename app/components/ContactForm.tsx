@@ -37,6 +37,10 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* OOO — remove after 8/5/26 */}
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+        I&apos;m currently out of office on a backpacking trip with limited connectivity until Wednesday, 8/5. I&apos;ll respond to booking inquiries with high priority when I&apos;m back Wednesday evening. Thanks for reaching out!
+      </div>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="contact-name" className="block text-sm font-medium text-slate-300 mb-1">Your Name</label>
@@ -94,7 +98,7 @@ export default function ContactForm() {
       {error && (
         <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email me directly.</p>
       )}
-      <p className="text-center text-slate-400 text-sm">No commitment. I&apos;ll reply within 24 hours.</p>
+      <p className="text-center text-slate-400 text-sm">No commitment. I&apos;m currently out of office and will reply by Wednesday evening, 8/5.</p>
     </form>
   )
 }
