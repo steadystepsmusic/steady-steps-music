@@ -15,9 +15,8 @@ export default function ThankYouPage() {
         <div className="max-w-lg w-full text-center">
           <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-4">Message Received</p>
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-4">You&apos;re all set!</h1>
-          {/* OOO — remove after 8/5/26 */}
           <p className="text-slate-300 text-lg leading-relaxed mb-10">
-            I&apos;m currently out of office on a backpacking trip with limited connectivity until Wednesday, 8/5. I&apos;ll respond with high priority Wednesday evening when I&apos;m back to schedule your free 15-minute demo lesson.
+            I&apos;ll get back to you within 24 hours to schedule your free 15-minute demo lesson.
           </p>
 
           {/* Free Guide CTA */}

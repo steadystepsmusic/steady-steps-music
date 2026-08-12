@@ -44,20 +44,13 @@ export default function BookingForm() {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
         <p style={{ color: '#c9a84c', fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.1em' }}>Message sent!</p>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', marginTop: '0.5rem' }}>
-          {/* OOO — remove after 8/5/26 */}
-          Thanks {form.name}, I&apos;m currently out of office on a trip with limited connectivity until Wednesday, 8/5. I&apos;ll respond with high priority when I&apos;m back Wednesday evening.
-        </p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', marginTop: '0.5rem' }}>Thanks {form.name}, I&apos;ll be in touch soon.</p>
       </div>
     )
   }
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '480px', margin: '0 auto' }}>
-      {/* OOO — remove after 8/5/26 */}
-      <div style={{ border: '1px solid rgba(201,168,76,0.4)', backgroundColor: 'rgba(201,168,76,0.08)', borderRadius: '2px', padding: '0.85rem 1rem', color: '#e3cf8f', fontSize: '0.9rem', lineHeight: 1.5 }}>
-        I&apos;m currently out of office on a backpacking trip with limited connectivity until Wednesday, 8/5. For booking inquiries, I&apos;ll respond with high priority Wednesday evening when I&apos;m back. Thanks for reaching out!
-      </div>
       <div>
         <label style={labelStyle}>Name</label>
         <input
