@@ -1,337 +1,36 @@
 import { Metadata } from 'next'
-import { CombinedSection } from './TabDisplay'
+import { songs } from './data'
+import { TabHeader, TabCta } from './TabShell'
 
 export const metadata: Metadata = {
-  title: 'Free Guitar Tab Sheets — Steady Steps Music',
+  title: 'Free Guitar Tab Sheets: Steady Steps Music',
   robots: { index: false, follow: false },
 }
 
-const tabs = [
-  {
-    episode: 'EP05',
-    title: 'Itsy Bitsy Spider',
-    description: 'Your first melody — high e and B string. Perfect for building single-note picking technique.',
-    sections: [
-      {
-        label: '',
-        phrases: [
-          {
-            name: 'Phrase 1',
-            lines: [
-              'e|--------0--0--0--2--4--4--2--0---2--4---0-|',
-              'B|--0-----------------------------------------|',
-              'G|--------------------------------------------|',
-              'D|--------------------------------------------|',
-              'A|--------------------------------------------|',
-              'E|--------------------------------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 2',
-            lines: [
-              'e|--4--4--5--7--7--5--4--5--7--4--|',
-              'B|--------------------------------|',
-              'G|--------------------------------|',
-              'D|--------------------------------|',
-              'A|--------------------------------|',
-              'E|--------------------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 3',
-            lines: [
-              'e|--------0--0--0--2--4--4--2--0---2--4---0-|',
-              'B|--0-----------------------------------------|',
-              'G|--------------------------------------------|',
-              'D|--------------------------------------------|',
-              'A|--------------------------------------------|',
-              'E|--------------------------------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 4',
-            lines: [
-              'e|--------0--0--0--2--4--4--2--0--2--4--0-|',
-              'B|--0--0-----------------------------------|',
-              'G|----------------------------------------|',
-              'D|----------------------------------------|',
-              'A|----------------------------------------|',
-              'E|----------------------------------------|',
-            ],
-          },
-        ],
-      },
-    ],
-    download: '/tab/ep05-itsy-bitsy-spider.pdf',
-    filename: 'itsy-bitsy-spider-tab.pdf',
-  },
-  {
-    episode: 'EP05',
-    title: 'Twinkle Twinkle Little Star',
-    description: 'Two ways to play the same melody -- on one string, then spread across two. Great for understanding how melodies move on the fretboard.',
-    sections: [
-      {
-        label: 'Version 1 — High e String Only',
-        phrases: [
-          {
-            name: 'Phrase 1: Twinkle Twinkle Little Star',
-            lines: [
-              'e|--0--0--7--7--9--9--7--5--5--4--4--2--2--0--|',
-              'B|---------------------------------------------|',
-              'G|---------------------------------------------|',
-              'D|---------------------------------------------|',
-              'A|---------------------------------------------|',
-              'E|---------------------------------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 2: How I Wonder What You Are (play twice)',
-            lines: [
-              'e|--7--7--5--5--4--4--2--7--7--5--5--4--4--2--|',
-              'B|---------------------------------------------|',
-              'G|---------------------------------------------|',
-              'D|---------------------------------------------|',
-              'A|---------------------------------------------|',
-              'E|---------------------------------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 3: Twinkle Twinkle Little Star (repeat)',
-            lines: [
-              'e|--0--0--7--7--9--9--7--5--5--4--4--2--2--0--|',
-              'B|---------------------------------------------|',
-              'G|---------------------------------------------|',
-              'D|---------------------------------------------|',
-              'A|---------------------------------------------|',
-              'E|---------------------------------------------|',
-            ],
-          },
-        ],
-      },
-      {
-        label: 'Version 2 — High e + B String',
-        phrases: [
-          {
-            name: 'Phrase 1: Twinkle Twinkle Little Star',
-            lines: [
-              'e|--------2--2--4--4--2--|',
-              'B|--0--0-----------------|',
-              'G|-----------------------|',
-              'D|-----------------------|',
-              'A|-----------------------|',
-              'E|-----------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 2: How I Wonder What You Are',
-            lines: [
-              'e|--0--0-----------------|',
-              'B|--------4--4--2--2--0--|',
-              'G|-----------------------|',
-              'D|-----------------------|',
-              'A|-----------------------|',
-              'E|-----------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 3: Up Above the World So High',
-            lines: [
-              'e|--2--2--0--0-----------|',
-              'B|--------------4--4--2--|',
-              'G|-----------------------|',
-              'D|-----------------------|',
-              'A|-----------------------|',
-              'E|-----------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 4: Like a Diamond in the Sky',
-            lines: [
-              'e|--2--2--0--0-----------|',
-              'B|--------------4--4--2--|',
-              'G|-----------------------|',
-              'D|-----------------------|',
-              'A|-----------------------|',
-              'E|-----------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 5: Twinkle Twinkle Little Star (repeat)',
-            lines: [
-              'e|--------2--2--4--4--2--|',
-              'B|--0--0-----------------|',
-              'G|-----------------------|',
-              'D|-----------------------|',
-              'A|-----------------------|',
-              'E|-----------------------|',
-            ],
-          },
-          {
-            name: 'Phrase 6: How I Wonder What You Are (repeat)',
-            lines: [
-              'e|--0--0-----------------|',
-              'B|--------4--4--2--2--0--|',
-              'G|-----------------------|',
-              'D|-----------------------|',
-              'A|-----------------------|',
-              'E|-----------------------|',
-            ],
-          },
-        ],
-      },
-    ],
-    download: '/tab/ep05-twinkle-twinkle.pdf',
-    filename: 'twinkle-twinkle-tab.pdf',
-  },
-  {
-    episode: 'EP08',
-    title: 'Blues Shuffle Riff',
-    description: 'Your first riff — a classic 12-bar blues pattern on the low strings. Index finger on the 2nd fret, ring finger on the 4th fret throughout. Full sequence: Part 1 → Part 1 Variation → Part 2 → Part 1 → Turnaround.',
-    sections: [
-      {
-        label: 'Part 1',
-        phrases: [
-          {
-            name: 'Part 1',
-            lines: [
-              'e|----------------|',
-              'B|----------------|',
-              'G|----------------|',
-              'D|--------2-------|',
-              'A|----2-4---4-2---|',
-              'E|0-4-----------4-|',
-            ],
-          },
-          {
-            name: 'Part 1 — Variation (open D string)',
-            lines: [
-              'e|----------------|',
-              'B|----------------|',
-              'G|----------------|',
-              'D|--------0-------|',
-              'A|----2-4---4-2---|',
-              'E|0-4-----------4-|',
-            ],
-          },
-        ],
-      },
-      {
-        label: 'Part 2 (IV chord — shift up one string)',
-        phrases: [
-          {
-            name: 'Part 2',
-            lines: [
-              'e|----------------|',
-              'B|----------------|',
-              'G|--------2-------|',
-              'D|----2-4---4-2---|',
-              'A|0-4-----------4-|',
-              'E|----------------|',
-            ],
-          },
-        ],
-      },
-      {
-        label: 'Turnaround',
-        phrases: [
-          {
-            name: 'Turnaround',
-            lines: [
-              'e|----------------------------------|',
-              'B|----------------------------------|',
-              'G|----------------------------------|',
-              'D|----0-----------------------------|',
-              'A|2-4---4-2-0---------0-1-2-0------|',
-              'E|------------4-2-0-4---------4-2--|',
-            ],
-          },
-        ],
-      },
-    ],
-    download: '/tab/ep08-blues-shuffle.pdf',
-    filename: 'blues-shuffle-tab.pdf',
-  },
-]
-
-
-export default function TabPage() {
+export default function TabLibraryPage() {
   return (
     <div className="min-h-screen bg-slate-900">
+      <TabHeader
+        eyebrow="Free Downloads"
+        title="Guitar Tab Sheets"
+        description="Tab sheets from the Steady Steps YouTube series. Pick a song below, then download it, open it in your browser, and print it or save it as a PDF to keep on your music stand."
+      />
 
-      {/* Header */}
-      <div className="border-b border-slate-800 px-6 py-8">
-        <div className="max-w-3xl mx-auto">
-          <a href="https://steadystepsmusic.com" className="flex items-center gap-2 no-underline mb-6 w-fit">
-            <svg viewBox="0 0 45 35" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0"  y="30" width="15" height="5" fill="#162D6E"/>
-              <rect x="10" y="25" width="5"  height="5" fill="#162D6E"/>
-              <rect x="10" y="20" width="15" height="5" fill="#2563EB"/>
-              <rect x="20" y="15" width="5"  height="5" fill="#2563EB"/>
-              <rect x="20" y="10" width="15" height="5" fill="#7DD3FC"/>
-              <rect x="30" y="5"  width="5"  height="5" fill="#7DD3FC"/>
-              <rect x="30" y="0"  width="15" height="5" fill="#2DD4BF"/>
-            </svg>
-            <span className="text-white font-bold text-lg">Steady <span className="text-teal-400">Steps</span> Music</span>
+      <div className="max-w-3xl mx-auto px-6 py-12 space-y-4">
+        {songs.map(song => (
+          <a
+            key={song.slug}
+            href={`/tab/${song.slug}`}
+            className="block bg-slate-800 border border-slate-700 hover:border-teal-500 rounded-2xl p-6 no-underline transition-colors"
+          >
+            <span className="text-teal-400 text-xs font-bold uppercase tracking-widest">{song.episode}</span>
+            <h2 className="text-white font-black text-xl mt-1">{song.title}</h2>
+            <p className="text-slate-400 text-sm mt-1 leading-relaxed">{song.description}</p>
           </a>
-          <p className="text-teal-400 font-semibold text-xs uppercase tracking-widest mb-2">Free Downloads</p>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">Guitar Tab Sheets</h1>
-          <p className="text-slate-400 text-sm leading-relaxed max-w-xl">
-            Tab sheets from the Steady Steps YouTube series. Download any sheet, open it in your browser, and print it or save it as a PDF to keep on your music stand.
-          </p>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="max-w-3xl mx-auto px-6 py-12 space-y-10">
-        {tabs.map((tab, i) => (
-          <div key={i} className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <div>
-                <span className="text-teal-400 text-xs font-bold uppercase tracking-widest">{tab.episode}</span>
-                <h2 className="text-white font-black text-xl mt-1">{tab.title}</h2>
-                <p className="text-slate-400 text-sm mt-1 leading-relaxed">{tab.description}</p>
-              </div>
-              <a
-                href={tab.download}
-                download={tab.filename}
-                className="flex-shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-sm transition-colors no-underline whitespace-nowrap"
-              >
-                Download Tab
-              </a>
-            </div>
-
-            {tab.sections.map((section, si) => (
-              <div key={si} className={si > 0 ? 'mt-8' : ''}>
-                {section.label && (
-                  <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">{section.label}</p>
-                )}
-                <CombinedSection phrases={section.phrases} />
-              </div>
-            ))}
-
-            <div className="mt-5 bg-slate-900 border-l-2 border-teal-500 rounded-r-xl px-4 py-3 text-slate-400 text-xs leading-relaxed">
-              <strong className="text-slate-200">How to read tab:</strong> 0 = open string. Number = fret that string. Play one note at a time, left to right.
-            </div>
-          </div>
         ))}
       </div>
 
-      {/* CTA */}
-      <div className="max-w-3xl mx-auto px-6 pb-16">
-        <div className="bg-teal-600 rounded-2xl p-8 text-center">
-          <h2 className="text-white font-black text-2xl mb-3">Ready to put this into practice?</h2>
-          <p className="text-teal-100 mb-6 text-sm leading-relaxed max-w-md mx-auto">
-            Tab sheets are great, but nothing replaces real feedback from a teacher. Book a free 15-minute lesson and let's work through these together.
-          </p>
-          <a
-            href="https://steadystepsmusic.com/#contact"
-            className="inline-block bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-4 rounded-xl text-base transition-colors no-underline"
-          >
-            Book Your Free Lesson
-          </a>
-        </div>
-      </div>
-
+      <TabCta />
     </div>
   )
 }
