@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Nav from './components/Nav'
 import ContactForm from './components/ContactForm'
 import YouTubeFacade from './components/YouTubeFacade'
+import { REVIEWS } from './site'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -15,9 +16,9 @@ const lessons = [
 ]
 
 const steps = [
-  { step: '1', title: 'Book Your Free Lesson',  desc: "Fill out the contact form. I'll reach out within 24 hours to schedule your complimentary 15-minute demo session." },
-  { step: '2', title: 'We Meet & Make a Plan',   desc: "We'll chat about your goals, your experience, and what you want to achieve. Then we'll map out a lesson plan just for you." },
-  { step: '3', title: 'Start Making Progress',   desc: "Each lesson builds on the last. You'll leave every session with something new to practice and a clear sense of progress." },
+  { title: 'Book Your Free Lesson', desc: "Fill out the form. I'll usually get back to you the same day and we'll find a time for your free 15-minute demo." },
+  { title: 'We Talk Music',        desc: "We'll figure out what you want to play and where you're starting from. That's what the lessons get built around." },
+  { title: 'You Start Playing',     desc: "You'll leave the first lesson with something to work on. Every lesson after that picks up where the last one left off." },
 ]
 
 const pricing = [
@@ -47,23 +48,7 @@ const pricing = [
   },
 ]
 
-const testimonials = [
-  {
-    name: 'Sarah M.',
-    role: 'Guitar student, 6 months',
-    quote: 'I went from not knowing a single chord to playing my favorite songs in just a few months. Nik has a gift for breaking things down so they actually make sense.',
-  },
-  {
-    name: 'James T.',
-    role: 'Piano student, adult learner',
-    quote: "I always thought it was too late to learn piano as an adult. Nik proved me completely wrong. The lessons are structured, fun, and I'm making real progress every week.",
-  },
-  {
-    name: 'Emily R.',
-    role: 'Voice & songwriting student',
-    quote: "Not only am I a better singer, I've written three songs I'm actually proud of. The songwriting sessions are the highlight of my week.",
-  },
-]
+const testimonials = REVIEWS
 
 const faqs = [
   { q: 'Do I need my own instrument?',      a: "For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
@@ -127,7 +112,7 @@ export default function Home() {
       </section>
 
       {/* ── About ────────────────────────────────────────────────────── */}
-      <section id="about" className="py-12 md:py-24 bg-white">
+      <section id="about" className="scroll-mt-20 py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1 flex justify-center">
             <div className="relative w-full h-[480px] sm:h-[560px] rounded-3xl overflow-hidden shadow-xl">
@@ -162,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* ── Lessons ──────────────────────────────────────────────────── */}
-      <section id="lessons" className="py-12 md:py-24 bg-slate-50">
+      <section id="lessons" className="scroll-mt-20 py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
@@ -195,21 +180,15 @@ export default function Home() {
       </section>
 
       {/* ── How It Works ─────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 md:py-24 bg-slate-900">
+      <section id="how-it-works" className="scroll-mt-20 py-12 md:py-24 bg-slate-900">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-3">Simple Process</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-white">Three Steps to Get Started</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-teal-400">How It Works</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {steps.map((s, i) => (
-              <div key={s.step} className="relative text-center">
-                {i < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-2/3 w-full h-px border-t-2 border-dashed border-slate-700" />
-                )}
-                <div className="relative z-10 w-16 h-16 rounded-full bg-teal-500 text-white font-black text-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-500/30">
-                  {s.step}
-                </div>
+          <div className="grid md:grid-cols-3 gap-10">
+            {steps.map(s => (
+              <div key={s.title}>
+                <div className="w-10 h-1 bg-teal-500 rounded-full mb-5" />
                 <h3 className="text-white font-bold text-lg mb-2">{s.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{s.desc}</p>
               </div>
@@ -219,11 +198,10 @@ export default function Home() {
       </section>
 
       {/* ── Pricing ──────────────────────────────────────────────────── */}
-      <section id="pricing" className="py-12 md:py-24 bg-white">
+      <section id="pricing" className="scroll-mt-20 py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Clear, Simple Pricing</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-teal-600">Pricing</h2>
             <p className="text-slate-600 mt-4">Start with a free demo. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
@@ -259,7 +237,7 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────────────── */}
-      <section id="testimonials" className="py-12 md:py-24 bg-slate-50">
+      <section id="testimonials" className="scroll-mt-20 py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Student Stories</p>
@@ -267,10 +245,16 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map(t => (
-              <div key={t.name} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col">
-                <div className="text-amber-400 text-xl mb-4">★★★★★</div>
-                <p className="text-slate-600 leading-relaxed mb-6 italic flex-1">&ldquo;{t.quote}&rdquo;</p>
-                <div>
+              <div key={t.name} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col">
+                <div className="text-amber-400 text-lg mb-3" aria-label="Rated 5 out of 5 stars">★★★★★</div>
+                {t.quote ? (
+                  <div tabIndex={0} className="h-16 overflow-y-auto pr-2 mb-4 text-sm [mask-image:linear-gradient(to_bottom,black_calc(100%-1.25rem),transparent)]">
+                    <p className="text-slate-600 leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
+                  </div>
+                ) : (
+                  <p className="text-slate-400 leading-relaxed mb-4 text-sm">Rated 5 stars on Google.</p>
+                )}
+                <div className="mt-auto">
                   <div className="font-bold text-slate-900">{t.name}</div>
                   <div className="text-slate-600 text-sm">{t.role}</div>
                 </div>
@@ -281,7 +265,7 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
-      <section id="faq" className="py-12 md:py-24 bg-white">
+      <section id="faq" className="scroll-mt-20 py-12 md:py-24 bg-white">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Questions</p>
@@ -321,12 +305,13 @@ export default function Home() {
       </section>
 
       {/* ── Contact ──────────────────────────────────────────────────── */}
-      <section id="contact" className="py-12 md:py-24 bg-slate-900">
+      <section id="contact" className="scroll-mt-20 py-12 md:py-24 bg-slate-900">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
             <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-3">Get In Touch</p>
             <h2 className="text-3xl sm:text-4xl font-black text-white">Book Your Free Lesson</h2>
-            <p className="text-slate-300 mt-4">Fill out the form and I&apos;ll get back to you within 24 hours to set up your free 15-minute demo session.</p>
+            <p className="text-slate-300 mt-4 max-w-2xl mx-auto text-pretty">Fill out the form and I&apos;ll get back to you the same day to set up your{' '}
+              <span className="whitespace-nowrap">free 15-minute demo session.</span></p>
           </div>
           <ContactForm />
         </div>

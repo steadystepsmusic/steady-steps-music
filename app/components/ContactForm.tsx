@@ -4,20 +4,22 @@ import { useRouter } from 'next/navigation'
 
 export default function ContactForm() {
   const router = useRouter()
-  const [form, setForm] = useState({ name: '', email: '', instrument: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', instrument: '', message: '' })
+  const [botcheck, setBotcheck] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (submitting) return
+    if (botcheck) return
     setSubmitting(true)
     setError(false)
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6', subject: 'New Lesson Inquiry | Steady Steps Music', ...form }),
+        body: JSON.stringify({ access_key: '72672cac-8700-4b5b-824c-1b2471e1a7d6', subject: 'New Lesson Inquiry | Steady Steps Music', replyto: form.email, botcheck, ...form }),
       })
       const data = await res.json()
       if (data.success) {
@@ -37,6 +39,16 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <input
+        type="checkbox"
+        name="botcheck"
+        checked={!!botcheck}
+        onChange={e => setBotcheck(e.target.checked ? 'bot' : '')}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="contact-name" className="block text-sm font-medium text-slate-300 mb-1">Your Name</label>
@@ -59,23 +71,37 @@ export default function ContactForm() {
           />
         </div>
       </div>
-      <div>
-        <label htmlFor="contact-instrument" className="block text-sm font-medium text-slate-300 mb-1">I&apos;m interested in…</label>
-        <select
-          id="contact-instrument"
-          value={form.instrument}
-          onChange={e => setForm({ ...form, instrument: e.target.value })}
-          className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:border-teal-400 transition-colors"
-        >
-          <option value="">Select a lesson type</option>
-          <option>Guitar</option>
-          <option>Bass</option>
-          <option>Piano</option>
-          <option>Voice / Singing</option>
-          <option>Music Theory</option>
-          <option>Songwriting</option>
-          <option>Not sure yet</option>
-        </select>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="contact-phone" className="block text-sm font-medium text-slate-300 mb-1">Phone Number (optional)</label>
+          <input
+            id="contact-phone"
+            type="tel" inputMode="tel" autoComplete="tel" value={form.phone}
+            onChange={e => setForm({ ...form, phone: e.target.value })}
+            placeholder="(208) 555-0123"
+            aria-describedby="contact-phone-help"
+            className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors"
+          />
+          <p id="contact-phone-help" className="mt-1 text-xs text-slate-400">Fastest way to get you scheduled. I&apos;ll text or call, whichever you prefer.</p>
+        </div>
+        <div>
+          <label htmlFor="contact-instrument" className="block text-sm font-medium text-slate-300 mb-1">I&apos;m interested in…</label>
+          <select
+            id="contact-instrument"
+            value={form.instrument}
+            onChange={e => setForm({ ...form, instrument: e.target.value })}
+            className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:border-teal-400 transition-colors"
+          >
+            <option value="">Select a lesson type</option>
+            <option>Guitar</option>
+            <option>Bass</option>
+            <option>Piano</option>
+            <option>Voice / Singing</option>
+            <option>Music Theory</option>
+            <option>Songwriting</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
       </div>
       <div>
         <label htmlFor="contact-message" className="block text-sm font-medium text-slate-300 mb-1">Anything else? (optional)</label>
@@ -94,7 +120,7 @@ export default function ContactForm() {
       {error && (
         <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email me directly.</p>
       )}
-      <p className="text-center text-slate-400 text-sm">No commitment. I&apos;ll reply within 24 hours.</p>
+      <p className="text-center text-slate-400 text-sm">No commitment. I&apos;ll usually reply the same day.</p>
     </form>
   )
 }
