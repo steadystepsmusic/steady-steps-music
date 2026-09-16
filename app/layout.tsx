@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { FAQS } from './site'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -90,56 +91,13 @@ const localBusinessSchema = {
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Do I need my own instrument?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you\'ll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What ages do you teach?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'I work with students from around 4th grade (age 9-10) and up: teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How do online lessons work?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'We meet over Zoom or your preferred video platform. After each lesson I\'ll send you a summary of what we covered, exercises to practice, and any resources like chord charts or sheet music.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do I need any prior experience?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Not at all. Complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How often should I take lessons?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I\'m flexible. We can discuss what works best for your schedule.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I cancel or reschedule?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Life happens! I ask for at least 24 hours notice to reschedule or cancel. Lessons cancelled with less than 24 hours notice may be charged in full.',
-      },
-    },
-  ],
+  // Generated from the same FAQS array the pages render, so the structured
+  // data can never drift out of sync with the visible copy.
+  mainEntity: FAQS.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

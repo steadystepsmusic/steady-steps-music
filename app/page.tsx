@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Nav from './components/Nav'
 import ContactForm from './components/ContactForm'
 import YouTubeFacade from './components/YouTubeFacade'
-import { REVIEWS } from './site'
+import { FAQS, REVIEWS } from './site'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -50,14 +50,7 @@ const pricing = [
 
 const testimonials = REVIEWS
 
-const faqs = [
-  { q: 'Do I need my own instrument?',      a: "For in-person lessons, yes. Having your own instrument to practice at home is important. For online lessons you'll need the instrument plus a stable internet connection. I can recommend beginner-friendly instruments at any budget." },
-  { q: 'What ages do you teach?',            a: 'I work with students from around 4th grade (age 9-10) and up: teenagers, adults, and seniors. Lessons are always tailored to your age, experience, and goals.' },
-  { q: 'How do online lessons work?',        a: "We meet over Zoom or your preferred video platform. After each lesson I'll send you a summary of what we covered, exercises to practice, and any resources like chord charts or sheet music." },
-  { q: 'Do I need any prior experience?',   a: "Not at all. Complete beginners are very welcome. Starting from scratch allows us to build good habits and attitudes about musical growth. I also work with intermediate and advanced students who want to break through a plateau." },
-  { q: 'How often should I take lessons?',  a: "Once a week is the sweet spot for most students. It gives you enough time to practice between sessions without losing momentum. That said, I'm flexible. We can discuss what works best for your schedule." },
-  { q: 'Can I cancel or reschedule?',       a: "Life happens! I ask for at least 24 hours notice to reschedule or cancel. Lessons cancelled with less than 24 hours notice may be charged in full." },
-]
+const faqs = FAQS
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
