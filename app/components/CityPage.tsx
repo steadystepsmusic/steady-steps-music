@@ -3,6 +3,7 @@ import Nav from './Nav'
 import ContactForm from './ContactForm'
 import { FAQS, REVIEWS, GOOGLE_LISTING_URL } from '../site'
 import YouTubeFacade from './YouTubeFacade'
+import Footer from './Footer'
 
 const lessons = [
   { name: 'Guitar',       desc: 'From your first open chord to advanced fingerpicking and lead playing. Acoustic or electric, all styles.' },
@@ -82,7 +83,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             <span className="whitespace-nowrap">✓ All skill levels</span>
           </div>
           <div className="w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10">
-            <YouTubeFacade videoId="rrrnBaHFfa8" title="Welcome to Steady Steps Music" />
+            <YouTubeFacade videoId="rrrnBaHFfa8" title="Welcome to Steady Steps Music" poster="/images/hero-video-poster.jpg" />
           </div>
           <p className="text-white text-base">
             Guitar &middot; Bass &middot; Piano &middot; Voice &middot; Songwriting &middot; Music Theory
@@ -233,21 +234,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────── */}
-      <footer className="bg-slate-950 border-t border-slate-800 py-8">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <a href="https://steadystepsmusic.com" className="flex items-center gap-2">
-            <span className="text-white font-bold text-2xl whitespace-nowrap">Steady <span className="text-teal-400">Steps</span> Music</span>
-          </a>
-          <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Music Lessons in {name}, ID</p>
-          <div className="flex items-center gap-6 text-slate-400 text-sm">
-            <a href="https://steadystepsmusic.com/#lessons"  className="hover:text-teal-400 transition-colors">Lessons</a>
-            <a href="https://steadystepsmusic.com/#pricing"  className="hover:text-teal-400 transition-colors">Pricing</a>
-            <a href="#contact" className="hover:text-teal-400 transition-colors">Contact</a>
-            <a href="/policies" className="hover:text-teal-400 transition-colors">Policies</a>
-            <a href="/privacy" className="hover:text-teal-400 transition-colors">Privacy</a>
-          </div>
-        </div>
-      </footer>
+      <Footer city={name} />
     </div>
   )
 }

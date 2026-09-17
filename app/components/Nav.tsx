@@ -15,7 +15,16 @@ export default function Nav({ basePath = '' }: { basePath?: string }) {
   const [open, setOpen]           = useState(false)
   const [scrolled, setScrolled]   = useState(false)
   const [pastHero, setPastHero]   = useState(false)
-  const links = linkSlugs.map(l => ({ ...l, href: `${basePath}${l.slug}` }))
+  const [missing, setMissing]     = useState<string[]>([])
+  const [isHome, setIsHome]       = useState(true)
+  // Anchors without a matching <section> on this page (privacy, policies, 404, etc.) go to the homepage section instead
+  const anchorHref = (slug: string) => (!basePath && missing.includes(slug)) ? `/${slug}` : `${basePath}${slug}`
+  const links = linkSlugs.map(l => ({ ...l, href: anchorHref(l.slug) }))
+
+  useEffect(() => {
+    setMissing(linkSlugs.map(l => l.slug).filter(slug => !document.querySelector(`section${slug}`)))
+    setIsHome(window.location.pathname === '/')
+  }, [])
 
   useEffect(() => {
     const handler = () => {
@@ -33,7 +42,7 @@ export default function Nav({ basePath = '' }: { basePath?: string }) {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur shadow-lg' : 'bg-transparent'}`}>
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
-        <a href={basePath || '#'} className="flex items-center gap-3 group">
+        <a href={basePath || (isHome ? '#' : '/')} className="flex items-center gap-3 group">
           <svg viewBox="0 0 45 35" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shapeRendering="crispEdges">
             <rect x="0"  y="30" width="15" height="5" fill="#162D6E"/>
             <rect x="10" y="25" width="5"  height="5" fill="#162D6E"/>
@@ -56,7 +65,7 @@ export default function Nav({ basePath = '' }: { basePath?: string }) {
               {l.label}
             </a>
           ))}
-          <a href={`${basePath}#contact`}
+          <a href={anchorHref('#contact')}
             className="ml-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-sm transition-colors whitespace-nowrap">
             Book Free Lesson
           </a>
@@ -79,7 +88,7 @@ export default function Nav({ basePath = '' }: { basePath?: string }) {
               {l.label}
             </a>
           ))}
-          <a href={`${basePath}#contact`} onClick={() => setOpen(false)}
+          <a href={anchorHref('#contact')} onClick={() => setOpen(false)}
             className="px-4 py-3 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-center transition-colors">
             Book Free Lesson
           </a>
@@ -89,7 +98,7 @@ export default function Nav({ basePath = '' }: { basePath?: string }) {
 
     {/* Mobile sticky bottom CTA — slides up after hero CTA scrolls off screen */}
     <div style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }} className={`md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-700 px-3 pt-3 transition-all duration-300 ${pastHero ? 'translate-y-0 opacity-100 pointer-events-auto' : 'translate-y-full opacity-0 pointer-events-none'}`}>
-      <a href={`${basePath}#contact`}
+      <a href={anchorHref('#contact')}
         style={{ touchAction: 'manipulation' }}
         className="block w-full py-3 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-900 font-bold rounded-xl text-center text-base transition-colors">
         Book a Free Lesson →

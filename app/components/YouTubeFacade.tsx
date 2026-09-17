@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-export default function YouTubeFacade({ videoId, title }: { videoId: string; title: string }) {
+export default function YouTubeFacade({ videoId, title, poster }: { videoId: string; title: string; poster?: string }) {
   const [active, setActive] = useState(false)
 
   if (active) {
@@ -28,7 +28,7 @@ export default function YouTubeFacade({ videoId, title }: { videoId: string; tit
       aria-label={`Play ${title}`}
     >
       <Image
-        src={`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`}
+        src={poster ?? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`}
         alt={title}
         fill
         className="object-cover"
