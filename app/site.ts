@@ -10,7 +10,10 @@
 // ever changes.
 export const PHONE_DISPLAY = '(208) 546-9737'
 export const PHONE_HREF = 'tel:+12085469737'
+// Write-a-review link: for personal asks only, never placed on the public site.
 export const GOOGLE_REVIEW_URL = 'https://g.page/r/CZeFRsw-tRznEBM/review'
+// Read-only listing link for the public site.
+export const GOOGLE_LISTING_URL = 'https://www.google.com/maps/search/?api=1&query=Steady%20Steps%20Music%20Boise%20ID'
 
 export type Review = { name: string; role: string; quote: string }
 
@@ -42,7 +45,7 @@ export type Faq = { q: string; a: string }
 export const FAQS: Faq[] = [
   {
     q: 'What happens in the free lesson?',
-    a: "It's about 15 minutes, usually over Zoom. I'll ask what you want to play and where you're starting from, you can ask me anything, and we'll figure out together whether I'm the right teacher for you. Nothing to prepare and no obligation to sign up after.",
+    a: "It's about 15 minutes, over Zoom. I'll ask what you want to play and where you're starting from, you can ask me anything, and we'll figure out together whether I'm the right teacher for you. Nothing to prepare and no obligation to sign up after.",
   },
   {
     q: 'What ages do you teach?',

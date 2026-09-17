@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Nav from './Nav'
 import ContactForm from './ContactForm'
-import { FAQS, REVIEWS } from '../site'
+import { FAQS, REVIEWS, GOOGLE_LISTING_URL } from '../site'
 import YouTubeFacade from './YouTubeFacade'
 
 const lessons = [
@@ -73,21 +73,16 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             <span className="text-teal-400">in {name}.</span>
           </h1>
           <p className="text-slate-300 text-lg leading-relaxed max-w-lg">{blurb}</p>
+          <a href="#contact" className="px-10 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
+            Book a Free Lesson →
+          </a>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400 text-sm justify-center">
+            <span className="whitespace-nowrap">✓ First lesson is free</span>
+            <span className="whitespace-nowrap">✓ Kids 9+ and adults</span>
+            <span className="whitespace-nowrap">✓ All skill levels</span>
+          </div>
           <div className="w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10">
             <YouTubeFacade videoId="rrrnBaHFfa8" title="Welcome to Steady Steps Music" />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#contact" className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-lg transition-colors text-center shadow-lg shadow-amber-500/20">
-              Book a Free Lesson →
-            </a>
-            <a href="#lessons" className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-lg transition-colors text-center border border-white/10">
-              See All Lessons
-            </a>
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400 text-sm justify-center">
-            <span className="whitespace-nowrap">✓ Free 15-min demo</span>
-            <span className="whitespace-nowrap">✓ Student Interest Centered</span>
-            <span className="whitespace-nowrap">✓ All skill levels</span>
           </div>
           <p className="text-white text-base">
             Guitar &middot; Bass &middot; Piano &middot; Voice &middot; Songwriting &middot; Music Theory
@@ -216,6 +211,11 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
               </div>
             ))}
           </div>
+          <p className="text-center mt-8">
+            <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+              See these reviews on Google →
+            </a>
+          </p>
         </div>
       </section>
 
@@ -236,13 +236,15 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       <footer className="bg-slate-950 border-t border-slate-800 py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <a href="https://steadystepsmusic.com" className="flex items-center gap-2">
-            <span className="text-white font-bold">Steady Steps <span className="text-teal-400">Music</span></span>
+            <span className="text-white font-bold text-2xl whitespace-nowrap">Steady <span className="text-teal-400">Steps</span> Music</span>
           </a>
           <p className="text-slate-500 text-sm">© {new Date().getFullYear()} Steady Steps Music · Music Lessons in {name}, ID</p>
           <div className="flex items-center gap-6 text-slate-400 text-sm">
             <a href="https://steadystepsmusic.com/#lessons"  className="hover:text-teal-400 transition-colors">Lessons</a>
             <a href="https://steadystepsmusic.com/#pricing"  className="hover:text-teal-400 transition-colors">Pricing</a>
             <a href="#contact" className="hover:text-teal-400 transition-colors">Contact</a>
+            <a href="/policies" className="hover:text-teal-400 transition-colors">Policies</a>
+            <a href="/privacy" className="hover:text-teal-400 transition-colors">Privacy</a>
           </div>
         </div>
       </footer>

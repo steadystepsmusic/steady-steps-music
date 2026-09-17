@@ -10,6 +10,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 1,
     },
+    {
+      url: 'https://steadystepsmusic.com/policies',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
     ...cities.map(city => ({
       url: `https://steadystepsmusic.com/${city}`,
       lastModified: new Date(),
