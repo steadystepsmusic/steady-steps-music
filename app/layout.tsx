@@ -36,7 +36,11 @@ export const metadata: Metadata = {
     description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons, online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
 }
 
