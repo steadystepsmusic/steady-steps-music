@@ -65,7 +65,7 @@ export default function PayBlockPage() {
         <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lesson Block</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Two-Hour Weekly Block</h1>
         <p className="text-slate-500 leading-relaxed">
-          Three lessons back to back, taught in your home once a week. Travel is included in both options.
+          Lessons taught back to back in your home once a week. Travel is included in both options.
           Pay securely with any major credit card. Questions? Reach out at{' '}
           <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-600 hover:underline">steadystepsmusic@gmail.com</a>.
         </p>
