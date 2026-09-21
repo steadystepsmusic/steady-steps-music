@@ -224,6 +224,7 @@ export default function Home() {
           </div>
           <p className="text-center text-slate-600 text-sm mt-8">Pre-pay for the month and save 10%. Mention it when you book.</p>
           <p className="text-center text-slate-400 text-xs mt-3">* In-home lessons include an additional $15 travel fee per session, on top of the prices shown above.</p>
+          <p className="text-center text-slate-400 text-xs mt-2">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
         </div>
       </section>
 

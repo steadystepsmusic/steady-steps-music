@@ -173,6 +173,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             ))}
           </div>
           <p className="text-center text-slate-600 text-sm mt-8">Monthly packages available. Just ask!</p>
+          <p className="text-center text-slate-400 text-xs mt-3">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
         </div>
       </section>
 

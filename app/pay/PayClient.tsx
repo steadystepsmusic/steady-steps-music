@@ -188,6 +188,7 @@ export default function PayClient() {
         {location === 'inhome' && (
           <p className="text-slate-400 text-xs mt-2">The $15 travel fee covers travel within the Boise/Eagle/Meridian/Garden City area{plan === 'monthly' ? '; the 10% prepay discount applies to the lesson fee only' : ''}.</p>
         )}
+        <p className="text-slate-400 text-xs mt-2">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
         <p className="text-slate-400 text-xs mt-2">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
       </div>
 
