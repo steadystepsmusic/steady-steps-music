@@ -31,7 +31,7 @@ export default function Footer({ city = 'Boise' }: { city?: string }) {
               </svg>
             </a>
           </div>
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-400 text-sm">
             © {new Date().getFullYear()} Steady Steps Music
             <br />
             Music Lessons in {city}, ID

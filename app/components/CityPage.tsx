@@ -100,7 +100,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">About Your Teacher</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">About Your Teacher</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>I&apos;ve been playing music my whole life and teaching for over 20 years. I specialize in guitar, bass, piano, and voice. I believe anyone can learn to play music at any age, as long as they approach the learning in the right way.</p>
@@ -110,7 +110,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             <div className="mt-8 grid grid-cols-3 gap-4 text-center">
               {[['20+', 'Years Teaching'], ['100+', 'Students Taught'], ['6', 'Musical Subjects']].map(([val, label]) => (
                 <div key={label} className="bg-teal-50 rounded-2xl p-4">
-                  <div className="text-2xl font-black text-teal-600">{val}</div>
+                  <div className="text-2xl font-black text-teal-700">{val}</div>
                   <div className="text-slate-500 text-xs mt-1">{label}</div>
                 </div>
               ))}
@@ -123,14 +123,14 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       <section id="lessons" className="scroll-mt-20 py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Music Lessons in {name}</h2>
             <p className="text-slate-600 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, {onlineOnly ? 'online via Zoom' : 'online or in-person'}.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map(l => (
               <div key={l.name} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:border-teal-200 transition-all group cursor-default">
-                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">{l.name} Lessons in {name}</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-700 transition-colors">{l.name} Lessons in {name}</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">{l.desc}</p>
               </div>
             ))}
@@ -142,12 +142,12 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       <section id="pricing" className="scroll-mt-20 py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-black text-teal-600">Pricing</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-teal-700">Pricing</h2>
             <p className="text-slate-600 mt-4">Start with a free demo. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {getPricing(onlineOnly).map(p => (
-              <div key={p.name} className={`rounded-2xl p-8 border-2 transition-all ${p.highlight ? 'bg-teal-600 border-teal-600 shadow-2xl shadow-teal-500/20 md:scale-105' : 'bg-white border-slate-200 hover:border-teal-200'}`}>
+              <div key={p.name} className={`rounded-2xl p-8 border-2 transition-all ${p.highlight ? 'bg-teal-700 border-teal-700 shadow-2xl shadow-teal-500/20 md:scale-105' : 'bg-white border-slate-200 hover:border-teal-200'}`}>
                 {p.highlight && (
                   <div className="text-center mb-4">
                     <span className="bg-amber-400 text-slate-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wide">Best Place to Start</span>
@@ -166,14 +166,14 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
                     </li>
                   ))}
                 </ul>
-                <a href="#contact" className={`block text-center py-3 rounded-xl font-bold transition-colors ${p.highlight ? 'bg-white text-teal-700 hover:bg-teal-50' : 'bg-teal-600 text-white hover:bg-teal-500'}`}>
+                <a href="#contact" className={`block text-center py-3 rounded-xl font-bold transition-colors ${p.highlight ? 'bg-white text-teal-700 hover:bg-teal-50' : 'bg-teal-700 text-white hover:bg-teal-600'}`}>
                   {p.cta}
                 </a>
               </div>
             ))}
           </div>
           <p className="text-center text-slate-600 text-sm mt-8">Monthly packages available. Just ask!</p>
-          <p className="text-center text-slate-400 text-xs mt-3">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
+          <p className="text-center text-slate-500 text-xs mt-3">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
         </div>
       </section>
 
@@ -181,7 +181,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       <section id="faq" className="scroll-mt-20 py-12 md:py-24 bg-slate-50">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Questions</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Questions</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Frequently Asked</h2>
           </div>
           <div className="space-y-4">
@@ -198,7 +198,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       {/* ── Reviews ──────────────────────────────────────────────────── */}
       <section className="py-12 md:py-20 bg-slate-50 border-t border-slate-100">
         <div className="max-w-4xl mx-auto px-6">
-          <p className="text-center text-teal-600 font-semibold text-sm uppercase tracking-widest mb-8">What Students and Parents Say</p>
+          <p className="text-center text-teal-700 font-semibold text-sm uppercase tracking-widest mb-8">What Students and Parents Say</p>
           <div className="grid sm:grid-cols-2 gap-6">
             {REVIEWS.filter(r => r.quote).map(r => (
               <div key={r.name} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col">
@@ -214,7 +214,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
             ))}
           </div>
           <p className="text-center mt-8">
-            <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+            <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors">
               See these reviews on Google →
             </a>
           </p>

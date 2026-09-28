@@ -19,7 +19,7 @@ function renderBodyWithLink(text: string) {
             href="https://steadystepsmusic.com/pay"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-teal-600 underline hover:no-underline"
+            className="text-teal-700 underline hover:no-underline"
           >
             {PAY_URL}
           </a>,

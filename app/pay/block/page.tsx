@@ -62,12 +62,12 @@ export default function PayBlockPage() {
 
       {/* Hero copy */}
       <div className="max-w-2xl mx-auto px-6 pt-14 pb-10 text-center">
-        <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lesson Block</p>
+        <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lesson Block</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Two-Hour Weekly Block</h1>
         <p className="text-slate-500 leading-relaxed">
           Lessons taught back to back in your home once a week. Travel is included in both options.
           Pay securely with any major credit card. Questions? Reach out at{' '}
-          <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-600 hover:underline">steadystepsmusic@gmail.com</a>.
+          <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-700 hover:underline">steadystepsmusic@gmail.com</a>.
         </p>
       </div>
 

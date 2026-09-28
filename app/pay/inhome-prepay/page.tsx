@@ -49,12 +49,12 @@ export default function PayInHomePrepayPage() {
 
       {/* Hero copy */}
       <div className="max-w-2xl mx-auto px-6 pt-14 pb-10 text-center">
-        <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lessons</p>
+        <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lessons</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Monthly Prepay</h1>
         <p className="text-slate-500 leading-relaxed">
           Prepay for 4 lessons and save 10% on the lesson fee. Prices below include the $15/session travel fee.
           Pay securely with any major credit or debit card.
-          Questions? Reach out at <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-600 hover:underline">steadystepsmusic@gmail.com</a>.
+          Questions? Reach out at <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-700 hover:underline">steadystepsmusic@gmail.com</a>.
         </p>
       </div>
 

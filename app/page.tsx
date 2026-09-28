@@ -112,7 +112,7 @@ export default function Home() {
           </div>
 
           <div className="order-1 md:order-2">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">About Your Teacher</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">About Your Teacher</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Hi, I&apos;m Nik</h2>
             <div className="space-y-4 text-slate-600 leading-relaxed">
               <p>
@@ -128,7 +128,7 @@ export default function Home() {
             <div className="mt-8 grid grid-cols-3 gap-4 text-center">
               {[['20+', 'Years Teaching'], ['100+', 'Students Taught'], ['6', 'Musical Subjects']].map(([val, label]) => (
                 <div key={label} className="bg-teal-50 rounded-2xl p-4">
-                  <div className="text-2xl font-black text-teal-600">{val}</div>
+                  <div className="text-2xl font-black text-teal-700">{val}</div>
                   <div className="text-slate-500 text-xs mt-1">{label}</div>
                 </div>
               ))}
@@ -141,7 +141,7 @@ export default function Home() {
       <section id="lessons" className="scroll-mt-20 py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">What I Teach</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Six Paths to Musical Growth</h2>
             <p className="text-slate-500 mt-4 max-w-xl mx-auto">Whether you&apos;re picking up your first instrument or leveling up an existing skill, there&apos;s a path for you, online or in-person in Boise, Idaho.</p>
           </div>
@@ -158,9 +158,9 @@ export default function Home() {
                   </div>
                 )}
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">{l.name}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-teal-700 transition-colors">{l.name}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed flex-1">{l.desc}</p>
-                  <span className="mt-4 inline-block text-sm font-semibold text-teal-600 group-hover:text-teal-700 transition-colors">
+                  <span className="mt-4 inline-block text-sm font-semibold text-teal-700 group-hover:text-teal-800 transition-colors">
                     Start {l.name} Lessons →
                   </span>
                 </div>
@@ -192,12 +192,12 @@ export default function Home() {
       <section id="pricing" className="scroll-mt-20 py-12 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-black text-teal-600">Pricing</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-teal-700">Pricing</h2>
             <p className="text-slate-600 mt-4">Start with a free demo. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {pricing.map(p => (
-              <div key={p.name} className={`rounded-2xl p-8 border-2 transition-all ${p.highlight ? 'bg-teal-600 border-teal-600 shadow-2xl shadow-teal-500/20 md:scale-105' : 'bg-white border-slate-200 hover:border-teal-200'}`}>
+              <div key={p.name} className={`rounded-2xl p-8 border-2 transition-all ${p.highlight ? 'bg-teal-700 border-teal-700 shadow-2xl shadow-teal-500/20 md:scale-105' : 'bg-white border-slate-200 hover:border-teal-200'}`}>
                 {p.highlight && (
                   <div className="text-center mb-4">
                     <span className="bg-amber-400 text-slate-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wide">Best Place to Start</span>
@@ -216,15 +216,15 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <a href="#contact" className={`block text-center py-3 rounded-xl font-bold transition-colors ${p.highlight ? 'bg-white text-teal-700 hover:bg-teal-50' : 'bg-teal-600 text-white hover:bg-teal-500'}`}>
+                <a href="#contact" className={`block text-center py-3 rounded-xl font-bold transition-colors ${p.highlight ? 'bg-white text-teal-700 hover:bg-teal-50' : 'bg-teal-700 text-white hover:bg-teal-600'}`}>
                   {p.cta}
                 </a>
               </div>
             ))}
           </div>
           <p className="text-center text-slate-600 text-sm mt-8">Pre-pay for the month and save 10%. Mention it when you book.</p>
-          <p className="text-center text-slate-400 text-xs mt-3">* In-home lessons include an additional $15 travel fee per session, on top of the prices shown above.</p>
-          <p className="text-center text-slate-400 text-xs mt-2">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
+          <p className="text-center text-slate-500 text-xs mt-3">* In-home lessons include an additional $15 travel fee per session, on top of the prices shown above.</p>
+          <p className="text-center text-slate-500 text-xs mt-2">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
         </div>
       </section>
 
@@ -232,7 +232,7 @@ export default function Home() {
       <section id="testimonials" className="scroll-mt-20 py-12 md:py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Student Stories</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Student Stories</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">What Students Are Saying</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -244,7 +244,7 @@ export default function Home() {
                     <p className="text-slate-600 leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
                   </div>
                 ) : (
-                  <p className="text-slate-400 leading-relaxed mb-4 text-sm">Rated 5 stars on Google.</p>
+                  <p className="text-slate-500 leading-relaxed mb-4 text-sm">Rated 5 stars on Google.</p>
                 )}
                 <div className="mt-auto">
                   <div className="font-bold text-slate-900">{t.name}</div>
@@ -254,7 +254,7 @@ export default function Home() {
             ))}
           </div>
           <p className="text-center mt-8">
-            <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+            <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors">
               See these reviews on Google →
             </a>
           </p>
@@ -265,7 +265,7 @@ export default function Home() {
       <section id="faq" className="scroll-mt-20 py-12 md:py-24 bg-white">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Questions</p>
+            <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Questions</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">Frequently Asked</h2>
           </div>
           <div className="space-y-4">
@@ -282,7 +282,7 @@ export default function Home() {
       {/* ── Areas Served ─────────────────────────────────────────────── */}
       <section className="py-10 bg-slate-50 border-t border-slate-100">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="text-slate-400 text-sm mb-4">Serving Boise and the surrounding Treasure Valley</p>
+          <p className="text-slate-600 text-sm mb-4">Serving Boise and the surrounding Treasure Valley</p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
               { label: 'Meridian',    href: '/meridian' },
@@ -292,7 +292,7 @@ export default function Home() {
               <a
                 key={href}
                 href={href}
-                className="px-4 py-1.5 rounded-full border border-slate-200 text-slate-500 text-sm hover:border-teal-400 hover:text-teal-600 transition-colors"
+                className="px-4 py-1.5 rounded-full border border-slate-200 text-slate-500 text-sm hover:border-teal-400 hover:text-teal-700 transition-colors"
               >
                 {label}
               </a>

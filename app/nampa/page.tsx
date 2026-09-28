@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import CityPage from '../components/CityPage'
+import { OG_IMAGE } from '../site'
 
 export const metadata: Metadata = {
   title: 'Music Lessons in Nampa, ID | Guitar, Piano, Voice & More | Steady Steps Music',
@@ -12,6 +13,12 @@ export const metadata: Metadata = {
     siteName: 'Steady Steps Music',
     locale: 'en_US',
     type: 'website',
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Music Lessons in Nampa, ID | Steady Steps Music',
+    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons in Nampa, Idaho, available online via Zoom. Book a free demo lesson today.',
   },
 }
 

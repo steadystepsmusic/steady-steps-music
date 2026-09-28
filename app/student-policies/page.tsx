@@ -28,11 +28,11 @@ export default function StudentPoliciesPage() {
       </div>
 
       <div className="max-w-2xl mx-auto px-6 pt-14 pb-6 text-center">
-        <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Welcome Aboard</p>
+        <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Welcome Aboard</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Lesson Policy Acknowledgment</h1>
         <p className="text-slate-500 leading-relaxed">
           Please review and sign below before your first paid lesson. Questions? Reach out at{' '}
-          <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-600 hover:underline">steadystepsmusic@gmail.com</a>.
+          <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-700 hover:underline">steadystepsmusic@gmail.com</a>.
         </p>
       </div>
 

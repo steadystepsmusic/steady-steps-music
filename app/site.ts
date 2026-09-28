@@ -15,6 +15,16 @@ export const GOOGLE_REVIEW_URL = 'https://g.page/r/CZeFRsw-tRznEBM/review'
 // Read-only listing link for the public site.
 export const GOOGLE_LISTING_URL = 'https://www.google.com/maps/search/?api=1&query=Steady%20Steps%20Music%20Boise%20ID'
 
+// Social share image. The root layout uses it, and every page that sets its own
+// openGraph must include it too, because Next.js replaces the whole openGraph
+// object rather than merging it with the layout's.
+export const OG_IMAGE = {
+  url: '/images/og-image.png',
+  width: 1200,
+  height: 630,
+  alt: 'Steady Steps Music: Music Lessons in Boise, Idaho',
+}
+
 export type Review = { name: string; role: string; quote: string }
 
 // Real Google reviews. Gina's is trimmed verbatim with ellipses, never paraphrased.

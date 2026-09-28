@@ -118,7 +118,7 @@ export default function ContactForm() {
         {submitting ? 'Sending…' : 'Book My Free Lesson →'}
       </button>
       {error && (
-        <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email me directly.</p>
+        <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email me at <a href="mailto:hello@steadystepsmusic.com" className="underline hover:text-red-300">hello@steadystepsmusic.com</a>.</p>
       )}
       <p className="text-center text-slate-400 text-sm">No commitment. I&apos;ll usually reply the same day.</p>
     </form>

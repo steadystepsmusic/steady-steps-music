@@ -119,11 +119,11 @@ export default function PayClient() {
 
       {/* Hero copy */}
       <div className="max-w-2xl mx-auto px-6 pt-14 pb-10 text-center">
-        <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Book Your Lessons</p>
+        <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Book Your Lessons</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Choose Your Plan</h1>
         <p className="text-slate-500 leading-relaxed">
           Select where you&apos;d like lessons and how you&apos;d like to pay. Pay securely with any major credit or debit card.
-          Questions? Reach out to us at <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-600 hover:underline">steadystepsmusic@gmail.com</a> and we&apos;ll get back to you within 24 hours.
+          Questions? Reach out to us at <a href="mailto:steadystepsmusic@gmail.com" className="text-teal-700 hover:underline">steadystepsmusic@gmail.com</a> and we&apos;ll get back to you within 24 hours.
         </p>
       </div>
 
