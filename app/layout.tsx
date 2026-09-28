@@ -88,7 +88,9 @@ const localBusinessSchema = {
   },
   sameAs: [
     'https://www.instagram.com/steadystepsmusic',
-    'https://www.facebook.com/share/18av9MhPhH/',
+    'https://www.facebook.com/profile.php?id=61579572761312',
+    'https://www.youtube.com/@steadystepsmusic',
+    'https://www.google.com/maps?cid=16653384803429025175',
   ],
 }
 
