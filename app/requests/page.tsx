@@ -1,10 +1,12 @@
 import Image from 'next/image'
 import RequestsClient from './RequestsClient'
 import FanSignupForm from './FanSignupForm'
+import { NMM_ICONS } from '../site'
 
 export const metadata = {
   title: 'Song Requests | Nik Mathews Music',
   description: 'Browse the setlist and request a song live!',
+  icons: NMM_ICONS,
   openGraph: {
     title: 'Request a Song — Nik Mathews Music',
     description: 'Browse the setlist and request a song live!',

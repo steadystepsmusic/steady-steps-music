@@ -11,6 +11,15 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL('/nik-mathews', request.url))
   }
 
+  // Browsers and Google fetch /favicon.ico from the domain root regardless of
+  // page metadata, so the NMM domain needs its own file at that path.
+  if (isNikDomain && request.nextUrl.pathname === '/favicon.ico') {
+    return NextResponse.rewrite(new URL('/nmm-favicon.ico', request.url))
+  }
+  if (isNikDomain && request.nextUrl.pathname === '/apple-touch-icon.png') {
+    return NextResponse.rewrite(new URL('/nmm-apple-touch-icon.png', request.url))
+  }
+
   const isSteadyDomain =
     hostname === 'steadystepsmusic.com' ||
     hostname === 'www.steadystepsmusic.com'
@@ -23,5 +32,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/requests'],
+  matcher: ['/', '/requests', '/favicon.ico', '/apple-touch-icon.png'],
 }

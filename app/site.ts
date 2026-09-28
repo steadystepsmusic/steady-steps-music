@@ -25,6 +25,17 @@ export const OG_IMAGE = {
   alt: 'Steady Steps Music: Music Lessons in Boise, Idaho',
 }
 
+// Nik Mathews Music favicon (gold note). Steady Steps pages inherit the stair
+// step from the root layout; NMM pages override with this. proxy.ts also serves
+// /nmm-favicon.ico as /favicon.ico on nikmathewsmusic.com. Source: print-assets/nmm-icon.svg
+export const NMM_ICONS = {
+  icon: [
+    { url: '/nmm-favicon.ico', sizes: '16x16 32x32 48x48' },
+    { url: '/nmm-icon-512.png', sizes: '512x512', type: 'image/png' },
+  ],
+  apple: '/nmm-apple-touch-icon.png',
+}
+
 export type Review = { name: string; role: string; quote: string }
 
 // Real Google reviews. Gina's is trimmed verbatim with ellipses, never paraphrased.

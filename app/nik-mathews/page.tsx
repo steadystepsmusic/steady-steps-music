@@ -5,11 +5,13 @@ import BookingForm from './BookingForm'
 import VideoSection from './VideoSection'
 import { genreGroups } from './genreGroups'
 import NikNav from './NikNav'
+import { NMM_ICONS } from '../site'
 
 export const metadata: Metadata = {
   title: 'Nik Mathews | Singer & Guitarist',
   description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
   robots: 'noindex, nofollow',
+  icons: NMM_ICONS,
   openGraph: {
     title: 'Nik Mathews | Singer & Guitarist',
     description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
