@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import ReferralNote from './ReferralNote'
 
 // ─── Stripe Payment Links ─────────────────────────────────────────────────────
 const STRIPE = {
@@ -93,6 +94,13 @@ function ToggleGroup<T extends string>({
 export default function PayClient() {
   const [location, setLocation] = useState<Location>('studio')
   const [plan, setPlan] = useState<Plan>('single')
+
+  // Old /pay/inhome links redirect here with ?location=inhome (&plan=monthly)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('location') === 'inhome') setLocation('inhome')
+    if (params.get('plan') === 'monthly') setPlan('monthly')
+  }, [])
 
   const plans = PLANS[location][plan]
 
@@ -191,6 +199,8 @@ export default function PayClient() {
         <p className="text-slate-400 text-xs mt-2">Prices shown are for individual lessons, one student per session. Family and group lessons are priced separately.</p>
         <p className="text-slate-400 text-xs mt-2">Cancellations require 24 hours notice or the session fee is still due. Reschedules are welcome anytime as long as we can find a time in the same week.</p>
       </div>
+
+      <ReferralNote />
 
       {/* Trust footer */}
       <div className="border-t border-slate-200 bg-white py-6 px-6 text-center">

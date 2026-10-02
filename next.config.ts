@@ -6,6 +6,14 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'i.ytimg.com' },
     ],
   },
+  // Retired payment URLs that students may still have saved
+  async redirects() {
+    return [
+      { source: '/pay/block', destination: '/pay/block-2hr', permanent: true },
+      { source: '/pay/inhome', destination: '/pay?location=inhome', permanent: true },
+      { source: '/pay/inhome-prepay', destination: '/pay?location=inhome&plan=monthly', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
