@@ -8,15 +8,20 @@ export const metadata = {
   description: 'Browse the setlist and request a song live!',
   icons: NMM_ICONS,
   openGraph: {
-    title: 'Request a Song — Nik Mathews Music',
+    title: 'Request a Song | Nik Mathews Music',
     description: 'Browse the setlist and request a song live!',
     images: [{ url: '/images/nmm-requests-og.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Request a Song | Nik Mathews Music',
+    description: 'Browse the setlist and request a song live!',
   },
 }
 
 export default function RequestsPage() {
   return (
-    <div className="min-h-screen bg-slate-900 px-6 py-16">
+    <main className="min-h-screen bg-slate-900 px-6 py-16">
       <div className="max-w-lg mx-auto">
 
         {/* Header */}
@@ -148,6 +153,6 @@ export default function RequestsPage() {
         </a>
 
       </div>
-    </div>
+    </main>
   )
 }

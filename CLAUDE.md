@@ -42,7 +42,7 @@ Two sites served from one Next.js deployment on Vercel:
 - `songs.ts` — flat array of `{ title, artist }` objects. Single source of truth — also imported by the promo page.
 
 **Nik Mathews promo page (`app/nik-mathews/`):**
-- `page.tsx` — standalone page, no nav/footer from main site. Black/gold branding. noindex/nofollow. Imports songs from `../requests/songs`.
+- `page.tsx` — standalone page, no nav/footer from main site. Black/gold branding. Indexed by Google (canonical www.nikmathewsmusic.com, noindex removed 2026-10-02). Booking form fires GA4 `booking_inquiry`, never `generate_lead` (that event is the Google Ads lesson conversion). Imports songs from `../requests/songs`.
 - `BookingForm.tsx` — booking inquiry form, posts to Web3Forms (key `babdd6d6`). `'use client'`.
 - Accessible at steadystepsmusic.com/nik-mathews and nikmathewsmusic.com (via proxy)
 

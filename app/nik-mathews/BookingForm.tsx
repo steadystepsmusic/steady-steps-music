@@ -5,17 +5,32 @@ export default function BookingForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+  const [botcheck, setBotcheck] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (loading) return
+    if (botcheck) return
     setLoading(true)
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ access_key: 'babdd6d6-3df0-4e4a-a08b-e6012c7c8369', subject: 'Booking Inquiry | Nik Mathews', ...form }),
-    })
-    const data = await res.json()
-    if (data.success) setSent(true)
+    setError(false)
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_key: 'babdd6d6-3df0-4e4a-a08b-e6012c7c8369', subject: 'Booking Inquiry | Nik Mathews', replyto: form.email, botcheck, ...form }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        const { gtag } = window as unknown as { gtag?: (...args: unknown[]) => void }
+        gtag?.('event', 'booking_inquiry', { event_category: 'booking_form' })
+        setSent(true)
+      } else {
+        setError(true)
+      }
+    } catch {
+      setError(true)
+    }
     setLoading(false)
   }
 
@@ -36,7 +51,7 @@ export default function BookingForm() {
     fontSize: '0.75rem',
     letterSpacing: '0.2em',
     textTransform: 'uppercase' as const,
-    color: 'rgba(255,255,255,0.45)',
+    color: 'rgba(255,255,255,0.6)',
     marginBottom: '0.4rem',
   }
 
@@ -51,9 +66,20 @@ export default function BookingForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '480px', margin: '0 auto' }}>
+      <input
+        type="checkbox"
+        name="botcheck"
+        checked={!!botcheck}
+        onChange={e => setBotcheck(e.target.checked ? 'bot' : '')}
+        style={{ display: 'none' }}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <div>
-        <label style={labelStyle}>Name</label>
+        <label htmlFor="booking-name" style={labelStyle}>Name</label>
         <input
+          id="booking-name"
           required
           type="text"
           value={form.name}
@@ -63,8 +89,9 @@ export default function BookingForm() {
         />
       </div>
       <div>
-        <label style={labelStyle}>Email</label>
+        <label htmlFor="booking-email" style={labelStyle}>Email</label>
         <input
+          id="booking-email"
           required
           type="email"
           value={form.email}
@@ -74,8 +101,9 @@ export default function BookingForm() {
         />
       </div>
       <div>
-        <label style={labelStyle}>Message</label>
+        <label htmlFor="booking-message" style={labelStyle}>Message</label>
         <textarea
+          id="booking-message"
           required
           value={form.message}
           onChange={e => setForm({ ...form, message: e.target.value })}
@@ -103,6 +131,12 @@ export default function BookingForm() {
       >
         {loading ? 'Sending...' : 'Send Message'}
       </button>
+      {error && (
+        <p style={{ color: '#f87171', fontSize: '0.9rem', textAlign: 'center', margin: 0 }}>
+          Something went wrong. Please try again or email me at{' '}
+          <a href="mailto:nikmathewsmusic@gmail.com" style={{ color: '#f87171', textDecoration: 'underline' }}>nikmathewsmusic@gmail.com</a>.
+        </p>
+      )}
       <a
         href="https://www.instagram.com/nikmathewsmusic"
         target="_blank"

@@ -20,7 +20,7 @@ export default function SongList() {
           placeholder="Search songs or artists..."
           className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors text-sm"
         />
-        <p className="text-slate-500 text-xs mt-2">{filtered.length} song{filtered.length !== 1 ? 's' : ''} in the setlist</p>
+        <p className="text-slate-400 text-xs mt-2">{filtered.length} song{filtered.length !== 1 ? 's' : ''} in the setlist</p>
       </div>
       <div className="max-h-72 overflow-y-auto divide-y divide-slate-700/50">
         {filtered.length === 0 ? (

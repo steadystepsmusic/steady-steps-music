@@ -10,12 +10,12 @@ import { NMM_ICONS } from '../site'
 export const metadata: Metadata = {
   title: 'Nik Mathews | Singer & Guitarist',
   description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
-  robots: 'noindex, nofollow',
+  alternates: { canonical: 'https://www.nikmathewsmusic.com/' },
   icons: NMM_ICONS,
   openGraph: {
     title: 'Nik Mathews | Singer & Guitarist',
     description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
-    url: 'https://nikmathewsmusic.com',
+    url: 'https://www.nikmathewsmusic.com/',
     siteName: 'Nik Mathews Music',
     images: [
       {
@@ -26,6 +26,11 @@ export const metadata: Metadata = {
       },
     ],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nik Mathews | Singer & Guitarist',
+    description: 'Solo acoustic singer and guitarist available for bars, restaurants, breweries, wineries, weddings, and private events in Boise, ID.',
   },
 }
 
@@ -106,10 +111,10 @@ export default function NikMathewsPage() {
       {/* Setlist */}
       <section id="setlist" style={{ padding: '4rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+          <h2 style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             Setlist
-          </p>
-          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '1rem', marginBottom: '3rem', marginTop: 0 }}>
+          </h2>
+          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontSize: '1rem', marginBottom: '3rem', marginTop: 0 }}>
             Over 200 songs available across a variety of genres, plus requests!
           </p>
           {genreGroups.map(({ genre, songs: genreSongs }) => (
@@ -141,7 +146,7 @@ export default function NikMathewsPage() {
                       style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
                     >
                       <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.88)', lineHeight: 1.3 }}>{song.title}</p>
-                      <p style={{ margin: '0.1rem 0 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.35)' }}>{song.artist}</p>
+                      <p style={{ margin: '0.1rem 0 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)' }}>{song.artist}</p>
                     </div>
                   )
                 })}
@@ -156,7 +161,7 @@ export default function NikMathewsPage() {
         <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.2em', color: '#c9a84c', textTransform: 'uppercase' }}>
           Nik Mathews
         </p>
-        <p style={{ margin: '0.4rem 0 0', fontSize: '0.9rem', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>
+        <p style={{ margin: '0.4rem 0 0', fontSize: '0.9rem', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase' }}>
           Singer &amp; Guitarist
         </p>
         <a

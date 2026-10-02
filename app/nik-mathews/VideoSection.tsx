@@ -10,9 +10,10 @@ declare global {
 }
 
 const MONTAGE2_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%202%20-%20Vertical%20Web.mp4'
-const POSTER2_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/montage-2-poster.jpg'
+// Posters are 760px web copies of the Blob originals (full 1080px posters were ~1MB combined)
+const POSTER2_URL = '/images/nik-mathews/montage-2-poster-web.jpg'
 const MONTAGE_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%20-%20Vertical%20Web.mp4'
-const POSTER_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/montage-poster.jpg'
+const POSTER_URL = '/images/nik-mathews/montage-poster-web.jpg'
 const YOUTUBE_ID = 'nRVzXqenyKc'
 
 function HostedVideo({
@@ -83,8 +84,26 @@ export default function VideoSection() {
   const ytPlayer = useRef<any>(null)
   const montage2Video = useRef<HTMLVideoElement>(null)
   const montageVideo = useRef<HTMLVideoElement>(null)
+  const ytBox = useRef<HTMLDivElement>(null)
+  const [showYouTube, setShowYouTube] = useState(false)
+
+  // The YouTube embed pulls ~900KB of player JS, so only mount it once the
+  // visitor scrolls near it. Keeps the hero and first paint fast.
+  useEffect(() => {
+    const box = ytBox.current
+    if (!box) return
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) {
+        setShowYouTube(true)
+        observer.disconnect()
+      }
+    }, { rootMargin: '600px 0px' })
+    observer.observe(box)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
+    if (!showYouTube) return
     const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
     document.head.appendChild(tag)
@@ -102,7 +121,7 @@ export default function VideoSection() {
         },
       })
     }
-  }, [])
+  }, [showYouTube])
 
   function pauseOthersFor(playing: 'montage2' | 'montage' | 'youtube') {
     if (playing !== 'youtube' && ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
@@ -135,17 +154,18 @@ export default function VideoSection() {
 
         {/* YouTube video */}
         <div
+          ref={ytBox}
           onClick={() => pauseOthersFor('youtube')}
           style={{ position: 'relative', paddingBottom: '56.25%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}
         >
-          <iframe
+          {showYouTube && <iframe
             id="yt-player"
             src={`https://www.youtube.com/embed/${YOUTUBE_ID}?rel=0&enablejsapi=1`}
             title="Nik Mathews Live Performance"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
-          />
+          />}
         </div>
       </div>
     </section>

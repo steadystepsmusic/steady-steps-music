@@ -98,19 +98,19 @@ export default function RequestsClient() {
             className="w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors text-sm"
           />
           <div className="flex items-center justify-between mt-2">
-            <p className="text-slate-500 text-xs">{filtered.length} song{filtered.length !== 1 ? 's' : ''} · tap to select</p>
+            <p className="text-slate-400 text-xs">{filtered.length} song{filtered.length !== 1 ? 's' : ''} · tap to select</p>
             <div className="flex rounded-lg overflow-hidden border border-slate-600 text-xs">
               <button
                 type="button"
                 onClick={() => setSortBy('song')}
-                className={`px-3 py-1 transition-colors ${sortBy === 'song' ? 'bg-teal-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-white'}`}
+                className={`px-3 py-1 transition-colors ${sortBy === 'song' ? 'bg-teal-700 text-white' : 'bg-slate-700 text-slate-300 hover:text-white'}`}
               >
                 Song
               </button>
               <button
                 type="button"
                 onClick={() => setSortBy('artist')}
-                className={`px-3 py-1 transition-colors ${sortBy === 'artist' ? 'bg-teal-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-white'}`}
+                className={`px-3 py-1 transition-colors ${sortBy === 'artist' ? 'bg-teal-700 text-white' : 'bg-slate-700 text-slate-300 hover:text-white'}`}
               >
                 Artist
               </button>
@@ -168,7 +168,7 @@ export default function RequestsClient() {
                   </button>
                 </div>
               ) : (
-                <div className="w-full px-4 py-3 bg-slate-700/30 border border-slate-600 rounded-xl text-slate-500 text-sm">
+                <div className="w-full px-4 py-3 bg-slate-700/30 border border-slate-600 rounded-xl text-slate-400 text-sm">
                   Tap a song from the list above
                 </div>
               )}
