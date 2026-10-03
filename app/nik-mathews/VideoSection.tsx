@@ -27,7 +27,7 @@ function HostedVideo({
 }: {
   src: string
   poster: string
-  songs: string
+  songs: string[]
   videoRef: React.RefObject<HTMLVideoElement | null>
   onPlay: () => void
 }) {
@@ -76,7 +76,13 @@ function HostedVideo({
         )}
       </div>
       <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', letterSpacing: '0.05em', marginTop: '0.75rem', textAlign: 'center' }}>
-        {songs}
+        {/* Each title stays on one line; wraps only happen between songs */}
+        {songs.map((song, i) => (
+          <span key={song}>
+            {i > 0 && ' \u00b7 '}
+            <span style={{ whiteSpace: 'nowrap' }}>{song}</span>
+          </span>
+        ))}
       </p>
     </div>
   )
@@ -154,7 +160,7 @@ export default function VideoSection() {
         <HostedVideo
           src={MONTAGE3_URL}
           poster={POSTER3_URL}
-          songs="Ain't No Sunshine &middot; Ring of Fire &middot; Sundown"
+          songs={["Ain't No Sunshine", 'Ring of Fire', 'Sundown']}
           videoRef={montage3Video}
           onPlay={() => pauseOthersFor('montage3')}
         />
@@ -162,7 +168,7 @@ export default function VideoSection() {
         <HostedVideo
           src={MONTAGE2_URL}
           poster={POSTER2_URL}
-          songs="Something in the Orange &middot; Lovely Day &middot; Black Water"
+          songs={['Something in the Orange', 'Lovely Day', 'Black Water']}
           videoRef={montage2Video}
           onPlay={() => pauseOthersFor('montage2')}
         />
@@ -170,7 +176,7 @@ export default function VideoSection() {
         <HostedVideo
           src={MONTAGE_URL}
           poster={POSTER_URL}
-          songs="The Joker &middot; Peaceful Easy Feeling &middot; Norwegian Wood &middot; Free Fallin'"
+          songs={['The Joker', 'Peaceful Easy Feeling', 'Norwegian Wood', "Free Fallin'"]}
           videoRef={montageVideo}
           onPlay={() => pauseOthersFor('montage')}
         />
