@@ -9,6 +9,8 @@ declare global {
   }
 }
 
+const MONTAGE3_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%203%20-%20Vertical%20Web.mp4'
+const POSTER3_URL = '/images/nik-mathews/montage-3-poster-web.jpg'
 const MONTAGE2_URL = 'https://s3zmevobweuhkkc2.public.blob.vercel-storage.com/Live%20Show%20Promo%20Montage%202%20-%20Vertical%20Web.mp4'
 // Posters are 760px web copies of the Blob originals (full 1080px posters were ~1MB combined)
 const POSTER2_URL = '/images/nik-mathews/montage-2-poster-web.jpg'
@@ -38,8 +40,8 @@ function HostedVideo({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
-      <div style={{ position: 'relative', width: '100%', maxWidth: '380px', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+    <div className="nmm-reel-tile">
+      <div style={{ position: 'relative', width: '100%', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
         <video
           ref={videoRef}
           src={src}
@@ -82,6 +84,7 @@ function HostedVideo({
 
 export default function VideoSection() {
   const ytPlayer = useRef<any>(null)
+  const montage3Video = useRef<HTMLVideoElement>(null)
   const montage2Video = useRef<HTMLVideoElement>(null)
   const montageVideo = useRef<HTMLVideoElement>(null)
   const ytBox = useRef<HTMLDivElement>(null)
@@ -114,6 +117,7 @@ export default function VideoSection() {
           onStateChange: (e: any) => {
             if (e.data === window.YT.PlayerState.PLAYING) {
               e.target.setPlaybackQuality('hd1080')
+              montage3Video.current?.pause()
               montage2Video.current?.pause()
               montageVideo.current?.pause()
             }
@@ -123,18 +127,42 @@ export default function VideoSection() {
     }
   }, [showYouTube])
 
-  function pauseOthersFor(playing: 'montage2' | 'montage' | 'youtube') {
+  function pauseOthersFor(playing: 'montage3' | 'montage2' | 'montage' | 'youtube') {
     if (playing !== 'youtube' && ytPlayer.current?.pauseVideo) ytPlayer.current.pauseVideo()
+    if (playing !== 'montage3') montage3Video.current?.pause()
     if (playing !== 'montage2') montage2Video.current?.pause()
     if (playing !== 'montage') montageVideo.current?.pause()
   }
 
   return (
     <section id="video" style={{ padding: '1.5rem 1.5rem 4rem' }}>
-      <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+      {/* Desktop: three reels side by side. Mobile: swipe row, next reel peeks in from the right. */}
+      <style>{`
+        .nmm-reel-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
+        .nmm-reel-tile { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+        @media (max-width: 760px) {
+          .nmm-reel-row {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+            gap: 0.75rem; margin: 0 -1.5rem 1.5rem; padding: 0 1.5rem;
+            scrollbar-width: none;
+          }
+          .nmm-reel-row::-webkit-scrollbar { display: none; }
+          .nmm-reel-tile { flex: 0 0 78%; scroll-snap-align: center; }
+        }
+      `}</style>
+      <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
         <p style={{ textAlign: 'center', color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1.5rem' }}>
           Watch &amp; Listen
         </p>
+
+        <div className="nmm-reel-row">
+        <HostedVideo
+          src={MONTAGE3_URL}
+          poster={POSTER3_URL}
+          songs="Ain't No Sunshine &middot; Ring of Fire &middot; Sundown"
+          videoRef={montage3Video}
+          onPlay={() => pauseOthersFor('montage3')}
+        />
 
         <HostedVideo
           src={MONTAGE2_URL}
@@ -151,6 +179,7 @@ export default function VideoSection() {
           videoRef={montageVideo}
           onPlay={() => pauseOthersFor('montage')}
         />
+        </div>
 
         {/* YouTube video */}
         <div
