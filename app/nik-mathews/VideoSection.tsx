@@ -136,18 +136,13 @@ export default function VideoSection() {
 
   return (
     <section id="video" style={{ padding: '1.5rem 1.5rem 4rem' }}>
-      {/* Desktop: three reels side by side. Mobile: swipe row, next reel peeks in from the right. */}
+      {/* Desktop: three reels side by side. Mobile: stacked, slightly narrower than full width to shorten the scroll. */}
       <style>{`
         .nmm-reel-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
         .nmm-reel-tile { display: flex; flex-direction: column; align-items: center; min-width: 0; }
         @media (max-width: 760px) {
-          .nmm-reel-row {
-            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-            gap: 0.75rem; margin: 0 -1.5rem 1.5rem; padding: 0 1.5rem;
-            scrollbar-width: none;
-          }
-          .nmm-reel-row::-webkit-scrollbar { display: none; }
-          .nmm-reel-tile { flex: 0 0 78%; scroll-snap-align: center; }
+          .nmm-reel-row { grid-template-columns: 1fr; gap: 2rem; justify-items: center; }
+          .nmm-reel-tile { width: 85%; max-width: 340px; }
         }
       `}</style>
       <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
