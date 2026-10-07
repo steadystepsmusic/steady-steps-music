@@ -17,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: 'https://steadystepsmusic.com/7th-chords',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
       url: 'https://steadystepsmusic.com/policies',
       lastModified: new Date(),
       changeFrequency: 'yearly',

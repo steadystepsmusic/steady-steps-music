@@ -25,30 +25,30 @@ export function TabHeader({
             </svg>
             <span className="text-white font-bold text-lg">Steady <span className="text-teal-400">Steps</span> Music</span>
           </a>
-          <a href="https://steadystepsmusic.com" className="text-slate-400 hover:text-teal-400 text-xs font-semibold no-underline whitespace-nowrap">
+          <a href="https://steadystepsmusic.com" className="text-slate-400 hover:text-teal-400 text-sm font-semibold no-underline whitespace-nowrap">
             Visit Full Website →
           </a>
         </div>
         {backLink && (
-          <a href={backLink.href} className="text-slate-400 hover:text-teal-400 text-xs font-semibold mb-4 inline-block no-underline">
+          <a href={backLink.href} className="text-slate-400 hover:text-teal-400 text-sm font-semibold mb-4 inline-block no-underline">
             ← {backLink.label}
           </a>
         )}
-        <p className="text-teal-400 font-semibold text-xs uppercase tracking-widest mb-2">{eyebrow}</p>
+        <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-2">{eyebrow}</p>
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">{title}</h1>
-        <p className="text-slate-400 text-sm leading-relaxed max-w-xl">{description}</p>
+        <p className="text-slate-300 text-lg leading-relaxed max-w-xl">{description}</p>
       </div>
     </div>
   )
 }
 
-export function TabCta() {
+export function TabCta({ body }: { body?: string } = {}) {
   return (
     <div className="max-w-3xl mx-auto px-6 pb-16">
       <div className="bg-teal-600 rounded-2xl p-8 text-center">
         <h2 className="text-white font-black text-2xl mb-3">Ready to put this into practice?</h2>
-        <p className="text-teal-100 mb-6 text-sm leading-relaxed max-w-md mx-auto">
-          Tab sheets are great, but nothing replaces real feedback from a teacher. Book a free 15-minute lesson and let&apos;s work through these together.
+        <p className="text-teal-100 mb-6 text-base leading-relaxed max-w-md mx-auto">
+          {body ?? "Tab sheets are great, but nothing replaces real feedback from a teacher. Book a free 15-minute lesson and let's work through these together."}
         </p>
         <a
           href="https://steadystepsmusic.com/#contact"

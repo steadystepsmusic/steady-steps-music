@@ -5,14 +5,14 @@ import { TabHeader, TabCta } from '../tab/TabShell'
 export const metadata: Metadata = {
   title: 'Guitar 7th Chord Vocabulary: Steady Steps Music',
   description:
-    'Free download for viewers of the Steady Steps 7th Chords episode. All 21 Major 7th, minor 7th, and Dominant 7th chords on one printable page.',
+    'Your download of the Guitar 7th Chord Vocabulary. All 21 Major 7th, minor 7th, and Dominant 7th chords on one printable page.',
   robots: { index: false, follow: false },
 }
 
-const PDF_URL = '/downloads/ssm-7th-chords-x7q2mn.pdf'
+const PDF_URL = '/downloads/ssm-7th-chords-jr289yin.pdf'
 
 const bullets = [
-  '21 7th chords: A through G as Major 7th, minor 7th, and Dominant 7th',
+  'Twenty-one 7th chords, A through G, in Major 7th, minor 7th, and Dominant 7th',
   'Finger numbers on every diagram, barre shapes marked',
   'Moveable shapes flagged so you can slide them anywhere on the neck',
   'The formula for each chord type, right at the top of the page',
@@ -22,9 +22,9 @@ export default function SeventhChordsPage() {
   return (
     <div className="min-h-screen bg-slate-900">
       <TabHeader
-        eyebrow="Free download for YouTube viewers"
+        eyebrow="Thanks for your purchase"
         title="Guitar 7th Chord Vocabulary"
-        description="The one-page chord sheet from the Steady Steps 7th Chords episode. Print it, keep it on your music stand, and work through the three chord types at your own pace."
+        description="Here's your chord sheet from the Steady Steps 7th Chords episode. Download it now and bookmark this page in case you need it again. Print it, keep it on your music stand, and work through the three chord types at your own pace."
       />
 
       <div className="max-w-3xl mx-auto px-6 py-12">
@@ -55,15 +55,15 @@ export default function SeventhChordsPage() {
 
         <ul className="space-y-3 mt-12 max-w-xl mx-auto">
           {bullets.map((b) => (
-            <li key={b} className="flex items-start gap-3 text-slate-300 text-base">
+            <li key={b} className="flex items-start gap-3 text-slate-300 text-lg">
               <span className="text-teal-400 font-bold mt-0.5 flex-shrink-0">&#10003;</span>
               <span>{b}</span>
             </li>
           ))}
         </ul>
 
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mt-12 text-sm text-slate-400 leading-relaxed max-w-xl mx-auto">
-          <p className="text-white font-bold mb-2">Quick reminder from the video</p>
+        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mt-12 text-base text-slate-300 leading-relaxed max-w-xl mx-auto">
+          <p className="text-white font-bold text-lg mb-2">Quick reminder from the video</p>
           <p>
             Find the 7th from the octave, the higher root. A half step below is the Major 7th.
             A whole step below is the minor 7th. A plain letter and a 7, like G7, is always a Dominant 7th:
