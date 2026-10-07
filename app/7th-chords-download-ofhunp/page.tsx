@@ -51,6 +51,10 @@ export default function SeventhChordsPage() {
           >
             Download the PDF
           </a>
+          <p className="text-slate-400 text-sm mt-4">
+            On iPhone or iPad, the PDF opens in a new screen. Tap Share, then Save to Files to keep it.
+          </p>
+          <p className="text-slate-400 text-sm mt-1">A copy is also on its way to your email.</p>
         </div>
 
         <ul className="space-y-3 mt-12 max-w-xl mx-auto">
