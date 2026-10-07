@@ -11,6 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: 'https://steadystepsmusic.com/free-guide',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: 'https://steadystepsmusic.com/policies',
       lastModified: new Date(),
       changeFrequency: 'yearly',
