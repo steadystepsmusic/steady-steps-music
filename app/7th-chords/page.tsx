@@ -7,6 +7,21 @@ export const metadata: Metadata = {
   description:
     'All 21 Major 7th, minor 7th, and Dominant 7th guitar chords on one printable page, with finger numbers, barre shapes, and moveable shapes marked.',
   alternates: { canonical: 'https://steadystepsmusic.com/7th-chords' },
+  openGraph: {
+    title: 'Guitar 7th Chord Vocabulary PDF | Steady Steps Music',
+    description: 'All 21 Major 7th, minor 7th, and Dominant 7th guitar chords on one printable page. Instant download.',
+    url: 'https://steadystepsmusic.com/7th-chords',
+    siteName: 'Steady Steps Music',
+    locale: 'en_US',
+    type: 'website',
+    images: [{ url: '/images/og-7th-chords.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Guitar 7th Chord Vocabulary PDF | Steady Steps Music',
+    description: 'All 21 Major 7th, minor 7th, and Dominant 7th guitar chords on one printable page. Instant download.',
+    images: ['/images/og-7th-chords.png'],
+  },
 }
 
 // Stripe Payment Link. After payment Stripe redirects to /7th-chords-download-ofhunp

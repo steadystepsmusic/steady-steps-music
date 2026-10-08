@@ -15,8 +15,8 @@ export const metadata: Metadata = {
     canonical: 'https://steadystepsmusic.com',
   },
   openGraph: {
-    title: 'Music Lessons in Boise, ID | Steady Steps Music',
-    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons, online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
+    title: 'Music Lessons in Boise and Online | Steady Steps Music',
+    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons with Nik. Online from anywhere, or in person in Boise, Idaho. Book a free lesson today.',
     url: 'https://steadystepsmusic.com',
     siteName: 'Steady Steps Music',
     locale: 'en_US',
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Music Lessons in Boise, ID | Steady Steps Music',
-    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons, online or in-person with Nik in Boise, Idaho. Book a free demo lesson today.',
+    title: 'Music Lessons in Boise and Online | Steady Steps Music',
+    description: 'Guitar, bass, piano, voice, music theory, and songwriting lessons with Nik. Online from anywhere, or in person in Boise, Idaho. Book a free lesson today.',
   },
   icons: {
     icon: [
