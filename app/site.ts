@@ -41,6 +41,11 @@ export type Review = { name: string; role: string; quote: string }
 // Real Google reviews. Gina's is trimmed verbatim with ellipses, never paraphrased.
 export const REVIEWS: Review[] = [
   {
+    name: 'Kelsey A.',
+    role: 'Google review',
+    quote: "My son has been taking piano lessons through Steady Steps music for a couple of months now and the experience has been fantastic! Nik keeps it fun. My son is staying engaged, interested and excited in learning the piano. He enjoys practicing every day and is making outstanding progress. Zoom makes these lessons so incredibly convenient and hassle free. Our family is very happy with our experience and I'm excited to continue watching my kid develope his skills and love for music.",
+  },
+  {
     name: 'Gina S.',
     role: 'Google review',
     quote: "Nik has been teaching our boys for approximately 12 years\u2026 He is so very knowledgeable and good at making music fun. Our (now) teenagers don't complain about lessons or practice, because they get to drive where they want to explore, and Nik has been THE BEST teacher.",
@@ -49,11 +54,6 @@ export const REVIEWS: Review[] = [
     name: 'Brian G.',
     role: 'Google review',
     quote: 'Great teacher, very knowledgeable and patient. Highly recommend.',
-  },
-  {
-    name: 'Beth G.',
-    role: 'Google review',
-    quote: '',
   },
 ]
 
