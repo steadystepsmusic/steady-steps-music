@@ -38,8 +38,18 @@ export const NMM_ICONS = {
 
 export type Review = { name: string; role: string; quote: string }
 
-// Real Google reviews. Gina's is trimmed verbatim with ellipses, never paraphrased.
+// Total Google reviews shown in the count line. Bump it when a new review lands,
+// even if the review has no text to add below.
+export const REVIEW_COUNT = 7
+
+// Real Google reviews, strongest first (most visitors never swipe past the first view).
+// Gina's is trimmed verbatim with ellipses, never paraphrased.
 export const REVIEWS: Review[] = [
+  {
+    name: 'Ashley L.',
+    role: 'Google review',
+    quote: "Nik has been a great and patient teacher! He makes learning guitar fun and really wants you to enjoy the music you\u2019re making along the way. He\u2019s easy to learn from and makes you feel comfortable even when you\u2019re just starting out. I\u2019d recommend him to anyone, young or old, wanting to learn guitar!",
+  },
   {
     name: 'Kelsey A.',
     role: 'Google review',

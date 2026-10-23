@@ -3,7 +3,8 @@ import Nav from './components/Nav'
 import ContactForm from './components/ContactForm'
 import YouTubeFacade from './components/YouTubeFacade'
 import Footer from './components/Footer'
-import { FAQS, REVIEWS, GOOGLE_LISTING_URL } from './site'
+import { FAQS, REVIEWS, REVIEW_COUNT, GOOGLE_LISTING_URL } from './site'
+import ReviewCarousel from './components/ReviewCarousel'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -234,28 +235,12 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Student Stories</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">What Students Are Saying</h2>
+            <p className="mt-3 text-slate-600"><span className="text-amber-400" aria-hidden="true">★</span> 5.0 from {REVIEW_COUNT} Google reviews</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map(t => (
-              <div key={t.name} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col">
-                <div className="text-amber-400 text-lg mb-3" aria-label="Rated 5 out of 5 stars">★★★★★</div>
-                {t.quote ? (
-                  <div tabIndex={0} className="h-16 overflow-y-auto pr-2 mb-4 text-sm [mask-image:linear-gradient(to_bottom,black_calc(100%-1.25rem),transparent)]">
-                    <p className="text-slate-600 leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
-                  </div>
-                ) : (
-                  <p className="text-slate-500 leading-relaxed mb-4 text-sm">Rated 5 stars on Google.</p>
-                )}
-                <div className="mt-auto">
-                  <div className="font-bold text-slate-900">{t.name}</div>
-                  <div className="text-slate-600 text-sm">{t.role}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ReviewCarousel reviews={testimonials.filter(t => t.quote)} perView={3} />
           <p className="text-center mt-8">
             <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors">
-              See these reviews on Google →
+              See all {REVIEW_COUNT} five-star reviews on Google →
             </a>
           </p>
         </div>

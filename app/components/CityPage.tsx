@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Nav from './Nav'
 import ContactForm from './ContactForm'
-import { FAQS, REVIEWS, GOOGLE_LISTING_URL } from '../site'
+import { FAQS, REVIEWS, REVIEW_COUNT, GOOGLE_LISTING_URL } from '../site'
+import ReviewCarousel from './ReviewCarousel'
 import YouTubeFacade from './YouTubeFacade'
 import Footer from './Footer'
 
@@ -199,23 +200,10 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
       <section className="py-12 md:py-20 bg-slate-50 border-t border-slate-100">
         <div className="max-w-4xl mx-auto px-6">
           <p className="text-center text-teal-700 font-semibold text-sm uppercase tracking-widest mb-8">What Students and Parents Say</p>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {REVIEWS.filter(r => r.quote).map(r => (
-              <div key={r.name} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col">
-                <div className="text-amber-400 text-lg mb-3" aria-label="Rated 5 out of 5 stars">★★★★★</div>
-                <div tabIndex={0} className="h-16 overflow-y-auto pr-2 mb-4 text-sm [mask-image:linear-gradient(to_bottom,black_calc(100%-1.25rem),transparent)]">
-                  <p className="text-slate-600 leading-relaxed italic">&ldquo;{r.quote}&rdquo;</p>
-                </div>
-                <div className="mt-auto">
-                  <div className="font-bold text-slate-900">{r.name}</div>
-                  <div className="text-slate-600 text-sm">{r.role}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ReviewCarousel reviews={REVIEWS.filter(r => r.quote)} perView={2} />
           <p className="text-center mt-8">
             <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors">
-              See these reviews on Google →
+              See all {REVIEW_COUNT} five-star reviews on Google →
             </a>
           </p>
         </div>
