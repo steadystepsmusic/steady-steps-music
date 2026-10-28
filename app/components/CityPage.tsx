@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Nav from './Nav'
 import ContactForm from './ContactForm'
-import { FAQS, REVIEWS, REVIEW_COUNT, GOOGLE_LISTING_URL } from '../site'
+import { FAQS, REVIEWS, GOOGLE_LISTING_URL } from '../site'
 import ReviewCarousel from './ReviewCarousel'
 import YouTubeFacade from './YouTubeFacade'
 import Footer from './Footer'
@@ -203,7 +203,7 @@ export default function CityPage({ name, slug, blurb, context, onlineOnly = fals
           <ReviewCarousel reviews={REVIEWS.filter(r => r.quote)} perView={2} />
           <p className="text-center mt-8">
             <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors">
-              See all {REVIEW_COUNT} five-star reviews on Google →
+              Read our reviews on Google →
             </a>
           </p>
         </div>

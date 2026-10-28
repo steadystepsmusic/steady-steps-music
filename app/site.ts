@@ -38,10 +38,6 @@ export const NMM_ICONS = {
 
 export type Review = { name: string; role: string; quote: string }
 
-// Total Google reviews shown in the count line. Bump it when a new review lands,
-// even if the review has no text to add below.
-export const REVIEW_COUNT = 7
-
 // Real Google reviews, strongest first (most visitors never swipe past the first view).
 // Gina's is trimmed verbatim with ellipses, never paraphrased.
 export const REVIEWS: Review[] = [

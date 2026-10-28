@@ -3,7 +3,7 @@ import Nav from './components/Nav'
 import ContactForm from './components/ContactForm'
 import YouTubeFacade from './components/YouTubeFacade'
 import Footer from './components/Footer'
-import { FAQS, REVIEWS, REVIEW_COUNT, GOOGLE_LISTING_URL } from './site'
+import { FAQS, REVIEWS, GOOGLE_LISTING_URL } from './site'
 import ReviewCarousel from './components/ReviewCarousel'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -235,12 +235,12 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">Student Stories</p>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900">What Students Are Saying</h2>
-            <p className="mt-3 text-slate-600"><span className="text-amber-400" aria-hidden="true">★</span> 5.0 from {REVIEW_COUNT} Google reviews</p>
+            <p className="mt-3 text-slate-600"><span className="text-amber-400" aria-hidden="true">★</span> 5.0 on Google</p>
           </div>
           <ReviewCarousel reviews={testimonials.filter(t => t.quote)} perView={3} />
           <p className="text-center mt-8">
             <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors">
-              See all {REVIEW_COUNT} five-star reviews on Google →
+              Read our reviews on Google →
             </a>
           </p>
         </div>
