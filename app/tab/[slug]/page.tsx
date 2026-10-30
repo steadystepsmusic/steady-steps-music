@@ -47,12 +47,34 @@ export default async function TabSongPage({ params }: { params: Promise<{ slug: 
             </div>
           )}
 
+          {song.chordDiagrams && (
+            <div className="mb-8">
+              <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">Chord Shapes</p>
+              <div className="grid grid-cols-2 gap-3">
+                {song.chordDiagrams.map(chord => (
+                  <div key={chord.name} className="bg-slate-950 rounded-xl overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={chord.src} alt={`${chord.name} chord diagram`} className="w-full h-auto" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {song.sections.map((section, si) => (
             <div key={si} className={si > 0 ? 'mt-8' : ''}>
               {section.label && (
                 <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">{section.label}</p>
               )}
-              <CombinedSection phrases={section.phrases} />
+              {section.layout === 'grid' ? (
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {section.phrases.map((phrase, pi) => (
+                    <CombinedSection key={pi} phrases={[phrase]} />
+                  ))}
+                </div>
+              ) : (
+                <CombinedSection phrases={section.phrases} />
+              )}
             </div>
           ))}
 

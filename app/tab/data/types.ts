@@ -6,6 +6,13 @@ export type Phrase = {
 export type Section = {
   label: string
   phrases: Phrase[]
+  // 'grid' lays short phrases out side by side instead of stacked full width
+  layout?: 'grid'
+}
+
+export type ChordDiagram = {
+  name: string
+  src: string
 }
 
 export type ChordProgression = {
@@ -36,6 +43,7 @@ export type Song = {
   episode: string
   title: string
   description: string
+  chordDiagrams?: ChordDiagram[]
   sections: Section[]
   chordProgression?: ChordProgression
   chordGrid?: ChordGrid
