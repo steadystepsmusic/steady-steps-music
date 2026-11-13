@@ -2,7 +2,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function ContactForm() {
+// `team` switches the helper copy from Nik's first person ("I'll") to "we",
+// for the multi-teacher version of the site. Default is unchanged.
+export default function ContactForm({ team = false }: { team?: boolean }) {
   const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '', phone: '', instrument: '', message: '' })
   const [botcheck, setBotcheck] = useState('')
@@ -82,7 +84,7 @@ export default function ContactForm() {
             aria-describedby="contact-phone-help"
             className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors"
           />
-          <p id="contact-phone-help" className="mt-1 text-xs text-slate-400">Fastest way to get you scheduled. I&apos;ll text or call, whichever you prefer.</p>
+          <p id="contact-phone-help" className="mt-1 text-xs text-slate-400">Fastest way to get you scheduled. {team ? 'We’ll' : 'I’ll'} text or call, whichever you prefer.</p>
         </div>
         <div>
           <label htmlFor="contact-instrument" className="block text-sm font-medium text-slate-300 mb-1">I&apos;m interested in…</label>
@@ -109,7 +111,7 @@ export default function ContactForm() {
           id="contact-message"
           rows={4} value={form.message}
           onChange={e => setForm({ ...form, message: e.target.value })}
-          placeholder="Tell me a bit about your experience level, goals, or any questions you have..."
+          placeholder={`Tell ${team ? 'us' : 'me'} a bit about your experience level, goals, or any questions you have...`}
           className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-colors resize-none"
         />
       </div>
@@ -118,9 +120,9 @@ export default function ContactForm() {
         {submitting ? 'Sending…' : 'Book My Free Lesson →'}
       </button>
       {error && (
-        <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email me at <a href="mailto:hello@steadystepsmusic.com" className="underline hover:text-red-300">hello@steadystepsmusic.com</a>.</p>
+        <p className="text-center text-red-400 text-sm">Something went wrong. Please try again or email {team ? 'us' : 'me'} at <a href="mailto:hello@steadystepsmusic.com" className="underline hover:text-red-300">hello@steadystepsmusic.com</a>.</p>
       )}
-      <p className="text-center text-slate-400 text-sm">No commitment. I&apos;ll usually reply the same day.</p>
+      <p className="text-center text-slate-400 text-sm">No commitment. {team ? 'We’ll' : 'I’ll'} usually reply the same day.</p>
     </form>
   )
 }
