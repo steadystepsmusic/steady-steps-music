@@ -9,7 +9,7 @@ import ReviewCarousel from '../components/ReviewCarousel'
 
 // PROTOTYPE (2026-11-13): the homepage as a multi-teacher company for Phase 2.
 // Same structure as app/page.tsx, with "we" voice, an Our Teachers section in
-// place of "Hi, I'm Nik", and the placement-lesson flow. No link to /teach
+// place of "Hi, I'm Nik", and the free intro lesson with the matched teacher (Nik, 2026-11-17). No link to /teach
 // anywhere on the student site (Nik, 2026-11-13).
 // noindex, not in the sitemap, not linked from the live site. FAQs are local
 // on purpose: the shared FAQS in site.ts feed the live FAQPage schema.
@@ -24,7 +24,7 @@ const teachers = [
     name: 'Nik Mathews',
     role: 'Founder',
     teaches: 'Guitar · Bass · Piano · Voice',
-    bio: 'Nik has taught for over 20 years and plays around Boise most weekends. He gives every new student their free placement lesson.',
+    bio: 'Nik has taught for over 20 years and plays around Boise most weekends. He started Steady Steps and still teaches every week.',
     image: '/images/about.jpeg',
   },
   {
@@ -53,18 +53,18 @@ const lessons = [
 ]
 
 const steps = [
-  { title: 'Book Your Free Lesson', desc: "Fill out the form. We'll usually get back to you the same day and find a time for your free 15-minute placement lesson." },
-  { title: 'Meet Nik',              desc: "Your placement lesson is with Nik, our founder. He'll ask what you want to play and where you're starting from, then match you with the teacher who fits." },
+  { title: 'Book Your Free Lesson', desc: "Fill out the form. We'll usually get back to you the same day and find a time for your free 15-minute intro lesson." },
+  { title: 'Meet Your Teacher',     desc: "We match you with the teacher who fits what you want to play. Your free intro lesson is with them, so you know who you'd be learning from before you start." },
   { title: 'You Start Playing',     desc: "You'll leave your first lesson with something to work on. Every lesson after that picks up where the last one left off." },
 ]
 
 const pricing = [
   {
-    name: 'Placement Lesson',
+    name: 'Intro Lesson',
     price: 'Free',
     duration: '15 min intro',
     highlight: true,
-    features: ['No commitment required', 'Meet our founder first', 'Get matched with the right teacher', 'Online via Zoom'],
+    features: ['No commitment required', 'Meet your teacher first', 'Matched to what you want to play', 'Online via Zoom'],
     cta: "Book Now. It's Free.",
   },
   {
@@ -252,7 +252,7 @@ export default function TeamPreview() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-black text-teal-700">Pricing</h2>
-            <p className="text-slate-600 mt-4">Start with a free placement lesson. No pressure, no commitment.</p>
+            <p className="text-slate-600 mt-4">Start with a free intro lesson. No pressure, no commitment.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {pricing.map(p => (
@@ -328,7 +328,7 @@ export default function TeamPreview() {
             <p className="text-teal-400 font-semibold text-sm uppercase tracking-widest mb-3">Get In Touch</p>
             <h2 className="text-3xl sm:text-4xl font-black text-white">Book Your Free Lesson</h2>
             <p className="text-slate-300 mt-4 max-w-2xl mx-auto text-pretty">Fill out the form and we&apos;ll get back to you the same day to set up your{' '}
-              <span className="whitespace-nowrap">free 15-minute placement lesson.</span></p>
+              <span className="whitespace-nowrap">free 15-minute intro lesson.</span></p>
           </div>
           <ContactForm team />
         </div>

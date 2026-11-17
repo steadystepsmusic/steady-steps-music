@@ -9,7 +9,24 @@ import { Avatar, Btn, Choice, Label, Sheet, Stairs, Tag } from '../ui'
 // Same rules: phone first, every decision is one tap, pills for anything
 // clickable, square tags for status.
 
-type Tab = 'todo' | 'leads' | 'teachers'
+type Tab = 'todo' | 'inbox' | 'leads' | 'teachers'
+
+// One inbox for everyone who writes to Steady Steps directly: teachers, students
+// and parents (billing questions included). Teachers never see family threads here.
+type Msg = { from: 'them' | 'us'; text: string; when: string }
+type Convo = { id: string; name: string; who: 'Teacher' | 'Parent' | 'Student'; about?: string; topic: string; msgs: Msg[] }
+const INBOX: Convo[] = [
+  { id: 'c1', name: 'Dana T.', who: 'Parent', about: 'Owen T. · with Jordan', topic: 'Billing', msgs: [
+    { from: 'them', text: 'Hi! Can we switch Owen to the monthly prepay? And was the travel fee charged twice in October?', when: 'Today, 8:41 AM' },
+  ] },
+  { id: 'c2', name: 'Jordan Ellis', who: 'Teacher', topic: 'Schedule', msgs: [
+    { from: 'them', text: 'Is it OK if I move Priya to Thursdays starting next week? She asked.', when: 'Nov 13, 2:40 PM' },
+    { from: 'us', text: 'Yes, go ahead. Thanks for checking. Nik', when: 'Nov 13, 3:05 PM' },
+  ] },
+  { id: 'c3', name: 'Priya S.', who: 'Student', about: 'with Jordan', topic: 'Lessons', msgs: [
+    { from: 'them', text: 'Loving lessons with Jordan. Is there a way to add a second lesson some weeks before my show?', when: 'Yesterday, 7:15 PM' },
+  ] },
+]
 
 type Teacher = {
   id: string
@@ -114,6 +131,9 @@ function Row({ k, v }: { k: string; v: string }) {
 export default function AdminApp() {
   const [tab, setTab] = useState<Tab>('todo')
   const [todos, setTodos] = useState(TODOS)
+  const [inbox, setInbox] = useState(INBOX)
+  const [openConvo, setOpenConvo] = useState<string | null>(null)
+  const [draft, setDraft] = useState('')
   const [leads, setLeads] = useState(LEADS)
   const [openLead, setOpenLead] = useState<string | null>(null)
   const [openTeacher, setOpenTeacher] = useState<string | null>(null)
@@ -135,6 +155,7 @@ export default function AdminApp() {
   const needsYou = leads.filter(l => l.status === 'new' || l.status === 'expired').length
   const tabs: { id: Tab; label: string; badge?: number }[] = [
     { id: 'todo', label: 'To do', badge: todos.length },
+    { id: 'inbox', label: 'Inbox', badge: inbox.filter(c => c.msgs[c.msgs.length - 1].from === 'them').length },
     { id: 'leads', label: 'Leads', badge: needsYou },
     { id: 'teachers', label: 'Teachers' },
   ]
@@ -264,6 +285,32 @@ export default function AdminApp() {
           </div>
         )}
 
+        {tab === 'inbox' && (
+          <div className="space-y-4">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Inbox</h1>
+            <p className="text-sm text-slate-600 text-pretty">Teachers, students and parents writing to Steady Steps directly. Billing questions land here too.</p>
+            <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
+              {inbox.map(c => {
+                const last = c.msgs[c.msgs.length - 1]
+                const waiting = last.from === 'them'
+                return (
+                  <button key={c.id} type="button" onClick={() => setOpenConvo(c.id)} className="w-full text-left p-4 flex items-center gap-3">
+                    <Avatar name={c.name} tone={c.who === 'Teacher' ? 'slate' : 'teal'} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="font-bold text-slate-900 truncate">{c.name}</span>
+                        <Tag tone={c.who === 'Teacher' ? 'slate' : 'teal'}>{c.who}</Tag>
+                      </div>
+                      <div className={`text-sm truncate ${waiting ? 'text-slate-900 font-semibold' : 'text-slate-600'}`}>{c.topic} · {last.text}</div>
+                    </div>
+                    <span className={`inline-flex items-center min-h-11 px-4 rounded-full text-sm font-bold whitespace-nowrap ${waiting ? 'bg-slate-900 text-white' : 'border-2 border-slate-300 text-slate-800'}`}>{waiting ? 'Reply' : 'Open'}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {tab === 'leads' && (
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Leads</h1>
@@ -319,7 +366,7 @@ export default function AdminApp() {
         )}
       </main>
 
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 grid grid-cols-3 px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 grid grid-cols-4 px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
         {tabs.map(t => (
           <button key={t.id} type="button" onClick={() => setTab(t.id)} aria-current={tab === t.id ? 'page' : undefined} className={`min-h-12 rounded-full text-sm font-bold ${tab === t.id ? 'bg-teal-50 text-teal-800' : 'text-slate-600'}`}>
             {t.label}
@@ -350,6 +397,42 @@ export default function AdminApp() {
           </div>
         </Sheet>
       )}
+
+      {openConvo && (() => {
+        const c = inbox.find(x => x.id === openConvo)!
+        const sendReply = (e: React.FormEvent) => {
+          e.preventDefault()
+          if (!draft.trim()) return
+          setInbox(list => list.map(x => (x.id === c.id ? { ...x, msgs: [...x.msgs, { from: 'us', text: draft.trim(), when: 'Just now' }] } : x)))
+          setDraft('')
+        }
+        return (
+          <Sheet title={c.name} onClose={() => { setOpenConvo(null); setDraft('') }}>
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2 -mt-1">
+                <Tag tone={c.who === 'Teacher' ? 'slate' : 'teal'}>{c.who}</Tag>
+                <Tag tone="slate">{c.topic}</Tag>
+                {c.about && <span className="text-sm text-slate-600">{c.about}</span>}
+              </div>
+              <div className="space-y-3">
+                {c.msgs.map((m, i) => (
+                  <div key={i} className={`flex ${m.from === 'us' ? 'justify-end' : 'justify-start'}`}>
+                    <div className="max-w-[85%]">
+                      <div className={`px-4 py-2.5 rounded-3xl text-sm leading-relaxed text-pretty ${m.from === 'us' ? 'bg-slate-900 text-white rounded-br-lg' : 'bg-slate-100 text-slate-900 rounded-bl-lg'}`}>{m.text}</div>
+                      <div className={`text-[11px] text-slate-500 mt-1 ${m.from === 'us' ? 'text-right' : ''}`}>{m.when}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <form onSubmit={sendReply} className="flex gap-2">
+                <input value={draft} onChange={e => setDraft(e.target.value)} placeholder="Write a reply" aria-label={`Reply to ${c.name}`} className="flex-1 min-w-0 min-h-11 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-4 text-slate-900" />
+                <button type="submit" disabled={!draft.trim()} className="inline-flex items-center min-h-11 px-4 rounded-full text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-900 disabled:bg-slate-200 disabled:text-slate-500">Send</button>
+              </form>
+              {c.who !== 'Teacher' && <p className="text-xs text-slate-600 text-pretty">Their teacher does not see this conversation.</p>}
+            </div>
+          </Sheet>
+        )
+      })()}
 
       {shownTeacher && (
         <Sheet title={shownTeacher.name} onClose={() => setOpenTeacher(null)}>

@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 const benefits = [
   {
-    title: 'Students who already said yes',
-    desc: "Every new student starts with a free placement lesson with Nik, our founder. By the time a student reaches you, they've decided to start and you know what they want to play. You never give an unpaid trial lesson.",
+    title: 'Students who are ready to start',
+    desc: "We match each new student to you by instrument, level and schedule. You meet them in a free 15-minute intro lesson, so the first lesson is already yours and you know what they want to play.",
   },
   {
     title: 'No invoices to chase',

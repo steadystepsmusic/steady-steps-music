@@ -22,6 +22,7 @@ type Overlay =
   | { kind: 'finish'; lessonId: string }
   | { kind: 'move'; lessonId: string }
   | { kind: 'thread'; studentId: string }
+  | { kind: 'office' }
   | null
 
 type Student = {
@@ -79,7 +80,7 @@ const STUDENTS: Student[] = [
     pays: 40, travel: 15, planNote: '1 lesson left',
     notes: [
       { date: 'Nov 3', by: 'You', text: 'Right hand melody of his video game theme, first 8 bars. Left hand next week. Loves figuring notes out by ear.' },
-      { date: 'Oct 27', by: 'Nik (placement lesson)', text: 'Picks things up quickly by ear. Gets restless after about 20 minutes, so switch activities halfway.' },
+      { date: 'Oct 27', by: 'You (intro lesson)', text: 'Picks things up quickly by ear. Gets restless after about 20 minutes, so switch activities halfway.' },
     ],
   },
   {
@@ -122,6 +123,12 @@ const PAST_PAYOUTS = [
   { date: 'Oct 5', period: 'September lessons', amount: 312 },
 ]
 
+// The teacher's direct line to Steady Steps admin. Only admin sees it (Nik, 2026-11-17).
+const OFFICE: Message[] = [
+  { from: 'me', text: 'Is it OK if I move Priya to Thursdays starting next week? She asked.', when: 'Nov 13, 2:40 PM' },
+  { from: 'them', text: 'Yes, go ahead. Thanks for checking. Nik', when: 'Nov 13, 3:05 PM' },
+]
+
 const THREADS: Record<string, Message[]> = {
   owen: [
     { from: 'them', text: 'Hi Jordan, the side gate will be open tomorrow. Owen has been playing his song for everyone who walks in the door.', when: 'Today, 9:12 AM' },
@@ -148,6 +155,16 @@ const APPROVED: Teaching = {
 }
 
 const student = (id: string) => STUDENTS.find(s => s.id === id)!
+// Hours from now until a lesson starts. Inside 24 hours, moving it needs the family's OK (Nik, 2026-11-17).
+const hoursUntil = (l: Lesson, now: Date | null) => {
+  if (!now) return Infinity
+  const [clock, ampm] = l.time.split(' ')
+  const [h, m] = clock.split(':').map(Number)
+  const start = new Date(now)
+  start.setDate(start.getDate() + l.offset)
+  start.setHours((h % 12) + (ampm === 'PM' ? 12 : 0), m, 0, 0)
+  return (start.getTime() - now.getTime()) / 36e5
+}
 const money = (n: number) => `$${n.toFixed(2)}`
 const flip = (list: string[], o: string) => (list.includes(o) ? list.filter(x => x !== o) : [...list, o])
 const same = (a: Teaching, b: Teaching) =>
@@ -214,6 +231,7 @@ export default function MaestroApp() {
   const [now, setNow] = useState<Date | null>(null) // set after load, so it is the phone's own clock
   const [allEarnings, setEarnings] = useState(EARNINGS)
   const [allThreads, setThreads] = useState(THREADS)
+  const [office, setOffice] = useState(OFFICE)
   const [offer, setOffer] = useState<'open' | 'accepted' | 'passed'>('open')
   const [introTime, setIntroTime] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
@@ -564,7 +582,16 @@ export default function MaestroApp() {
         {tab === 'messages' && (
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
-            <p className="text-sm text-slate-600 text-pretty">Messages go out as email from Steady Steps Music. Replies come back here.</p>
+            <button type="button" onClick={() => setOverlay({ kind: 'office' })} className="w-full text-left bg-slate-900 rounded-3xl p-4 flex items-center gap-3">
+              <div className="w-10 h-10 shrink-0 rounded-full bg-slate-800 flex items-center justify-center"><Stairs size={18} /></div>
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-white truncate">Steady Steps</div>
+                <div className="text-sm text-slate-300 truncate">{office.length ? `${office[office.length - 1].from === 'me' ? 'You: ' : ''}${office[office.length - 1].text}` : 'Pay, schedule, a problem, anything'}</div>
+              </div>
+              <span className={pill('primary')}>Open</span>
+            </button>
+            <Label>Your students</Label>
+            <p className="text-sm text-slate-600 -mt-1 text-pretty">These go out as email from Steady Steps Music. Replies come back here.</p>
             {students.length === 0 && <Empty title="No messages yet" text="Once you have a student, you can message them here." />}
             <div className={students.length ? 'bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100' : 'hidden'}>
               {students.map(s => {
@@ -608,7 +635,7 @@ export default function MaestroApp() {
         ))}
       </nav>
 
-      {overlay?.kind === 'profile' && <ProfileSheet profile={profile} current={students.length} onClose={close} onToast={setToast} onRefer={() => setOverlay({ kind: 'refer' })} />}
+      {overlay?.kind === 'profile' && <ProfileSheet profile={profile} current={students.length} onOffice={() => setOverlay({ kind: 'office' })} onClose={close} onToast={setToast} onRefer={() => setOverlay({ kind: 'refer' })} />}
       {overlay?.kind === 'refer' && <ReferSheet onClose={close} onSent={who => { close(); setToast(`Thank you. We will reach out to ${who}.`) }} />}
       {overlay?.kind === 'offer' && (
         <OfferSheet
@@ -629,12 +656,34 @@ export default function MaestroApp() {
       {overlay?.kind === 'move' && (
         <MoveSheet
           lesson={lessons.find(l => l.id === overlay.lessonId)!}
+          soon={hoursUntil(lessons.find(l => l.id === overlay.lessonId)!, now) < 24}
           onClose={close}
           onDone={(tag, message) => { setMoved(m => ({ ...m, [overlay.lessonId]: tag })); close(); setToast(message) }}
         />
       )}
-      {overlay?.kind === 'thread' && (
-        <ThreadSheet s={student(overlay.studentId)} messages={threads[overlay.studentId] ?? []} onClose={close} onSend={text => send(overlay.studentId, text)} />
+      {overlay?.kind === 'thread' && (() => {
+        const s = student(overlay.studentId)
+        return (
+          <ThreadSheet
+            title={s.contact ? s.contact.replace('Parent: ', '') : s.name}
+            subtitle={s.contact ? `Parent of ${s.name}` : undefined}
+            quick={QUICK_REPLIES}
+            footnote="Sent as email from Steady Steps Music. Replies show up here."
+            messages={threads[overlay.studentId] ?? []}
+            onClose={close}
+            onSend={text => send(overlay.studentId, text)}
+          />
+        )
+      })()}
+      {overlay?.kind === 'office' && (
+        <ThreadSheet
+          title="Steady Steps"
+          subtitle="Goes straight to Nik and the admin team. Students and families never see this."
+          footnote="Pay questions, schedule changes, a problem with a student, anything."
+          messages={office}
+          onClose={close}
+          onSend={text => text.trim() && setOffice(o => [...o, { from: 'me', text: text.trim(), when: 'Just now' }])}
+        />
       )}
 
       {toast && (
@@ -648,7 +697,7 @@ export default function MaestroApp() {
 
 // ---------- Sheets ----------
 
-function ProfileSheet({ profile: p, current, onClose, onToast, onRefer }: { profile: Profile; current: number; onClose: () => void; onToast: (m: string) => void; onRefer: () => void }) {
+function ProfileSheet({ profile: p, current, onOffice, onClose, onToast, onRefer }: { profile: Profile; current: number; onOffice: () => void; onClose: () => void; onToast: (m: string) => void; onRefer: () => void }) {
   const groups: Record<string, string[]> = {
     'Lesson lengths': ['30 min', '45 min', '60 min'],
     'Where you teach': ['Zoom', 'In-home'],
@@ -779,7 +828,8 @@ function ProfileSheet({ profile: p, current, onClose, onToast, onRefer }: { prof
 
         <div className="flex flex-col gap-2.5">
           <Btn onClick={onRefer}>Refer a student or teacher</Btn>
-          {['Teacher agreement', 'Message Steady Steps', 'Sign out'].map(item => (
+          <Btn onClick={onOffice}>Message Steady Steps</Btn>
+          {['Teacher agreement', 'Sign out'].map(item => (
             <Btn key={item} onClick={() => onToast('Not wired up in the prototype.')}>{item}</Btn>
           ))}
         </div>
@@ -871,7 +921,7 @@ function OfferSheet({ countdown, onClose, onAccept, onPass }: { countdown: strin
               </div>
             ))}
           </dl>
-          <p className="text-sm text-slate-600 text-pretty">You start with a free 15-minute intro lesson. If she signs up, she is yours every week.</p>
+          <p className="text-sm text-slate-600 text-pretty">You give her a free 15-minute intro lesson. If she signs up, she is yours every week.</p>
           <div className="grid grid-cols-2 gap-3">
             <Btn onClick={() => setStep('pass')}>Pass</Btn>
             <Btn kind="primary" onClick={() => setStep('time')}>Take student</Btn>
@@ -926,7 +976,7 @@ function Empty({ title, text }: { title: string; text: string }) {
 }
 
 // Rescheduling is the normal path. Asking for a sub is the last resort, one step further in.
-function MoveSheet({ lesson, onClose, onDone }: { lesson: Lesson; onClose: () => void; onDone: (tag: string, message: string) => void }) {
+function MoveSheet({ lesson, soon, onClose, onDone }: { lesson: Lesson; soon: boolean; onClose: () => void; onDone: (tag: string, message: string) => void }) {
   const s = student(lesson.studentId)
   const who = s.contact ? s.contact.replace('Parent: ', '') : s.name
   const [step, setStep] = useState<'move' | 'sub'>('move')
@@ -945,9 +995,22 @@ function MoveSheet({ lesson, onClose, onDone }: { lesson: Lesson; onClose: () =>
               <div className="space-y-3">
                 {times.map(t => <Choice key={t} active={time === t} onClick={() => setTime(t)} title={t} />)}
               </div>
-              <p className="text-sm text-slate-600 mt-3 text-pretty">These are open on your calendar. We email {who} to confirm, and the lesson only moves if they say yes.</p>
+              <p className="text-sm text-slate-600 mt-3 text-pretty">These are open on your calendar.</p>
             </div>
-            <Btn kind="primary" className="w-full" disabled={!time} onClick={() => onDone('Move requested', `Asked ${who} to move the lesson.`)}>Ask to move</Btn>
+            {soon ? (
+              <>
+                <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-950 space-y-2">
+                  <p className="font-bold">This lesson is less than 24 hours away.</p>
+                  <p className="text-pretty">Moving it now is a favor to ask, so {who} has to agree. The lesson stays where it is unless they say yes.</p>
+                </div>
+                <Btn kind="primary" className="w-full" disabled={!time} onClick={() => onDone('Asked to move', `Asked ${who} if the lesson can move.`)}>Ask {who}</Btn>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-slate-600 text-pretty">The lesson is more than 24 hours away, so it moves right away. We let {who} know.</p>
+                <Btn kind="primary" className="w-full" disabled={!time} onClick={() => onDone(`Moved to ${time}`, `Lesson moved. We let ${who} know.`)}>Move lesson</Btn>
+              </>
+            )}
             <div className="pt-5 border-t border-slate-100">
               <p className="text-sm text-slate-600 mb-3 text-pretty">None of these work and you cannot teach this lesson?</p>
               <Btn onClick={() => setStep('sub')}>Ask for a sub</Btn>
@@ -1051,13 +1114,20 @@ function FinishSheet({ lesson, previous, onClose, onSubmit }: {
   )
 }
 
-function ThreadSheet({ s, messages, onClose, onSend }: { s: Student; messages: Message[]; onClose: () => void; onSend: (text: string) => void }) {
+function ThreadSheet({ title, subtitle, quick = [], footnote, messages, onClose, onSend }: {
+  title: string
+  subtitle?: string
+  quick?: string[]
+  footnote: string
+  messages: Message[]
+  onClose: () => void
+  onSend: (text: string) => void
+}) {
   const [draft, setDraft] = useState('')
-  const who = s.contact ? s.contact.replace('Parent: ', '') : s.name
   return (
-    <Sheet title={who} onClose={onClose}>
+    <Sheet title={title} onClose={onClose}>
       <div className="space-y-4">
-        {s.contact && <p className="text-sm text-slate-600 -mt-2">Parent of {s.name}</p>}
+        {subtitle && <p className="text-sm text-slate-600 -mt-2 text-pretty">{subtitle}</p>}
         <div className="space-y-3 min-h-24">
           {messages.length === 0 && <p className="text-sm text-slate-600 text-center py-8">No messages yet.</p>}
           {messages.map((m, i) => (
@@ -1069,20 +1139,22 @@ function ThreadSheet({ s, messages, onClose, onSend }: { s: Student; messages: M
             </div>
           ))}
         </div>
-        <div className="flex flex-col items-start gap-2">
-          {QUICK_REPLIES.map(q => <Btn key={q} onClick={() => onSend(q)}>{q}</Btn>)}
-        </div>
+        {quick.length > 0 && (
+          <div className="flex flex-col items-start gap-2">
+            {quick.map(q => <Btn key={q} onClick={() => onSend(q)}>{q}</Btn>)}
+          </div>
+        )}
         <form onSubmit={e => { e.preventDefault(); onSend(draft); setDraft('') }} className="flex gap-2">
           <input
             value={draft}
             onChange={e => setDraft(e.target.value)}
             placeholder="Write a message"
-            aria-label={`Message ${who}`}
+            aria-label={`Message ${title}`}
             className="flex-1 min-w-0 min-h-11 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-4 text-slate-900"
           />
           <button type="submit" disabled={!draft.trim()} className={pill('primary')}>Send</button>
         </form>
-        <p className="text-xs text-slate-600 text-pretty">Sent as email from Steady Steps Music. Replies show up here.</p>
+        <p className="text-xs text-slate-600 text-pretty">{footnote}</p>
       </div>
     </Sheet>
   )
