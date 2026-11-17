@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, Toggle, pill } from './ui'
 
 // PROTOTYPE (2026-11-16). Clickable sketch of the teacher side. All data below
 // is invented and lives in component state: a refresh resets it. Teachers see
@@ -19,7 +20,7 @@ type Overlay =
   | { kind: 'refer' }
   | { kind: 'offer' }
   | { kind: 'finish'; lessonId: string }
-  | { kind: 'sub'; lessonId: string }
+  | { kind: 'move'; lessonId: string }
   | { kind: 'thread'; studentId: string }
   | null
 
@@ -50,7 +51,14 @@ type Lesson = {
   status: 'needs-wrap-up' | 'upcoming' | 'submitted'
 }
 
-type EarningRow = { id: string; date: string; studentId: string; amount: number; label: string; status: 'Approved' | 'In review' | 'Waived' }
+type Outcome = 'taught' | 'charge' | 'waive'
+type EarningRow = {
+  id: string; date: string; studentId: string; amount: number; label: string
+  status: 'Approved' | 'In review' | 'Waived'
+  lessonId?: string; notes?: string; outcome?: Outcome // kept so an unapproved lesson can be changed
+}
+type NewRow = Omit<EarningRow, 'id' | 'date' | 'studentId' | 'lessonId'>
+type Demo = 'normal' | 'new' | 'offline'
 type Message = { from: 'me' | 'them'; text: string; when: string }
 type MapsApp = 'Apple Maps' | 'Google Maps'
 
@@ -91,6 +99,7 @@ const STUDENTS: Student[] = [
 ]
 
 const LESSONS: Lesson[] = [
+  { id: 'p1', studentId: 'leo', offset: -4, day: 'Thu, Nov 12', time: '5:00 PM', status: 'submitted' },
   { id: 'l1', studentId: 'maya', offset: 0, day: 'Today', time: '3:30 PM', status: 'needs-wrap-up' },
   { id: 'l2', studentId: 'leo', offset: 0, day: 'Today', time: '5:00 PM', status: 'upcoming' },
   { id: 'l3', studentId: 'owen', offset: 1, day: 'Tomorrow', time: '4:15 PM', status: 'upcoming' },
@@ -98,7 +107,7 @@ const LESSONS: Lesson[] = [
 ]
 
 const EARNINGS: EarningRow[] = [
-  { id: 'e8', date: 'Nov 12', studentId: 'leo', amount: 56, label: '45 min', status: 'In review' },
+  { id: 'e8', date: 'Nov 12', studentId: 'leo', amount: 56, label: '45 min', status: 'In review', lessonId: 'p1', outcome: 'taught', notes: 'Minor pentatonic, box 1 and 2. Wrote a four-bar lick of his own. Send the backing track link.' },
   { id: 'e7', date: 'Nov 11', studentId: 'priya', amount: 72, label: '60 min', status: 'Approved' },
   { id: 'e6', date: 'Nov 10', studentId: 'owen', amount: 0, label: 'Missed, waived', status: 'Waived' },
   { id: 'e5', date: 'Nov 9', studentId: 'maya', amount: 36, label: '30 min', status: 'Approved' },
@@ -151,42 +160,6 @@ const directions = (s: Student, app: MapsApp) => {
 
 // ---------- Building blocks ----------
 
-const PILL = 'inline-flex items-center justify-center gap-1.5 min-h-11 px-4 rounded-full text-sm font-bold whitespace-nowrap transition-colors'
-const KIND = {
-  primary: 'bg-amber-500 hover:bg-amber-400 text-slate-900 disabled:bg-slate-200 disabled:text-slate-500',
-  action: 'bg-slate-900 hover:bg-slate-800 text-white disabled:bg-slate-200 disabled:text-slate-500',
-  outline: 'bg-white border-2 border-slate-300 hover:border-slate-500 text-slate-800',
-}
-type BtnKind = keyof typeof KIND
-const pill = (kind: BtnKind, extra = '') => `${PILL} ${KIND[kind]} ${extra}`
-
-function Btn({ kind = 'outline', className = '', ...props }: { kind?: BtnKind } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return <button type="button" {...props} className={pill(kind, className)} />
-}
-
-function Tag({ children, tone }: { children: React.ReactNode; tone: 'teal' | 'amber' | 'slate' }) {
-  const cls = { teal: 'bg-teal-100 text-teal-900', amber: 'bg-amber-100 text-amber-900', slate: 'bg-slate-200 text-slate-700' }[tone]
-  return <span className={`inline-block text-[11px] font-bold uppercase tracking-wide px-2 py-1 rounded-md whitespace-nowrap ${cls}`}>{children}</span>
-}
-
-function Label({ children }: { children: React.ReactNode }) {
-  return <div className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2.5">{children}</div>
-}
-
-function Stairs({ size = 26 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 45 35" height={size} fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" shapeRendering="crispEdges">
-      <rect x="0" y="30" width="15" height="5" fill="#3B5BB5" />
-      <rect x="10" y="25" width="5" height="5" fill="#3B5BB5" />
-      <rect x="10" y="20" width="15" height="5" fill="#2563EB" />
-      <rect x="20" y="15" width="5" height="5" fill="#2563EB" />
-      <rect x="20" y="10" width="15" height="5" fill="#7DD3FC" />
-      <rect x="30" y="5" width="5" height="5" fill="#7DD3FC" />
-      <rect x="30" y="0" width="15" height="5" fill="#2DD4BF" />
-    </svg>
-  )
-}
-
 function Icon({ name }: { name: Tab }) {
   const paths: Record<Tab, string> = {
     home: 'M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10',
@@ -198,90 +171,6 @@ function Icon({ name }: { name: Tab }) {
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={paths[name]} />
     </svg>
-  )
-}
-
-function Avatar({ name, tone = 'teal' }: { name: string; tone?: 'teal' | 'slate' }) {
-  const cls = tone === 'teal' ? 'bg-teal-100 text-teal-800' : 'bg-slate-700 text-white'
-  return (
-    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-sm ${cls}`}>
-      {name.split(' ').map(p => p[0]).join('').slice(0, 2)}
-    </div>
-  )
-}
-
-function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    const before = document.body.style.overflow
-    document.body.style.overflow = 'hidden' // the page behind must not scroll
-    window.addEventListener('keydown', onKey)
-    return () => {
-      document.body.style.overflow = before
-      window.removeEventListener('keydown', onKey)
-    }
-  }, [onClose])
-
-  return (
-    <div className="fixed inset-x-0 top-0 h-dvh z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm" onClick={onClose}>
-      <div
-        className="bg-white w-full sm:max-w-lg max-h-[88dvh] flex flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl shadow-2xl"
-        onClick={e => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-label={title}
-      >
-        <div className="shrink-0 bg-white flex items-center justify-between gap-4 pl-6 pr-4 py-3 border-b border-slate-100">
-          <h2 className="font-black text-slate-900 text-lg truncate">{title}</h2>
-          <Btn kind="action" onClick={onClose} className="shrink-0">Done</Btn>
-        </div>
-        <div className="p-6 overflow-y-auto overscroll-contain">{children}</div>
-      </div>
-    </div>
-  )
-}
-
-function Choice({ active, onClick, title, desc }: { active: boolean; onClick: () => void; title: string; desc?: string }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`w-full text-left rounded-3xl border-2 px-5 py-3 transition-colors ${active ? 'border-teal-500 bg-teal-50' : 'border-slate-300 hover:border-slate-500 bg-white'}`}
-    >
-      <div className="font-bold text-slate-900">{title}</div>
-      {desc && <div className="text-sm text-slate-600 mt-0.5 text-pretty">{desc}</div>}
-    </button>
-  )
-}
-
-function Toggle({ on, onClick, label }: { on: boolean; onClick: () => void; label: string }) {
-  return (
-    <button type="button" onClick={onClick} role="switch" aria-checked={on} aria-label={label} className={`relative w-14 h-8 shrink-0 rounded-full transition-colors ${on ? 'bg-teal-600' : 'bg-slate-300'}`}>
-      <span className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-6' : ''}`} />
-    </button>
-  )
-}
-
-function Chips({ options, picked, onToggle, disabled }: { options: string[]; picked: string[]; onToggle: (o: string) => void; disabled?: boolean }) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {options.map(o => {
-        const on = picked.includes(o)
-        return (
-          <button
-            key={o}
-            type="button"
-            disabled={disabled}
-            onClick={() => onToggle(o)}
-            aria-pressed={on}
-            className={`min-h-11 px-4 rounded-full border-2 text-sm font-bold whitespace-nowrap transition-colors ${on ? 'border-teal-500 bg-teal-50 text-teal-900' : 'border-slate-300 text-slate-600'} ${disabled ? 'opacity-70' : 'hover:border-slate-500'}`}
-          >
-            {o}
-          </button>
-        )
-      })}
-    </div>
   )
 }
 
@@ -323,13 +212,14 @@ export default function MaestroApp() {
   const [overlay, setOverlay] = useState<Overlay>(null)
   const [rawLessons, setLessons] = useState(LESSONS)
   const [now, setNow] = useState<Date | null>(null) // set after load, so it is the phone's own clock
-  const [earnings, setEarnings] = useState(EARNINGS)
-  const [threads, setThreads] = useState(THREADS)
+  const [allEarnings, setEarnings] = useState(EARNINGS)
+  const [allThreads, setThreads] = useState(THREADS)
   const [offer, setOffer] = useState<'open' | 'accepted' | 'passed'>('open')
   const [introTime, setIntroTime] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
   const [minutesLeft, setMinutesLeft] = useState(21 * 60 + 14)
-  const [subAsked, setSubAsked] = useState<string[]>([])
+  const [moved, setMoved] = useState<Record<string, string>>({}) // lessonId -> what was asked
+  const [demo, setDemo] = useState<Demo>('normal') // prototype-only preview switch
   const [openStudent, setOpenStudent] = useState<string | null>(null)
   const profile = useProfile()
   const close = () => setOverlay(null)
@@ -344,7 +234,11 @@ export default function MaestroApp() {
   const hour = now?.getHours()
   const greeting = hour === undefined ? 'Welcome' : hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
   const today = now?.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) ?? '\u00a0'
-  const lessons = rawLessons.map(l => {
+  const isNew = demo === 'new' // a teacher on day one, before any students
+  const students = isNew ? [] : STUDENTS
+  const earnings = isNew ? [] : allEarnings
+  const threads = isNew ? {} : allThreads
+  const lessons = (isNew ? [] : rawLessons).map(l => {
     if (!now || l.offset < 2) return l
     const d = new Date(now); d.setDate(d.getDate() + l.offset)
     return { ...l, day: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) }
@@ -365,16 +259,25 @@ export default function MaestroApp() {
   const inReview = earnings.filter(r => r.status === 'In review').reduce((sum, r) => sum + r.amount, 0)
 
   const tabs: { id: Tab; label: string; badge?: number }[] = [
-    { id: 'home', label: 'Home', badge: needsWrapUp.length + (offer === 'open' ? 1 : 0) },
+    { id: 'home', label: 'Home', badge: needsWrapUp.length + (offer === 'open' && !isNew ? 1 : 0) },
     { id: 'students', label: 'Students' },
     { id: 'earnings', label: 'Earnings' },
     { id: 'messages', label: 'Messages', badge: unread },
   ]
 
-  function submitLesson(lessonId: string, row: Omit<EarningRow, 'id' | 'date' | 'studentId'>, message: string) {
+  function submitLesson(lessonId: string, row: NewRow, message: string) {
+    if (demo === 'offline') {
+      setToast('Not sent. Check your connection and try again.') // the panel stays open, nothing is lost
+      return
+    }
     const lesson = lessons.find(l => l.id === lessonId)!
     setLessons(ls => ls.map(l => (l.id === lessonId ? { ...l, status: 'submitted' } : l)))
-    setEarnings(rows => [{ id: `new-${lessonId}`, date: 'Nov 16', studentId: lesson.studentId, ...row }, ...rows])
+    setEarnings(rows => {
+      const old = rows.find(r => r.lessonId === lessonId)
+      if (old) return rows.map(r => (r === old ? { ...old, ...row } : r)) // changing an unapproved lesson
+      const date = now?.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) ?? 'Today'
+      return [{ id: `new-${lessonId}`, date, studentId: lesson.studentId, lessonId, ...row }, ...rows]
+    })
     close()
     setToast(message)
   }
@@ -388,8 +291,16 @@ export default function MaestroApp() {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-28 md:pb-10">
-      <div className="bg-amber-400 text-slate-900 text-xs font-bold text-center py-1.5 px-4">
-        PROTOTYPE · Made-up data · Nothing is saved
+      <div className="bg-amber-400 text-slate-900 text-xs font-bold px-4 py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+        <span className="whitespace-nowrap">PROTOTYPE · Made-up data</span>
+        <div className="flex items-center gap-1.5" role="group" aria-label="Preview a situation">
+          {([['normal', 'Normal'], ['new', 'Day one'], ['offline', 'Offline']] as [Demo, string][]).map(([id, label]) => (
+            <button key={id} type="button" onClick={() => setDemo(id)} aria-pressed={demo === id} className={`min-h-8 px-3 rounded-full border-2 border-slate-900 whitespace-nowrap ${demo === id ? 'bg-slate-900 text-white' : 'text-slate-900'}`}>
+              {label}
+            </button>
+          ))}
+          <a href="/maestro/admin" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Admin view</a>
+        </div>
       </div>
 
       <header className="sticky top-0 z-40 bg-slate-900 border-b border-slate-800">
@@ -420,6 +331,18 @@ export default function MaestroApp() {
         </div>
       </header>
 
+      {demo === 'offline' && (
+        <div className="bg-red-50 border-b border-red-200" role="alert">
+          <div className="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
+            <div className="min-w-0 text-sm text-red-950">
+              <div className="font-bold">No connection</div>
+              <div className="text-pretty">Showing what was saved at 4:12 PM.</div>
+            </div>
+            <Btn className="shrink-0" onClick={() => { setDemo('normal'); setToast('Back online.') }}>Try again</Btn>
+          </div>
+        </div>
+      )}
+
       <main className="max-w-3xl mx-auto px-5 pt-7">
         {tab === 'home' && (
           <div className="space-y-7">
@@ -428,7 +351,10 @@ export default function MaestroApp() {
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{greeting}, {TEACHER}</h1>
             </div>
 
-            {offer === 'open' && (
+            {isNew && (
+              <Empty title="You are all set up" text="Your first student will show up here. We will also email you, so you do not need to keep checking." />
+            )}
+            {!isNew && offer === 'open' && (
               <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
                 <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">New student for you</div>
                 <div className="text-white text-2xl font-black mt-2">Adult beginner, guitar</div>
@@ -440,14 +366,14 @@ export default function MaestroApp() {
                 </div>
               </div>
             )}
-            {offer === 'accepted' && (
+            {!isNew && offer === 'accepted' && (
               <div className="rounded-3xl bg-teal-50 border border-teal-200 p-5">
                 <div className="font-bold text-teal-900">Intro lesson with Elena M.</div>
                 <div className="font-bold text-teal-900">{introTime}</div>
                 <div className="text-sm text-teal-900 mt-1 text-pretty">She has been emailed the time and the Zoom link. It is on your calendar.</div>
               </div>
             )}
-            {offer === 'passed' && (
+            {!isNew && offer === 'passed' && (
               <div className="rounded-3xl bg-white border border-slate-200 p-5 text-sm text-slate-600 text-pretty">
                 You passed on a new student. Thanks for answering quickly.
               </div>
@@ -505,9 +431,9 @@ export default function MaestroApp() {
                         )}
                         <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
                           <Btn onClick={() => openThread(s.id)}>Message</Btn>
-                          {subAsked.includes(l.id)
-                            ? <Tag tone="amber">Sub requested</Tag>
-                            : <Btn onClick={() => setOverlay({ kind: 'sub', lessonId: l.id })}>Request a sub</Btn>}
+                          {moved[l.id]
+                            ? <Tag tone="amber">{moved[l.id]}</Tag>
+                            : <Btn onClick={() => setOverlay({ kind: 'move', lessonId: l.id })}>Reschedule</Btn>}
                         </div>
                       </div>
                     )
@@ -515,6 +441,10 @@ export default function MaestroApp() {
                 </div>
               </section>
             ))}
+
+            {!isNew && upcoming.length === 0 && needsWrapUp.length === 0 && (
+              <Empty title="No lessons coming up" text="Lessons appear here when they are on your Steady Steps calendar." />
+            )}
 
             <section className="bg-white rounded-3xl border border-slate-200 p-5">
               <div className="font-bold text-slate-900">Know someone who would fit?</div>
@@ -527,7 +457,8 @@ export default function MaestroApp() {
         {tab === 'students' && (
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1">Your students</h1>
-            {STUDENTS.map(s => {
+            {students.length === 0 && <Empty title="No students yet" text="When you take a student, they show up here with their notes and contact." />}
+            {students.map(s => {
               const open = openStudent === s.id
               return (
                 <div key={s.id} className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
@@ -586,15 +517,20 @@ export default function MaestroApp() {
               {inReview > 0 && <div className="text-amber-400 text-sm font-semibold">{money(inReview)} still in review</div>}
             </div>
 
+            {earnings.length === 0 && <Empty title="Nothing earned yet" text="Each lesson you finish shows up here, with the day it will be paid." />}
+            {earnings.length > 0 && (
             <section>
               <Label>November lessons</Label>
               <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
                 {earnings.map(r => (
                   <div key={r.id} className="px-5 py-3.5 flex items-center justify-between gap-3">
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="font-bold text-slate-900 truncate">{student(r.studentId).name}</div>
                       <div className="text-xs text-slate-600 whitespace-nowrap">{r.date} · {r.label}</div>
                     </div>
+                    {r.lessonId && r.status !== 'Approved' && (
+                      <Btn className="shrink-0" onClick={() => setOverlay({ kind: 'finish', lessonId: r.lessonId! })} aria-label={`Change the ${r.date} lesson with ${student(r.studentId).name}`}>Change</Btn>
+                    )}
                     <div className="shrink-0 flex flex-col items-end gap-1">
                       <div className="font-black text-slate-900 tabular-nums">{money(r.amount)}</div>
                       <Tag tone={r.status === 'Approved' ? 'teal' : r.status === 'In review' ? 'amber' : 'slate'}>{r.status}</Tag>
@@ -602,8 +538,11 @@ export default function MaestroApp() {
                   </div>
                 ))}
               </div>
+              <p className="text-sm text-slate-600 mt-3 text-pretty">You can change a lesson until it is approved. After that, message Steady Steps.</p>
             </section>
+            )}
 
+            {!isNew && (
             <section>
               <Label>Paid</Label>
               <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
@@ -618,6 +557,7 @@ export default function MaestroApp() {
                 ))}
               </div>
             </section>
+            )}
           </div>
         )}
 
@@ -625,8 +565,9 @@ export default function MaestroApp() {
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
             <p className="text-sm text-slate-600 text-pretty">Messages go out as email from Steady Steps Music. Replies come back here.</p>
-            <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
-              {STUDENTS.map(s => {
+            {students.length === 0 && <Empty title="No messages yet" text="Once you have a student, you can message them here." />}
+            <div className={students.length ? 'bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100' : 'hidden'}>
+              {students.map(s => {
                 const thread = threads[s.id] ?? []
                 const last = thread[thread.length - 1]
                 const isNew = last?.from === 'them'
@@ -667,7 +608,7 @@ export default function MaestroApp() {
         ))}
       </nav>
 
-      {overlay?.kind === 'profile' && <ProfileSheet profile={profile} onClose={close} onToast={setToast} onRefer={() => setOverlay({ kind: 'refer' })} />}
+      {overlay?.kind === 'profile' && <ProfileSheet profile={profile} current={students.length} onClose={close} onToast={setToast} onRefer={() => setOverlay({ kind: 'refer' })} />}
       {overlay?.kind === 'refer' && <ReferSheet onClose={close} onSent={who => { close(); setToast(`Thank you. We will reach out to ${who}.`) }} />}
       {overlay?.kind === 'offer' && (
         <OfferSheet
@@ -677,12 +618,19 @@ export default function MaestroApp() {
           onPass={() => { setOffer('passed'); close(); setToast('Passed. The student goes back to Steady Steps.') }}
         />
       )}
-      {overlay?.kind === 'finish' && <FinishSheet lesson={lessons.find(l => l.id === overlay.lessonId)!} onClose={close} onSubmit={submitLesson} />}
-      {overlay?.kind === 'sub' && (
-        <SubSheet
+      {overlay?.kind === 'finish' && (
+        <FinishSheet
+          lesson={lessons.find(l => l.id === overlay.lessonId)!}
+          previous={earnings.find(r => r.lessonId === overlay.lessonId)}
+          onClose={close}
+          onSubmit={submitLesson}
+        />
+      )}
+      {overlay?.kind === 'move' && (
+        <MoveSheet
           lesson={lessons.find(l => l.id === overlay.lessonId)!}
           onClose={close}
-          onSend={() => { setSubAsked(a => [...a, overlay.lessonId]); close(); setToast('Sub request sent to Steady Steps.') }}
+          onDone={(tag, message) => { setMoved(m => ({ ...m, [overlay.lessonId]: tag })); close(); setToast(message) }}
         />
       )}
       {overlay?.kind === 'thread' && (
@@ -700,13 +648,12 @@ export default function MaestroApp() {
 
 // ---------- Sheets ----------
 
-function ProfileSheet({ profile: p, onClose, onToast, onRefer }: { profile: Profile; onClose: () => void; onToast: (m: string) => void; onRefer: () => void }) {
+function ProfileSheet({ profile: p, current, onClose, onToast, onRefer }: { profile: Profile; current: number; onClose: () => void; onToast: (m: string) => void; onRefer: () => void }) {
   const groups: Record<string, string[]> = {
     'Lesson lengths': ['30 min', '45 min', '60 min'],
     'Where you teach': ['Zoom', 'In-home'],
     'Days you teach': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
   }
-  const current = STUDENTS.length
   const waiting = p.sent !== null
   const shown = p.sent ?? p.draft
   const changed = !waiting && !same(p.draft, APPROVED)
@@ -969,48 +916,80 @@ function LessonHead({ lesson }: { lesson: Lesson }) {
   )
 }
 
-function SubSheet({ lesson, onClose, onSend }: { lesson: Lesson; onClose: () => void; onSend: () => void }) {
-  const s = student(lesson.studentId)
-  const [reason, setReason] = useState<string | null>(null)
-  const reasons = ['I am sick', 'Family emergency', 'Schedule conflict', 'Something else']
+function Empty({ title, text }: { title: string; text: string }) {
   return (
-    <Sheet title="Request a sub" onClose={onClose}>
+    <div className="rounded-3xl border-2 border-dashed border-slate-300 p-6 text-center">
+      <div className="font-bold text-slate-900">{title}</div>
+      <p className="text-sm text-slate-600 mt-1 text-pretty">{text}</p>
+    </div>
+  )
+}
+
+// Rescheduling is the normal path. Asking for a sub is the last resort, one step further in.
+function MoveSheet({ lesson, onClose, onDone }: { lesson: Lesson; onClose: () => void; onDone: (tag: string, message: string) => void }) {
+  const s = student(lesson.studentId)
+  const who = s.contact ? s.contact.replace('Parent: ', '') : s.name
+  const [step, setStep] = useState<'move' | 'sub'>('move')
+  const [time, setTime] = useState<string | null>(null)
+  const [reason, setReason] = useState<string | null>(null)
+  const times = ['Thursday · 4:30 PM', 'Friday · 3:00 PM', 'Saturday · 10:00 AM']
+  const reasons = ['I am sick', 'Family emergency', 'Something else']
+  return (
+    <Sheet title={step === 'move' ? 'Reschedule' : 'Ask for a sub'} onClose={onClose}>
       <div className="space-y-5">
         <LessonHead lesson={lesson} />
-        <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-950 space-y-2">
-          <p className="text-pretty">Only request a sub when you cannot teach this lesson.</p>
-          <p className="text-pretty">If another teacher covers it, they are paid for the lesson and {s.name} stays your student.</p>
-          <p className="text-pretty">If no one can cover it, the lesson is cancelled. A late cancellation goes on your record.</p>
-        </div>
-        <div>
-          <Label>Reason</Label>
-          <div className="space-y-3">
-            {reasons.map(r => <Choice key={r} active={reason === r} onClick={() => setReason(r)} title={r} />)}
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Btn onClick={onClose}>Keep lesson</Btn>
-          <Btn kind="action" disabled={!reason} onClick={onSend}>Send request</Btn>
-        </div>
+        {step === 'move' && (
+          <>
+            <div>
+              <Label>Pick a new time</Label>
+              <div className="space-y-3">
+                {times.map(t => <Choice key={t} active={time === t} onClick={() => setTime(t)} title={t} />)}
+              </div>
+              <p className="text-sm text-slate-600 mt-3 text-pretty">These are open on your calendar. We email {who} to confirm, and the lesson only moves if they say yes.</p>
+            </div>
+            <Btn kind="primary" className="w-full" disabled={!time} onClick={() => onDone('Move requested', `Asked ${who} to move the lesson.`)}>Ask to move</Btn>
+            <div className="pt-5 border-t border-slate-100">
+              <p className="text-sm text-slate-600 mb-3 text-pretty">None of these work and you cannot teach this lesson?</p>
+              <Btn onClick={() => setStep('sub')}>Ask for a sub</Btn>
+            </div>
+          </>
+        )}
+        {step === 'sub' && (
+          <>
+            <p className="text-sm text-slate-700 text-pretty">Steady Steps will look for another teacher for this one lesson. {s.name} stays your student.</p>
+            <div>
+              <Label>Reason</Label>
+              <div className="space-y-3">
+                {reasons.map(r => <Choice key={r} active={reason === r} onClick={() => setReason(r)} title={r} />)}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Btn onClick={() => setStep('move')}>Back</Btn>
+              <Btn kind="action" disabled={!reason} onClick={() => onDone('Sub requested', 'Sub request sent to Steady Steps.')}>Send request</Btn>
+            </div>
+          </>
+        )}
       </div>
     </Sheet>
   )
 }
 
-function FinishSheet({ lesson, onClose, onSubmit }: {
+function FinishSheet({ lesson, previous, onClose, onSubmit }: {
   lesson: Lesson
+  previous?: EarningRow // set when changing a lesson that is not approved yet
   onClose: () => void
-  onSubmit: (lessonId: string, row: Omit<EarningRow, 'id' | 'date' | 'studentId'>, message: string) => void
+  onSubmit: (lessonId: string, row: NewRow, message: string) => void
 }) {
   const s = student(lesson.studentId)
-  const [outcome, setOutcome] = useState<'taught' | 'missed' | null>(null)
-  const [missed, setMissed] = useState<'charge' | 'waive' | null>(null)
-  const [notes, setNotes] = useState('')
+  const was = previous?.outcome
+  const [outcome, setOutcome] = useState<'taught' | 'missed' | null>(was ? (was === 'taught' ? 'taught' : 'missed') : null)
+  const [missed, setMissed] = useState<'charge' | 'waive' | null>(was && was !== 'taught' ? was : null)
+  const [notes, setNotes] = useState(previous?.notes ?? '')
   const total = s.pays + s.travel
   const base = `${s.minutes} min${s.travel ? ` + $${s.travel} travel` : ''}`
 
   return (
-    <Sheet title="Finish lesson" onClose={onClose}>
+    <Sheet title={previous ? 'Change lesson' : 'Finish lesson'} onClose={onClose}>
       <div className="space-y-5">
         <LessonHead lesson={lesson} />
 
@@ -1042,9 +1021,9 @@ function FinishSheet({ lesson, onClose, onSubmit }: {
               kind="primary"
               className="w-full"
               disabled={!notes.trim()}
-              onClick={() => onSubmit(lesson.id, { amount: total, label: base, status: 'In review' }, `Submitted. ${money(total)} added to your payout.`)}
+              onClick={() => onSubmit(lesson.id, { amount: total, label: base, status: 'In review', outcome: 'taught', notes }, previous ? 'Lesson updated.' : `Submitted. ${money(total)} added to your payout.`)}
             >
-              Submit lesson
+              {previous ? 'Save changes' : 'Submit lesson'}
             </Btn>
           </>
         )}
@@ -1060,10 +1039,10 @@ function FinishSheet({ lesson, onClose, onSubmit }: {
               className="w-full"
               disabled={!missed}
               onClick={() => missed === 'charge'
-                ? onSubmit(lesson.id, { amount: total, label: 'Missed, counted', status: 'In review' }, `Submitted. ${money(total)} added to your payout.`)
-                : onSubmit(lesson.id, { amount: 0, label: 'Missed, waived', status: 'Waived' }, 'Submitted. The student keeps the lesson.')}
+                ? onSubmit(lesson.id, { amount: total, label: 'Missed, counted', status: 'In review', outcome: 'charge' }, previous ? 'Lesson updated.' : `Submitted. ${money(total)} added to your payout.`)
+                : onSubmit(lesson.id, { amount: 0, label: 'Missed, waived', status: 'Waived', outcome: 'waive' }, previous ? 'Lesson updated.' : 'Submitted. The student keeps the lesson.')}
             >
-              Submit
+              {previous ? 'Save changes' : 'Submit'}
             </Btn>
           </>
         )}
