@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // The dev-only Next.js badge sat on top of the Maestro phone tab bar
+  devIndicators: false,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'i.ytimg.com' },
