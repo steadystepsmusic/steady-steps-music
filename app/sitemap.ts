@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
+import { songs } from './tab/data'
 
-const cities = ['meridian', 'eagle', 'nampa', 'garden-city', 'star', 'kuna', 'caldwell']
+const cities = ['boise', 'meridian', 'eagle', 'nampa', 'garden-city', 'star', 'kuna', 'caldwell']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -33,6 +34,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    })),
+    {
+      url: 'https://steadystepsmusic.com/tab',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    ...songs.map(song => ({
+      url: `https://steadystepsmusic.com/tab/${song.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
     })),
   ]
 }
