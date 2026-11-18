@@ -69,7 +69,7 @@ const pricing = [
   },
   {
     name: '30-Minute Lesson',
-    price: '$58',
+    price: '$60',
     duration: 'per session',
     highlight: false,
     features: ['Great for beginners & kids', 'Focused, efficient sessions', 'Online via Zoom or in-person*', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],
@@ -77,7 +77,7 @@ const pricing = [
   },
   {
     name: '60-Minute Lesson',
-    price: '$104',
+    price: '$108',
     duration: 'per session',
     highlight: false,
     features: ['Deep dives & faster progress', 'Ideal for dedicated students', 'Online via Zoom or in-person*', 'Session notes sent after each lesson', 'Save 10% with monthly pre-pay'],

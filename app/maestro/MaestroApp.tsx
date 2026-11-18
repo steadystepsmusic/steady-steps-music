@@ -68,7 +68,7 @@ const TEACHER = 'Jordan'
 const STUDENTS: Student[] = [
   {
     id: 'maya', name: 'Maya R.', instrument: 'Guitar', level: 'Beginner', age: 'Adult', minutes: 30, format: 'Zoom',
-    pays: 36, travel: 0, planNote: '2 lessons left this month',
+    pays: 37, travel: 0, planNote: '2 lessons left this month',
     notes: [
       { date: 'Nov 9', by: 'You', text: 'G to C change is getting smoother. Started the strumming pattern for the verse. Practice: 5 slow changes a day.' },
       { date: 'Nov 2', by: 'You', text: 'First full lesson. Tuned by ear with the app, learned G and Em. She wants to play at a family campfire in June.' },
@@ -77,7 +77,7 @@ const STUDENTS: Student[] = [
   {
     id: 'owen', name: 'Owen T.', contact: 'Parent: Dana T.', instrument: 'Piano', level: 'Beginner', age: 'Age 11', minutes: 30, format: 'In-home',
     street: '4821 W Juniper Hollow Ct', city: 'Meridian, ID 83646', arrival: 'Side gate on the left. Piano is in the front room.',
-    pays: 40, travel: 15, planNote: '1 lesson left',
+    pays: 42, travel: 15, planNote: '1 lesson left',
     notes: [
       { date: 'Nov 3', by: 'You', text: 'Right hand melody of his video game theme, first 8 bars. Left hand next week. Loves figuring notes out by ear.' },
       { date: 'Oct 27', by: 'You (intro lesson)', text: 'Picks things up quickly by ear. Gets restless after about 20 minutes, so switch activities halfway.' },
@@ -85,14 +85,14 @@ const STUDENTS: Student[] = [
   },
   {
     id: 'priya', name: 'Priya S.', instrument: 'Voice', level: 'Intermediate', age: 'Adult', minutes: 60, format: 'Zoom',
-    pays: 72, travel: 0, planNote: '3 lessons left',
+    pays: 75, travel: 0, planNote: '3 lessons left',
     notes: [
       { date: 'Nov 11', by: 'You', text: 'Breath support on long phrases. Moved the song down a whole step and the chorus opened up.' },
     ],
   },
   {
     id: 'leo', name: 'Leo K.', contact: 'Parent: Robin K.', instrument: 'Guitar', level: 'Intermediate', age: 'Age 15', minutes: 45, format: 'Zoom',
-    pays: 56, travel: 0, planNote: 'Paid through this week. Steady Steps is handling the renewal.',
+    pays: 58, travel: 0, planNote: 'Paid through this week. Steady Steps is handling the renewal.',
     notes: [
       { date: 'Nov 12', by: 'You', text: 'Minor pentatonic, box 1 and 2. Wrote a four-bar lick of his own. Send the backing track link.' },
     ],
@@ -108,14 +108,14 @@ const LESSONS: Lesson[] = [
 ]
 
 const EARNINGS: EarningRow[] = [
-  { id: 'e8', date: 'Nov 12', studentId: 'leo', amount: 56, label: '45 min', status: 'In review', lessonId: 'p1', outcome: 'taught', notes: 'Minor pentatonic, box 1 and 2. Wrote a four-bar lick of his own. Send the backing track link.' },
-  { id: 'e7', date: 'Nov 11', studentId: 'priya', amount: 72, label: '60 min', status: 'Approved' },
+  { id: 'e8', date: 'Nov 12', studentId: 'leo', amount: 58, label: '45 min', status: 'In review', lessonId: 'p1', outcome: 'taught', notes: 'Minor pentatonic, box 1 and 2. Wrote a four-bar lick of his own. Send the backing track link.' },
+  { id: 'e7', date: 'Nov 11', studentId: 'priya', amount: 75, label: '60 min', status: 'Approved' },
   { id: 'e6', date: 'Nov 10', studentId: 'owen', amount: 0, label: 'Missed, waived', status: 'Waived' },
-  { id: 'e5', date: 'Nov 9', studentId: 'maya', amount: 36, label: '30 min', status: 'Approved' },
-  { id: 'e4', date: 'Nov 5', studentId: 'leo', amount: 56, label: '45 min', status: 'Approved' },
-  { id: 'e3', date: 'Nov 4', studentId: 'priya', amount: 72, label: '60 min', status: 'Approved' },
-  { id: 'e2', date: 'Nov 3', studentId: 'owen', amount: 55, label: '30 min + $15 travel', status: 'Approved' },
-  { id: 'e1', date: 'Nov 2', studentId: 'maya', amount: 36, label: '30 min', status: 'Approved' },
+  { id: 'e5', date: 'Nov 9', studentId: 'maya', amount: 37, label: '30 min', status: 'Approved' },
+  { id: 'e4', date: 'Nov 5', studentId: 'leo', amount: 58, label: '45 min', status: 'Approved' },
+  { id: 'e3', date: 'Nov 4', studentId: 'priya', amount: 75, label: '60 min', status: 'Approved' },
+  { id: 'e2', date: 'Nov 3', studentId: 'owen', amount: 57, label: '30 min + $15 travel', status: 'Approved' },
+  { id: 'e1', date: 'Nov 2', studentId: 'maya', amount: 37, label: '30 min', status: 'Approved' },
 ]
 
 const PAST_PAYOUTS = [
@@ -896,7 +896,7 @@ function OfferSheet({ countdown, onClose, onAccept, onPass }: { countdown: strin
     ['Age', 'Adult'],
     ['Lessons', 'Zoom · 30 min weekly'],
     ['Free times', 'Weekdays after 5 PM'],
-    ['Each lesson pays you', '$40.00'],
+    ['Each lesson pays you', '$42.00'],
   ]
   return (
     <Sheet title="New student" onClose={onClose}>
