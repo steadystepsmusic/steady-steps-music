@@ -61,8 +61,10 @@ export default function PayBlockTwoHourPage() {
         </a>
       </div>
 
+      <ReferralNote />
+
       {/* Hero copy */}
-      <div className="max-w-2xl mx-auto px-6 pt-14 pb-10 text-center">
+      <div className="max-w-2xl mx-auto px-6 pt-10 pb-10 text-center">
         <p className="text-teal-700 font-semibold text-sm uppercase tracking-widest mb-3">In-Home Lesson Block</p>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Two-Hour Weekly Block</h1>
         <p className="text-slate-500 leading-relaxed">
@@ -112,7 +114,6 @@ export default function PayBlockTwoHourPage() {
         <p className="text-slate-400 text-xs mt-2">The monthly prepay covers four consecutive weekly sessions. If a week is missed with notice, it rolls to the next available week.</p>
       </div>
 
-      <ReferralNote />
 
       {/* Trust footer */}
       <div className="border-t border-slate-200 bg-white py-6 px-6 text-center">
