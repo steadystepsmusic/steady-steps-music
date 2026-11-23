@@ -95,12 +95,38 @@ function Shell({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Email + password first: it works from a home-screen icon and needs no email. The emailed
+// link or code stays as the backup for a forgotten password (Nik, 2026-11-23).
+function friendly(message: string) {
+  if (/invalid login credentials/i.test(message)) return 'That email and password do not match.'
+  if (/security purposes|rate limit|too many/i.test(message)) return 'Too many sign-in emails in a short time. Use the newest email you already got, or wait a few minutes and try again.'
+  if (/signups not allowed/i.test(message)) return 'That email is not set up for Maestro.'
+  return message
+}
+
 function SignIn() {
+  const [mode, setMode] = useState<'password' | 'link' | 'sent'>('password')
   const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
+  const [password, setPassword] = useState('')
   const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const field = 'w-full min-h-12 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-5 text-slate-900'
+
+  async function withPassword(e: React.FormEvent) {
+    e.preventDefault()
+    setBusy(true); setError(null)
+    const { error } = await supabase!.auth.signInWithPassword({ email: email.trim(), password })
+    setBusy(false)
+    if (error) setError(friendly(error.message))
+  }
+
+  async function withPasskey() {
+    setBusy(true); setError(null)
+    const { error } = await supabase!.auth.signInWithPasskey()
+    setBusy(false)
+    if (error && !/abort|cancel|not allowed/i.test(error.message)) setError('Passkey sign-in did not work. Use your password, then set up the passkey again under your profile.')
+  }
 
   async function sendLink(e: React.FormEvent) {
     e.preventDefault()
@@ -110,8 +136,8 @@ function SignIn() {
       options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/maestro` },
     })
     setBusy(false)
-    if (error) setError(error.message.includes('Signups not allowed') ? 'That email is not set up for Maestro.' : error.message)
-    else setSent(true)
+    if (error) setError(friendly(error.message))
+    else setMode('sent')
   }
 
   async function useCode(e: React.FormEvent) {
@@ -125,22 +151,45 @@ function SignIn() {
   return (
     <Shell>
       <h1 className="text-2xl font-black text-slate-900">Sign in</h1>
-      {!sent ? (
+      {mode === 'password' && (
+        <div className="mt-5">
+          <Btn kind="action" className="w-full" disabled={busy} onClick={withPasskey}>Sign in with a passkey</Btn>
+          <div className="flex items-center gap-3 my-6 text-xs font-bold uppercase tracking-widest text-slate-400"><span className="h-px flex-1 bg-slate-200" />or<span className="h-px flex-1 bg-slate-200" /></div>
+        </div>
+      )}
+      {mode === 'password' && (
+        <form onSubmit={withPassword} className="space-y-4">
+          <div>
+            <label className="block text-sm font-bold text-slate-900 mb-2" htmlFor="email">Email</label>
+            <input id="email" type="email" autoComplete="username" required value={email} onChange={e => setEmail(e.target.value)} className={field} />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-slate-900 mb-2" htmlFor="password">Password</label>
+            <input id="password" type="password" autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} className={field} />
+          </div>
+          <button type="submit" disabled={busy || !email.trim() || !password} className={pill('primary', 'w-full')}>{busy ? 'Signing in…' : 'Sign in'}</button>
+          <div className="pt-2 text-center">
+            <Btn onClick={() => { setMode('link'); setError(null) }}>Forgot it? Email me a link</Btn>
+          </div>
+        </form>
+      )}
+      {mode === 'link' && (
         <form onSubmit={sendLink} className="mt-5 space-y-4">
           <label className="block text-sm font-bold text-slate-900" htmlFor="email">Your email</label>
-          <input id="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)}
-            className="w-full min-h-12 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-5 text-slate-900" />
+          <input id="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className={field} />
           <button type="submit" disabled={busy || !email.trim()} className={pill('primary', 'w-full')}>{busy ? 'Sending…' : 'Email me a sign-in link'}</button>
+          <div className="text-center"><Btn onClick={() => { setMode('password'); setError(null) }}>Back to password</Btn></div>
         </form>
-      ) : (
+      )}
+      {mode === 'sent' && (
         <div className="mt-5 space-y-5">
-          <p className="text-slate-700 text-pretty">Check your email. Tap the link in it, or type the code here. The code is the way to go if you added Maestro to your home screen.</p>
+          <p className="text-slate-700 text-pretty">Check your email and tap the link in it. If the email has a code, you can type it here instead.</p>
           <form onSubmit={useCode} className="space-y-4">
             <input inputMode="numeric" autoComplete="one-time-code" value={code} onChange={e => setCode(e.target.value.replace(/\D/g, ''))} placeholder="Code" aria-label="Sign-in code" maxLength={8}
-              className="w-full min-h-12 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-5 text-slate-900 tracking-widest text-center text-lg" />
+              className={`${field} tracking-widest text-center text-lg`} />
             <button type="submit" disabled={busy || code.length < 6} className={pill('primary', 'w-full')}>Sign in</button>
           </form>
-          <Btn onClick={() => { setSent(false); setCode('') }}>Use a different email</Btn>
+          <Btn onClick={() => { setMode('password'); setCode(''); setError(null) }}>Back to password</Btn>
         </div>
       )}
       {error && <p className="mt-4 text-sm font-semibold text-red-700 text-pretty" role="alert">{error}</p>}
@@ -539,6 +588,8 @@ function App({ teacher }: { teacher: Teacher }) {
               <Label>Directions open in</Label>
               <Chips options={['Apple Maps', 'Google Maps']} picked={[maps]} onToggle={o => setMaps(o as MapsApp)} />
             </div>
+            <PasskeySetup onToast={setToast} />
+            <PasswordSetup email={teacher.email} onToast={setToast} />
             <div>
               <Label>Sync</Label>
               <p className="text-sm text-slate-700 text-pretty">{data?.syncedAt ? `Your Mac last synced ${ago(data.syncedAt, now)}.` : 'Your Mac has not synced yet.'} It sends your roster, calendar and recaps every 15 minutes while it is awake.</p>
@@ -562,6 +613,59 @@ function App({ teacher }: { teacher: Teacher }) {
 }
 
 // ---------- Pieces ----------
+
+// new-password lets Safari suggest a strong password and save it to iCloud Keychain
+function PasswordSetup({ email, onToast }: { email: string; onToast: (m: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const [pw, setPw] = useState('')
+  const [busy, setBusy] = useState(false)
+  async function save(e: React.FormEvent) {
+    e.preventDefault()
+    setBusy(true)
+    const { error } = await supabase!.auth.updateUser({ password: pw })
+    setBusy(false)
+    if (error) onToast(error.message.includes('weak') || error.message.includes('characters') ? 'Use at least 8 characters.' : 'Could not save. Try again in a moment.')
+    else { setOpen(false); setPw(''); onToast('Password saved.') }
+  }
+  return (
+    <div>
+      <Label>Password</Label>
+      {!open ? <Btn onClick={() => setOpen(true)}>Set a new password</Btn> : (
+        <form onSubmit={save} className="space-y-3">
+          <input type="email" autoComplete="username" value={email} readOnly hidden />
+          <input type="password" autoComplete="new-password" minLength={8} required value={pw} onChange={e => setPw(e.target.value)} aria-label="New password" placeholder="New password"
+            className="w-full min-h-12 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-5 text-slate-900" />
+          <div className="flex gap-3">
+            <button type="submit" disabled={busy || pw.length < 8} className={pill('action')}>{busy ? 'Saving…' : 'Save password'}</button>
+            <Btn onClick={() => { setOpen(false); setPw('') }}>Cancel</Btn>
+          </div>
+        </form>
+      )}
+    </div>
+  )
+}
+
+// One tap here saves a passkey (Face ID / Touch ID) on this device. After that, "Sign in with
+// a passkey" on the sign-in screen needs no email or password.
+function PasskeySetup({ onToast }: { onToast: (m: string) => void }) {
+  const [busy, setBusy] = useState(false)
+  const [done, setDone] = useState(false)
+  async function add() {
+    setBusy(true)
+    const { error } = await supabase!.auth.registerPasskey()
+    setBusy(false)
+    if (!error) { setDone(true); onToast('Passkey saved. Next time, sign in with Face ID.') }
+    else if (!/abort|cancel|not allowed/i.test(error.message)) onToast('Could not save the passkey. Try again in a moment.')
+  }
+  return (
+    <div>
+      <Label>Passkey</Label>
+      <p className="text-sm text-slate-700 text-pretty">Sign in with Face ID instead of a password on this phone.</p>
+      {done ? <div className="mt-3"><Tag tone="teal">Saved on this device</Tag></div>
+        : <Btn className="mt-3" disabled={busy} onClick={add}>{busy ? 'Waiting for Face ID…' : 'Set up a passkey'}</Btn>}
+    </div>
+  )
+}
 
 function Icon({ name }: { name: Tab }) {
   const paths: Record<Tab, string> = {
