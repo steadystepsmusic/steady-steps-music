@@ -92,7 +92,7 @@ export async function loadAll(db: SupabaseClient) {
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1)
   const until = new Date(Math.max(monthEnd.getTime(), Date.now() + 15 * 864e5)).toISOString()
   const [students, lessons, reports, recaps, sync, rates] = await Promise.all([
-    db.from('students').select('*').in('status', ['active', 'paused']).order('name'),
+    db.from('students').select('*').in('status', ['active', 'paused', 'intro']).order('name'),  // intro = prospect booked for an intro, not on the roster yet
     db.from('lessons').select('*').eq('cancelled', false).gte('starts_at', since).lte('starts_at', until).order('starts_at'),
     db.from('lesson_reports').select('*').gte('lesson_starts_at', new Date(Date.now() - 70 * 864e5).toISOString()).order('lesson_starts_at', { ascending: false }),
     db.from('recaps').select('*').order('sent_at', { ascending: false }),

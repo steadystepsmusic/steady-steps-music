@@ -315,6 +315,8 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
   const students = useMemo(() => data?.students ?? [], [data])
   const byId = useMemo(() => Object.fromEntries(students.map(s => [s.id, s])), [students])
+  // Intro prospects show on Home for their lesson, but join Students only once they're on the roster
+  const roster = useMemo(() => students.filter(s => s.status !== 'intro'), [students])
   const reportFor = useMemo(() => Object.fromEntries((data?.reports ?? []).map(r => [r.lesson_id, r])), [data])
   const lessons = useMemo(() => (data?.lessons ?? []).filter(l => byId[l.student_id]), [data, byId])
 
@@ -515,8 +517,8 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
         {data && tab === 'students' && (
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1">Your students</h1>
-            {students.length === 0 && <Empty title="No students yet" text="Students show up here once your Mac syncs the roster." />}
-            {students.map(s => {
+            {roster.length === 0 && <Empty title="No students yet" text="Students show up here once your Mac syncs the roster." />}
+            {roster.map(s => {
               const open = openStudent === s.id
               return (
                 <div key={s.id} className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
