@@ -173,3 +173,6 @@ alter table teachers add column if not exists prefs jsonb not null default '{}':
 drop policy if exists "edit own prefs" on teachers;
 create policy "edit own prefs" on teachers for update to authenticated using (id = my_teacher_id()) with check (id = my_teacher_id());
 grant update (prefs) on teachers to authenticated;
+-- Maestro 005 (2026-11-23): whether the calendar event has any guests, so Home can flag
+-- "No invite sent" (Sam's lesson had no guests and no Zoom link).
+alter table lessons add column if not exists has_guests boolean;

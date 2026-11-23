@@ -50,6 +50,7 @@ export type Lesson = {
   is_intro: boolean
   zoom_url: string | null
   location: string | null
+  has_guests?: boolean | null  // false = nobody invited on the calendar event (Sam, 2026-11-23)
 }
 
 export type Outcome = 'taught' | 'charge' | 'waive'

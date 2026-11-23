@@ -480,10 +480,11 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
                             ? <a href={l.zoom_url} target="_blank" rel="noreferrer" className={pill('action')}>Join Zoom</a>
                             : inHome ? <a href={directions(s, maps)} target="_blank" rel="noreferrer" className={pill('action')}>Directions</a> : null}
                         </div>
-                        {(live || l.is_intro) && (
-                          <div className="mt-2 flex gap-2 pl-[68px]">
+                        {(live || l.is_intro || l.has_guests === false) && (
+                          <div className="mt-2 flex flex-wrap gap-2 pl-[68px]">
                             {live && <Tag tone="teal">Now</Tag>}
                             {l.is_intro && <Tag tone="amber">Intro</Tag>}
+                            {l.has_guests === false && <Tag tone="amber">No invite sent</Tag>}
                           </div>
                         )}
                         {inHome && (
