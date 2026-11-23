@@ -5,7 +5,7 @@ import type { Session } from '@supabase/supabase-js'
 import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, pill } from '../ui'
 import {
   supabase, loadAll, lessonPay, lessonMinutes,
-  type Data, type Lesson, type Outcome, type Rate, type Report, type Student, type StudentDetails, type Teacher,
+  type Data, type Lesson, type Money, type Outcome, type Rate, type Report, type Student, type StudentDetails, type Teacher,
 } from './data'
 
 // Maestro v0, real data (2026-11-23). Same design rules as the prototype (Nik, 2026-11-16):
@@ -549,7 +549,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
         )}
 
         {data && tab === 'earnings' && teacher.is_admin && (
-          <AdminEarnings lessons={lessons} byId={byId} reportFor={reportFor} rates={data.rates} now={now} />
+          <AdminEarnings lessons={lessons} byId={byId} reportFor={reportFor} rates={data.rates} money={data.money} now={now} />
         )}
 
         {data && tab === 'earnings' && !teacher.is_admin && (
@@ -685,8 +685,8 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
 // The admin sees the month at 100%: what students pay for each lesson, taught and booked
 // (Nik, 2026-11-23: "just show me what i'll get paid at 100%"). Teachers see only their pay.
-function AdminEarnings({ lessons, byId, reportFor, rates, now }: {
-  lessons: Lesson[]; byId: Record<string, Student>; reportFor: Record<string, Report>; rates: Rate[]; now: Date
+function AdminEarnings({ lessons, byId, reportFor, rates, money: m, now }: {
+  lessons: Lesson[]; byId: Record<string, Student>; reportFor: Record<string, Report>; rates: Rate[]; money: Money | null; now: Date
 }) {
   const rateOf = Object.fromEntries(rates.map(r => [r.id, r]))
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -730,23 +730,59 @@ function AdminEarnings({ lessons, byId, reportFor, rates, now }: {
   return (
     <div className="space-y-7">
       <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Earnings</h1>
-      <div className="maestro-keep rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
-        <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">{monthName} so far</div>
-        <div className="text-white text-5xl font-black mt-3 tracking-tight tabular-nums">{money(total(taught))}</div>
-        <div className="text-slate-300 text-sm mt-2">{taught.length} {taught.length === 1 ? 'lesson' : 'lessons'} taught · {money(total(booked))} booked</div>
-        <div className="text-amber-400 text-sm font-semibold">On track for {money(total(rows))}</div>
-      </div>
-      <p className="text-sm text-slate-600 -mt-3 text-pretty">
-        At 100%: what each lesson pays, from the package or one-off payment that covers it in your tracker. Only you see this. Teachers see their own pay.
-      </p>
+      {m ? (
+        <>
+          {/* Nik is paid by Stripe right away, so his headline is money in, the same as the tracker (11/23) */}
+          <div className="maestro-keep rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
+            <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">{m.month} payouts</div>
+            <div className="text-white text-5xl font-black mt-3 tracking-tight tabular-nums">{money(Number(m.collected))}</div>
+            <div className="text-slate-300 text-sm mt-2">{money(Number(m.to_come))} still to come · {m.last_month_name} was {money(Number(m.last_month))}</div>
+            <div className="text-amber-400 text-sm font-semibold">On track for {money(Number(m.collected) + Number(m.to_come))}</div>
+          </div>
+          <p className="text-sm text-slate-600 -mt-3 text-pretty">From Stripe, through your tracker. Only you see this. Teachers see their own pay.</p>
+          {m.payouts.length > 0 && (
+            <section>
+              <Label>Paid this month</Label>
+              <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
+                {m.payouts.map((p, i) => (
+                  <div key={i} className="px-5 py-3.5 flex items-center justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold text-slate-900 truncate">{p.student || 'Not matched yet'}</div>
+                      <div className="text-xs text-slate-600 whitespace-nowrap">{new Date(p.date + 'T12:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                    </div>
+                    <div className="shrink-0 font-black text-slate-900 tabular-nums">{money(Number(p.amount))}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+          {rows.length > 0 && (
+            <p className="text-sm text-slate-600 text-pretty">
+              Lessons this month, by what each one is worth: {money(total(taught))} taught, {money(total(booked))} booked. Packages paid last month cover some of these, so this won&apos;t match payouts.
+            </p>
+          )}
+        </>
+      ) : (
+        <>
+          <div className="maestro-keep rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
+            <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">{monthName} so far</div>
+            <div className="text-white text-5xl font-black mt-3 tracking-tight tabular-nums">{money(total(taught))}</div>
+            <div className="text-slate-300 text-sm mt-2">{taught.length} {taught.length === 1 ? 'lesson' : 'lessons'} taught · {money(total(booked))} booked</div>
+            <div className="text-amber-400 text-sm font-semibold">On track for {money(total(rows))}</div>
+          </div>
+          <p className="text-sm text-slate-600 -mt-3 text-pretty">
+            At 100%: what each lesson pays, from the package or one-off payment that covers it in your tracker. Only you see this. Teachers see their own pay.
+          </p>
+        </>
+      )}
       {unset.length > 0 && (
         <div className="rounded-3xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-950 text-pretty">
           No monthly figure yet for {unset.join(', ')}. Set it in the tracker&apos;s Finance tab and it shows up after the next sync.
         </div>
       )}
       {rows.length === 0 && <Empty title={`No lessons in ${monthName}`} text="Lessons on the Steady Steps calendar show up here." />}
-      {list('Booked', booked)}
-      {list('Taught', taught)}
+      {list(m ? 'Lessons booked' : 'Booked', booked)}
+      {list(m ? 'Lessons taught' : 'Taught', taught)}
     </div>
   )
 }

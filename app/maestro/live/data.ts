@@ -92,13 +92,14 @@ export async function loadAll(db: SupabaseClient) {
   const now = new Date()
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1)
   const until = new Date(Math.max(monthEnd.getTime(), Date.now() + 15 * 864e5)).toISOString()
-  const [students, lessons, reports, recaps, sync, rates] = await Promise.all([
+  const [students, lessons, reports, recaps, sync, rates, money] = await Promise.all([
     db.from('students').select('*').in('status', ['active', 'paused', 'intro']).order('name'),  // intro = prospect booked for an intro, not on the roster yet
     db.from('lessons').select('*').eq('cancelled', false).gte('starts_at', since).lte('starts_at', until).order('starts_at'),
     db.from('lesson_reports').select('*').gte('lesson_starts_at', new Date(Date.now() - 70 * 864e5).toISOString()).order('lesson_starts_at', { ascending: false }),
     db.from('recaps').select('*').order('sent_at', { ascending: false }),
     db.from('sync_status').select('*').eq('id', 'tracker').maybeSingle(),
     db.from('student_rates').select('*'), // empty for teachers; a missing table is not fatal
+    db.from('admin_money').select('*').eq('id', 'current').maybeSingle(), // admin only, same
   ])
   const err = students.error || lessons.error || reports.error || recaps.error || sync.error
   if (err) throw err
@@ -109,6 +110,12 @@ export async function loadAll(db: SupabaseClient) {
     recaps: (recaps.data ?? []) as Recap[],
     syncedAt: (sync.data?.last_synced_at as string | undefined) ?? null,
     rates: (rates.error ? [] : rates.data ?? []) as Rate[],
+    money: (money.error ? null : money.data ?? null) as Money | null,
   }
+}
+// Money in this month, from the tracker's money bar (it matches Stripe). Admin only.
+export type Money = {
+  month: string; collected: number; to_come: number; last_month: number; last_month_name: string
+  payouts: { date: string; amount: number; student: string }[]; updated_at: string
 }
 export type Data = Awaited<ReturnType<typeof loadAll>>
