@@ -66,7 +66,7 @@ const missingDetails = (s: Student) => !s.instrument || !s.format
 type Theme = 'Light' | 'Dark' | 'Match phone'
 const THEME_KEY = 'maestro-theme'
 
-function useTheme(): [Theme, (t: Theme) => void] {
+function useTheme(): [Theme, (t: Theme, fromAccount?: boolean) => void] {
   const [theme, setThemeState] = useState<Theme>('Light')
   useEffect(() => {
     try {
@@ -81,8 +81,21 @@ function useTheme(): [Theme, (t: Theme) => void] {
     mq.addEventListener('change', apply)
     return () => { mq.removeEventListener('change', apply); document.documentElement.classList.remove('maestro-dark') }
   }, [theme])
-  const setTheme = (t: Theme) => { setThemeState(t); try { localStorage.setItem(THEME_KEY, t) } catch { /* private mode */ } }
+  const setTheme = (t: Theme, fromAccount = false) => {
+    setThemeState(t)
+    try { localStorage.setItem(THEME_KEY, t) } catch { /* private mode */ }
+    if (!fromAccount) savePref('theme', t)
+  }
   return [theme, setTheme]
+}
+
+// Preferences are saved to the teacher's account too (Nik browses in private mode, where the
+// browser forgets them). Each save sends the whole prefs object; a teacher can change only this.
+let accountPrefs: { id: string; prefs: Record<string, string> } | null = null
+function savePref(key: string, value: string) {
+  if (!accountPrefs || !supabase) return
+  accountPrefs.prefs = { ...accountPrefs.prefs, [key]: value }
+  supabase.from('teachers').update({ prefs: accountPrefs.prefs }).eq('id', accountPrefs.id).then(() => {})
 }
 
 // ---------- Gate: config, sign in, teacher check ----------
@@ -226,12 +239,20 @@ function SignIn() {
   )
 }
 
-function TeacherGate({ session, theme, setTheme }: { session: Session; theme: Theme; setTheme: (t: Theme) => void }) {
+function TeacherGate({ session, theme, setTheme }: { session: Session; theme: Theme; setTheme: (t: Theme, fromAccount?: boolean) => void }) {
   const [teacher, setTeacher] = useState<Teacher | null | undefined>(undefined)
   useEffect(() => {
     supabase!.from('teachers').select('*').ilike('email', session.user.email ?? '').maybeSingle()
-      .then(({ data }) => setTeacher((data as Teacher) ?? null))
-  }, [session])
+      .then(({ data }) => {
+        const t = (data as Teacher) ?? null
+        if (t) {
+          accountPrefs = { id: t.id, prefs: (t.prefs ?? {}) as Record<string, string> }
+          const saved = t.prefs?.theme
+          if (saved === 'Light' || saved === 'Dark' || saved === 'Match phone') setTheme(saved, true)
+        }
+        setTeacher(t)
+      })
+  }, [session]) // eslint-disable-line react-hooks/exhaustive-deps
   if (teacher === undefined) return <Shell><p className="text-center text-slate-600 py-16">Loading…</p></Shell>
   if (!teacher) {
     return (
@@ -246,7 +267,7 @@ function TeacherGate({ session, theme, setTheme }: { session: Session; theme: Th
 
 // ---------- App ----------
 
-function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; setTheme: (t: Theme) => void }) {
+function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; setTheme: (t: Theme, fromAccount?: boolean) => void }) {
   const [tab, setTab] = useState<Tab>('home')
   const [overlay, setOverlay] = useState<Overlay>(null)
   const [data, setData] = useState<Data | null>(null)
@@ -269,10 +290,12 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
   useEffect(() => {
     const first = setTimeout(refresh, 0)
-    try { if (localStorage.getItem(MAPS_KEY) === 'Google Maps') setTimeout(() => setMapsState('Google Maps'), 0) } catch { /* private mode */ }
+    let savedMaps = teacher.prefs?.maps
+    try { savedMaps = savedMaps ?? localStorage.getItem(MAPS_KEY) ?? undefined } catch { /* private mode */ }
+    if (savedMaps === 'Google Maps') setTimeout(() => setMapsState('Google Maps'), 0)
     const t = setInterval(() => setNow(new Date()), 60000)
     return () => { clearTimeout(first); clearInterval(t) }
-  }, [refresh])
+  }, [refresh, teacher])
 
   // Coming back to the app re-reads the data, but never while a panel is open (no surprise
   // changes mid-task; Nik disliked the tracker's old auto-reload)
@@ -288,7 +311,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
     return () => clearTimeout(t)
   }, [toast])
 
-  const setMaps = (m: MapsApp) => { setMapsState(m); try { localStorage.setItem(MAPS_KEY, m) } catch { /* private mode */ } }
+  const setMaps = (m: MapsApp) => { setMapsState(m); try { localStorage.setItem(MAPS_KEY, m) } catch { /* private mode */ } savePref('maps', m) }
 
   const students = useMemo(() => data?.students ?? [], [data])
   const byId = useMemo(() => Object.fromEntries(students.map(s => [s.id, s])), [students])

@@ -166,3 +166,10 @@ revoke insert, update, delete on student_rates from authenticated, anon;
 -- Maestro 003 (2026-11-23): price per lesson day from the tracker's package boxes
 -- (a lesson in a $65 one-off box is $65, one in a $520 package of 4 is $130). Admin-only, same table.
 alter table student_rates add column if not exists by_date jsonb;
+-- Maestro 004 (2026-11-23): per-teacher preferences (dark mode, maps app) saved to the account,
+-- so they follow the teacher across devices and private browsing. A teacher can change only
+-- their own prefs, nothing else on their teacher row.
+alter table teachers add column if not exists prefs jsonb not null default '{}'::jsonb;
+drop policy if exists "edit own prefs" on teachers;
+create policy "edit own prefs" on teachers for update to authenticated using (id = my_teacher_id()) with check (id = my_teacher_id());
+grant update (prefs) on teachers to authenticated;
