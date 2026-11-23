@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, Toggle, pill } from '../ui'
+import { useIsAdmin } from './useIsAdmin'
 
 // PROTOTYPE (2026-11-16). Clickable sketch of the teacher side. All data below
 // is invented and lives in component state: a refresh resets it. Teachers see
@@ -238,6 +239,7 @@ export default function MaestroApp() {
   const [minutesLeft, setMinutesLeft] = useState(21 * 60 + 14)
   const [moved, setMoved] = useState<Record<string, string>>({}) // lessonId -> what was asked
   const [demo, setDemo] = useState<Demo>('normal') // prototype-only preview switch
+  const isAdmin = useIsAdmin() // the Admin view link is only for Nik, not prospective teachers
   const [openStudent, setOpenStudent] = useState<string | null>(null)
   const profile = useProfile()
   const close = () => setOverlay(null)
@@ -317,7 +319,7 @@ export default function MaestroApp() {
               {label}
             </button>
           ))}
-          <a href="/maestro/demo/admin" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Admin view</a>
+          {isAdmin && <a href="/maestro/demo/admin" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Admin view</a>}
         </div>
       </div>
 
