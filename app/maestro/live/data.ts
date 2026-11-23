@@ -66,7 +66,7 @@ export type Report = {
 }
 
 // Admin only (RLS): what a student pays per lesson, from the tracker's monthly figure
-export type Rate = { id: string; monthly_rate: number | null; lessons_per_month: number; lesson_rate: number; source: string | null }
+export type Rate = { id: string; monthly_rate: number | null; lessons_per_month: number; lesson_rate: number; source: string | null; by_date?: Record<string, number> | null }
 
 export type Recap = { id: string; student_id: string; sent_at: string; subject: string | null; body: string | null }
 

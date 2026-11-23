@@ -1,0 +1,67 @@
+/* Maestro dark mode (2026-11-23, Nik: "a dark mode for maestro, just as an option").
+   Tailwind v4 utilities read --color-* variables, so dark mode swaps the palette instead of
+   adding dark: classes everywhere. Scoped to html.maestro-dark, which only the real Maestro
+   app sets, so the rest of the site never changes. .maestro-keep holds the original colors
+   for parts that are already dark (the header, the big gradient cards). */
+html.maestro-dark { background: #020617; color-scheme: dark; }
+html.maestro-dark body {
+  background: #020617;
+  color: #f8fafc;
+  --color-white: #0f172a;
+  --color-slate-50: #020617;
+  --color-slate-100: #1e293b;
+  --color-slate-200: #334155;
+  --color-slate-300: #475569;
+  --color-slate-400: #64748b;
+  --color-slate-500: #94a3b8;
+  --color-slate-600: #94a3b8;
+  --color-slate-700: #cbd5e1;
+  --color-slate-800: #e2e8f0;
+  --color-slate-900: #f8fafc;
+  --color-teal-50: #042f2e;
+  --color-teal-100: #134e4a;
+  --color-teal-200: #115e59;
+  --color-teal-700: #5eead4;
+  --color-teal-800: #99f6e4;
+  --color-teal-900: #ccfbf1;
+  --color-amber-50: #451a03;
+  --color-amber-100: #78350f;
+  --color-amber-200: #92400e;
+  --color-amber-300: #b45309;
+  --color-amber-900: #fef3c7;
+  --color-amber-950: #fffbeb;
+  --color-red-50: #450a0a;
+  --color-red-200: #991b1b;
+  --color-red-700: #fca5a5;
+  --color-red-950: #fef2f2;
+}
+html.maestro-dark .maestro-keep {
+  --color-white: #ffffff;
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-700: #0f766e;
+  --color-teal-800: #115e59;
+  --color-teal-900: #134e4a;
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-900: #78350f;
+  --color-amber-950: #451a03;
+  --color-red-50: #fef2f2;
+  --color-red-200: #fecaca;
+  --color-red-700: #b91c1c;
+  --color-red-950: #450a0a;
+}
+html.maestro-dark input, html.maestro-dark textarea { background: #0f172a; color: #f8fafc; }

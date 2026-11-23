@@ -36,6 +36,9 @@ const time = (iso: string) => new Date(iso).toLocaleTimeString('en-US', { hour: 
 const shortDay = (iso: string) => new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
 const monthDay = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 const dayKey = (d: Date) => d.toDateString()
+const localIso = (iso: string) => { const d = new Date(iso); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` }
+// What this lesson pays at 100%: the price of the payment box it falls in, else the package rate
+const priceOf = (l: Lesson, r?: Rate) => (r ? r.by_date?.[localIso(l.starts_at)] ?? Number(r.lesson_rate) : undefined)
 function dayLabel(iso: string, now: Date) {
   const d = new Date(iso)
   if (dayKey(d) === dayKey(now)) return 'Today'
@@ -58,10 +61,35 @@ const who = (s: Student) => (s.contact_label ? s.contact_label.replace(/^Parent:
 const sub = (s: Student, minutes?: number) => [s.instrument ?? s.inquiry_instrument, minutes ? `${minutes} min` : s.default_minutes ? `${s.default_minutes} min` : null].filter(Boolean).join(' · ')
 const missingDetails = (s: Student) => !s.instrument || !s.format
 
+// ---------- Theme ----------
+
+type Theme = 'Light' | 'Dark' | 'Match phone'
+const THEME_KEY = 'maestro-theme'
+
+function useTheme(): [Theme, (t: Theme) => void] {
+  const [theme, setThemeState] = useState<Theme>('Light')
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(THEME_KEY) as Theme | null
+      if (saved === 'Dark' || saved === 'Match phone') setTimeout(() => setThemeState(saved), 0)
+    } catch { /* private mode: stay light */ }
+  }, [])
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const apply = () => document.documentElement.classList.toggle('maestro-dark', theme === 'Dark' || (theme === 'Match phone' && mq.matches))
+    apply()
+    mq.addEventListener('change', apply)
+    return () => { mq.removeEventListener('change', apply); document.documentElement.classList.remove('maestro-dark') }
+  }, [theme])
+  const setTheme = (t: Theme) => { setThemeState(t); try { localStorage.setItem(THEME_KEY, t) } catch { /* private mode */ } }
+  return [theme, setTheme]
+}
+
 // ---------- Gate: config, sign in, teacher check ----------
 
 export default function LiveApp() {
   const [session, setSession] = useState<Session | null | undefined>(undefined)
+  const [theme, setTheme] = useTheme()
 
   useEffect(() => {
     if (!supabase) return
@@ -75,13 +103,13 @@ export default function LiveApp() {
   }
   if (session === undefined) return <Shell><p className="text-center text-slate-600 py-16">Loading…</p></Shell>
   if (!session) return <SignIn />
-  return <TeacherGate session={session} />
+  return <TeacherGate session={session} theme={theme} setTheme={setTheme} />
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="bg-slate-900">
+      <header className="maestro-keep bg-slate-900">
         <div className="max-w-3xl mx-auto px-5 h-16 flex items-center gap-3">
           <Stairs />
           <div className="leading-tight">
@@ -198,7 +226,7 @@ function SignIn() {
   )
 }
 
-function TeacherGate({ session }: { session: Session }) {
+function TeacherGate({ session, theme, setTheme }: { session: Session; theme: Theme; setTheme: (t: Theme) => void }) {
   const [teacher, setTeacher] = useState<Teacher | null | undefined>(undefined)
   useEffect(() => {
     supabase!.from('teachers').select('*').ilike('email', session.user.email ?? '').maybeSingle()
@@ -213,12 +241,12 @@ function TeacherGate({ session }: { session: Session }) {
       </Shell>
     )
   }
-  return <App teacher={teacher} />
+  return <App teacher={teacher} theme={theme} setTheme={setTheme} />
 }
 
 // ---------- App ----------
 
-function App({ teacher }: { teacher: Teacher }) {
+function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; setTheme: (t: Theme) => void }) {
   const [tab, setTab] = useState<Tab>('home')
   const [overlay, setOverlay] = useState<Overlay>(null)
   const [data, setData] = useState<Data | null>(null)
@@ -295,12 +323,12 @@ function App({ teacher }: { teacher: Teacher }) {
     { id: 'messages', label: 'Messages' },
   ]
 
-  const rateOf = useMemo(() => Object.fromEntries((data?.rates ?? []).map(r => [r.id, Number(r.lesson_rate)])), [data])
+  const rateOf = useMemo(() => Object.fromEntries((data?.rates ?? []).map(r => [r.id, r])), [data])
   // The owner keeps 100% (Nik, 2026-11-23: "i'm the 100% because im the owner"); teachers see their card pay
   const payFor = (l: Lesson) => {
     const base = lessonPay(l, byId[l.student_id])
     if (!teacher.is_admin) return base
-    return { ...base, pay: l.is_intro ? 0 : rateOf[l.student_id] ?? 0 }
+    return { ...base, pay: l.is_intro ? 0 : priceOf(l, rateOf[l.student_id]) ?? 0 }
   }
 
   async function submitReport(l: Lesson, outcome: Outcome, notes: string) {
@@ -327,7 +355,7 @@ function App({ teacher }: { teacher: Teacher }) {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-28 md:pb-10">
-      <header className="sticky top-0 z-40 bg-slate-900 border-b border-slate-800">
+      <header className="maestro-keep sticky top-0 z-40 bg-slate-900 border-b border-slate-800">
         <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Stairs />
@@ -341,7 +369,7 @@ function App({ teacher }: { teacher: Teacher }) {
               <button key={t.id} type="button" onClick={() => setTab(t.id)}
                 className={`min-h-11 px-4 rounded-full text-sm font-bold transition-colors ${tab === t.id ? 'bg-slate-800 text-teal-400' : 'text-slate-300 hover:text-white'}`}>
                 {t.label}
-                {!!t.badge && <span className="ml-2 bg-amber-500 text-slate-900 text-[11px] font-bold px-1.5 py-0.5 rounded-full">{t.badge}</span>}
+                {!!t.badge && <span className="ml-2 bg-amber-500 text-slate-950 text-[11px] font-bold px-1.5 py-0.5 rounded-full">{t.badge}</span>}
               </button>
             ))}
           </nav>
@@ -501,7 +529,7 @@ function App({ teacher }: { teacher: Teacher }) {
         {data && tab === 'earnings' && !teacher.is_admin && (
           <div className="space-y-7">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Earnings</h1>
-            <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
+            <div className="maestro-keep rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
               <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">{monthName} at the teacher rate</div>
               <div className="text-white text-5xl font-black mt-3 tracking-tight tabular-nums">{money(sum(thisMonth))}</div>
               <div className="text-slate-300 text-sm mt-2">{thisMonth.length} {thisMonth.length === 1 ? 'lesson' : 'lessons'} finished · last month {money(sum(lastMonth))}</div>
@@ -568,7 +596,7 @@ function App({ teacher }: { teacher: Teacher }) {
             className={`relative flex flex-col items-center gap-0.5 py-1.5 rounded-full text-[11px] font-bold ${tab === t.id ? 'bg-teal-50 text-teal-800' : 'text-slate-600'}`}>
             <Icon name={t.id} />
             {t.label}
-            {!!t.badge && <span className="absolute top-0.5 left-1/2 ml-2 bg-amber-500 text-slate-900 text-[10px] font-bold px-1.5 rounded-full">{t.badge}</span>}
+            {!!t.badge && <span className="absolute top-0.5 left-1/2 ml-2 bg-amber-500 text-slate-950 text-[10px] font-bold px-1.5 rounded-full">{t.badge}</span>}
           </button>
         ))}
       </nav>
@@ -594,6 +622,10 @@ function App({ teacher }: { teacher: Teacher }) {
                 <div className="font-black text-slate-900 text-lg">{teacher.name}</div>
                 <div className="text-sm text-slate-600 truncate">{teacher.email}</div>
               </div>
+            </div>
+            <div>
+              <Label>Appearance</Label>
+              <Chips options={['Light', 'Dark', 'Match phone']} picked={[theme]} onToggle={o => setTheme(o as Theme)} />
             </div>
             <div>
               <Label>Directions open in</Label>
@@ -638,7 +670,7 @@ function AdminEarnings({ lessons, byId, reportFor, rates, now }: {
     .filter(l => { const d = new Date(l.starts_at); return d >= monthStart && d < monthEnd })
     .map(l => {
       const r = reportFor[l.id]
-      const rate = rateOf[l.student_id]?.lesson_rate
+      const rate = priceOf(l, rateOf[l.student_id])
       const past = new Date(l.ends_at) <= now
       const status = l.is_intro ? 'Intro' : r?.outcome === 'waive' ? 'Missed, let go' : r?.outcome === 'charge' ? 'Missed, counted' : r ? 'Finished' : past ? 'From calendar' : 'Booked'
       const amount = l.is_intro || r?.outcome === 'waive' ? 0 : rate ?? null
@@ -672,14 +704,14 @@ function AdminEarnings({ lessons, byId, reportFor, rates, now }: {
   return (
     <div className="space-y-7">
       <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Earnings</h1>
-      <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
+      <div className="maestro-keep rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
         <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">{monthName} so far</div>
         <div className="text-white text-5xl font-black mt-3 tracking-tight tabular-nums">{money(total(taught))}</div>
         <div className="text-slate-300 text-sm mt-2">{taught.length} {taught.length === 1 ? 'lesson' : 'lessons'} taught · {money(total(booked))} booked</div>
         <div className="text-amber-400 text-sm font-semibold">On track for {money(total(rows))}</div>
       </div>
       <p className="text-sm text-slate-600 -mt-3 text-pretty">
-        At 100%: what each student pays per lesson, from their newest package in your tracker. Only you see this. Teachers see their own pay.
+        At 100%: what each lesson pays, from the package or one-off payment that covers it in your tracker. Only you see this. Teachers see their own pay.
       </p>
       {unset.length > 0 && (
         <div className="rounded-3xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-950 text-pretty">

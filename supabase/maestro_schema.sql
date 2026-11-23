@@ -163,3 +163,6 @@ alter table student_rates enable row level security;
 drop policy if exists "admin reads" on student_rates;
 create policy "admin reads" on student_rates for select to authenticated using (i_am_admin());
 revoke insert, update, delete on student_rates from authenticated, anon;
+-- Maestro 003 (2026-11-23): price per lesson day from the tracker's package boxes
+-- (a lesson in a $65 one-off box is $65, one in a $520 package of 4 is $130). Admin-only, same table.
+alter table student_rates add column if not exists by_date jsonb;

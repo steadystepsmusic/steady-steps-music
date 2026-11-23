@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import LiveApp from './live/LiveApp'
+import './maestro-theme.css'
 
 // Maestro v0 (2026-11-23): the real teacher app, signed in, with real data from Supabase.
 // Nik is teacher #1 and uses it with his own students to R&D it. The clickable prototype

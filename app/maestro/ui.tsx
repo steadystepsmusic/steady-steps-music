@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 
 export const PILL = 'inline-flex items-center justify-center gap-1.5 min-h-11 px-4 rounded-full text-sm font-bold whitespace-nowrap transition-colors'
 export const KIND = {
-  primary: 'bg-amber-500 hover:bg-amber-400 text-slate-900 disabled:bg-slate-200 disabled:text-slate-500',
+  primary: 'bg-amber-500 hover:bg-amber-400 text-slate-950 disabled:bg-slate-200 disabled:text-slate-500',
   action: 'bg-slate-900 hover:bg-slate-800 text-white disabled:bg-slate-200 disabled:text-slate-500',
   outline: 'bg-white border-2 border-slate-300 hover:border-slate-500 text-slate-800',
 }
@@ -64,7 +64,7 @@ export function Sheet({ title, onClose, children }: { title: string; onClose: ()
   }, [onClose])
 
   return (
-    <div className="fixed inset-x-0 top-0 h-dvh z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-x-0 top-0 h-dvh z-50 flex items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-sm" onClick={onClose}>
       <div
         className="bg-white w-full sm:max-w-lg max-h-[88dvh] flex flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl shadow-2xl"
         onClick={e => e.stopPropagation()}
