@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Avatar, Btn, Choice, Label, Sheet, Stairs, Tag } from '../ui'
+import { Avatar, Btn, Choice, Label, Sheet, Stairs, Tag } from '../../ui'
 
 // PROTOTYPE (2026-11-16). The admin side: what Nik (and later an admin hire)
 // sees. Invented data in component state; a refresh resets it. Unlike the
@@ -166,7 +166,7 @@ export default function AdminApp() {
     <div className="min-h-screen bg-slate-50 pb-28 md:pb-10">
       <div className="bg-amber-400 text-slate-900 text-xs font-bold px-4 py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
         <span className="whitespace-nowrap">PROTOTYPE · Made-up data</span>
-        <a href="/maestro" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Teacher view</a>
+        <a href="/maestro/demo" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Teacher view</a>
       </div>
 
       <header className="sticky top-0 z-40 bg-slate-900 border-b border-slate-800">

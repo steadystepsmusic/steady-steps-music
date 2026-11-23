@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, Toggle, pill } from './ui'
+import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, Toggle, pill } from '../ui'
 
 // PROTOTYPE (2026-11-16). Clickable sketch of the teacher side. All data below
 // is invented and lives in component state: a refresh resets it. Teachers see
@@ -317,7 +317,7 @@ export default function MaestroApp() {
               {label}
             </button>
           ))}
-          <a href="/maestro/admin" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Admin view</a>
+          <a href="/maestro/demo/admin" className="min-h-8 px-3 inline-flex items-center rounded-full border-2 border-slate-900 text-slate-900 whitespace-nowrap">Admin view</a>
         </div>
       </div>
 
