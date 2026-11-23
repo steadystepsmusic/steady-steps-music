@@ -5,7 +5,7 @@ import type { Session } from '@supabase/supabase-js'
 import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, pill } from '../ui'
 import {
   supabase, loadAll, lessonPay, lessonMinutes,
-  type Data, type Lesson, type Outcome, type Report, type Student, type StudentDetails, type Teacher,
+  type Data, type Lesson, type Outcome, type Rate, type Report, type Student, type StudentDetails, type Teacher,
 } from './data'
 
 // Maestro v0, real data (2026-11-23). Same design rules as the prototype (Nik, 2026-11-16):
@@ -295,9 +295,16 @@ function App({ teacher }: { teacher: Teacher }) {
     { id: 'messages', label: 'Messages' },
   ]
 
+  const rateOf = useMemo(() => Object.fromEntries((data?.rates ?? []).map(r => [r.id, Number(r.lesson_rate)])), [data])
+  // The owner keeps 100% (Nik, 2026-11-23: "i'm the 100% because im the owner"); teachers see their card pay
+  const payFor = (l: Lesson) => {
+    const base = lessonPay(l, byId[l.student_id])
+    if (!teacher.is_admin) return base
+    return { ...base, pay: l.is_intro ? 0 : rateOf[l.student_id] ?? 0 }
+  }
+
   async function submitReport(l: Lesson, outcome: Outcome, notes: string) {
-    const s = byId[l.student_id]
-    const { minutes, pay } = lessonPay(l, s)
+    const { minutes, pay } = payFor(l)
     const row = {
       lesson_id: l.id, student_id: l.student_id, lesson_starts_at: l.starts_at, outcome,
       notes: notes.trim() || null, minutes, teacher_pay: outcome === 'waive' ? 0 : pay,
@@ -307,7 +314,7 @@ function App({ teacher }: { teacher: Teacher }) {
     if (error) { setToast('Not saved. Check your connection and try again.'); return false } // the panel stays open, nothing is lost
     const was = reportFor[l.id]
     close()
-    setToast(was ? 'Lesson updated.' : outcome === 'waive' ? 'Submitted. The student keeps the lesson.' : `Submitted. ${money(row.teacher_pay)} at the teacher rate.`)
+    setToast(was ? 'Lesson updated.' : outcome === 'waive' ? 'Submitted. The student keeps the lesson.' : `Submitted. ${money(row.teacher_pay)} for this lesson.`)
     refresh()
     return true
   }
@@ -487,7 +494,11 @@ function App({ teacher }: { teacher: Teacher }) {
           </div>
         )}
 
-        {data && tab === 'earnings' && (
+        {data && tab === 'earnings' && teacher.is_admin && (
+          <AdminEarnings lessons={lessons} byId={byId} reportFor={reportFor} rates={data.rates} now={now} />
+        )}
+
+        {data && tab === 'earnings' && !teacher.is_admin && (
           <div className="space-y-7">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Earnings</h1>
             <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
@@ -567,7 +578,7 @@ function App({ teacher }: { teacher: Teacher }) {
         if (!l) return null
         const s = byId[l.student_id]
         const lastNote = reports.find(r => r.student_id === s.id && r.lesson_id !== l.id && r.notes)
-        return <FinishSheet lesson={l} s={s} previous={reportFor[l.id]} lastNote={lastNote} onClose={close} onSubmit={submitReport} />
+        return <FinishSheet lesson={l} s={s} pay={payFor(l).pay} owner={teacher.is_admin} previous={reportFor[l.id]} lastNote={lastNote} onClose={close} onSubmit={submitReport} />
       })()}
       {overlay?.kind === 'edit' && byId[overlay.studentId] && (
         <EditSheet s={byId[overlay.studentId]} onClose={close} onSave={saveDetails}
@@ -613,6 +624,74 @@ function App({ teacher }: { teacher: Teacher }) {
 }
 
 // ---------- Pieces ----------
+
+// The admin sees the month at 100%: what students pay for each lesson, taught and booked
+// (Nik, 2026-11-23: "just show me what i'll get paid at 100%"). Teachers see only their pay.
+function AdminEarnings({ lessons, byId, reportFor, rates, now }: {
+  lessons: Lesson[]; byId: Record<string, Student>; reportFor: Record<string, Report>; rates: Rate[]; now: Date
+}) {
+  const rateOf = Object.fromEntries(rates.map(r => [r.id, r]))
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+  const monthName = now.toLocaleDateString('en-US', { month: 'long' })
+  const rows = lessons
+    .filter(l => { const d = new Date(l.starts_at); return d >= monthStart && d < monthEnd })
+    .map(l => {
+      const r = reportFor[l.id]
+      const rate = rateOf[l.student_id]?.lesson_rate
+      const past = new Date(l.ends_at) <= now
+      const status = l.is_intro ? 'Intro' : r?.outcome === 'waive' ? 'Missed, let go' : r?.outcome === 'charge' ? 'Missed, counted' : r ? 'Finished' : past ? 'From calendar' : 'Booked'
+      const amount = l.is_intro || r?.outcome === 'waive' ? 0 : rate ?? null
+      return { l, past, status, amount }
+    })
+  const taught = rows.filter(r => r.past).reverse()
+  const booked = rows.filter(r => !r.past)
+  const total = (rs: typeof rows) => rs.reduce((a, r) => a + (r.amount ?? 0), 0)
+  const unset = [...new Set(rows.filter(r => r.amount === null).map(r => byId[r.l.student_id]?.name))]
+
+  const list = (title: string, items: typeof rows) => items.length === 0 ? null : (
+    <section>
+      <Label>{title}</Label>
+      <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
+        {items.map(({ l, status, amount }) => (
+          <div key={l.id} className="px-5 py-3.5 flex items-center justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <div className="font-bold text-slate-900 truncate">{byId[l.student_id]?.name}</div>
+              <div className="text-xs text-slate-600 whitespace-nowrap">{shortDay(l.starts_at)} · {time(l.starts_at)}</div>
+            </div>
+            <div className="shrink-0 flex flex-col items-end gap-1">
+              <div className="font-black text-slate-900 tabular-nums">{amount === null ? 'No rate' : money(amount)}</div>
+              <Tag tone={status === 'Finished' ? 'teal' : status === 'Booked' || status === 'From calendar' ? 'slate' : 'amber'}>{status}</Tag>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+
+  return (
+    <div className="space-y-7">
+      <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Earnings</h1>
+      <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
+        <div className="text-teal-400 text-xs font-bold uppercase tracking-widest">{monthName} so far</div>
+        <div className="text-white text-5xl font-black mt-3 tracking-tight tabular-nums">{money(total(taught))}</div>
+        <div className="text-slate-300 text-sm mt-2">{taught.length} {taught.length === 1 ? 'lesson' : 'lessons'} taught · {money(total(booked))} booked</div>
+        <div className="text-amber-400 text-sm font-semibold">On track for {money(total(rows))}</div>
+      </div>
+      <p className="text-sm text-slate-600 -mt-3 text-pretty">
+        At 100%: what each student pays per lesson, from their newest package in your tracker. Only you see this. Teachers see their own pay.
+      </p>
+      {unset.length > 0 && (
+        <div className="rounded-3xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-950 text-pretty">
+          No monthly figure yet for {unset.join(', ')}. Set it in the tracker&apos;s Finance tab and it shows up after the next sync.
+        </div>
+      )}
+      {rows.length === 0 && <Empty title={`No lessons in ${monthName}`} text="Lessons on the Steady Steps calendar show up here." />}
+      {list('Booked', booked)}
+      {list('Taught', taught)}
+    </div>
+  )
+}
 
 // new-password lets Safari suggest a strong password and save it to iCloud Keychain
 function PasswordSetup({ email, onToast }: { email: string; onToast: (m: string) => void }) {
@@ -779,9 +858,11 @@ function Note({ date, by, text }: { date: string; by: string; text: string }) {
   )
 }
 
-function FinishSheet({ lesson, s, previous, lastNote, onClose, onSubmit }: {
+function FinishSheet({ lesson, s, pay, owner, previous, lastNote, onClose, onSubmit }: {
   lesson: Lesson
   s: Student
+  pay: number
+  owner: boolean
   previous?: Report
   lastNote?: Report
   onClose: () => void
@@ -792,7 +873,7 @@ function FinishSheet({ lesson, s, previous, lastNote, onClose, onSubmit }: {
   const [missed, setMissed] = useState<'charge' | 'waive' | null>(was && was !== 'taught' ? was : null)
   const [notes, setNotes] = useState(previous?.notes ?? '')
   const [busy, setBusy] = useState(false)
-  const { pay, label } = lessonPay(lesson, s)
+  const { label } = lessonPay(lesson, s)
 
   const go = async (o: Outcome) => { setBusy(true); await onSubmit(lesson, o, notes); setBusy(false) }
 
@@ -829,7 +910,7 @@ function FinishSheet({ lesson, s, previous, lastNote, onClose, onSubmit }: {
               <p className="text-xs text-slate-600 mt-2 text-pretty">Notes stay with the student and show in your tracker on the Mac.</p>
             </div>
             <div className="bg-slate-50 rounded-2xl border border-slate-100 p-4 flex items-center justify-between gap-3">
-              <span className="text-slate-600 text-sm whitespace-nowrap">{lesson.is_intro ? 'Intro pay is not decided yet' : 'At the teacher rate'}</span>
+              <span className="text-slate-600 text-sm whitespace-nowrap">{lesson.is_intro ? (owner ? 'Intro lesson' : 'Intro pay is not decided yet') : owner ? 'This lesson pays you' : 'At the teacher rate'}</span>
               <span className="text-2xl font-black text-slate-900 tabular-nums">{money(pay)}</span>
             </div>
             <Btn kind="primary" className="w-full" disabled={busy || !notes.trim()} onClick={() => go('taught')}>
@@ -841,8 +922,8 @@ function FinishSheet({ lesson, s, previous, lastNote, onClose, onSubmit }: {
         {outcome === 'missed' && (
           <>
             <div className="space-y-3">
-              <Choice active={missed === 'charge'} onClick={() => setMissed('charge')} title="Count the lesson" desc={`The student uses a lesson. Teacher rate ${money(pay)}.`} />
-              <Choice active={missed === 'waive'} onClick={() => setMissed('waive')} title="Let it go this time" desc="The student keeps the lesson. No teacher pay." />
+              <Choice active={missed === 'charge'} onClick={() => setMissed('charge')} title="Count the lesson" desc={`The student uses a lesson. You are paid ${money(pay)}.`} />
+              <Choice active={missed === 'waive'} onClick={() => setMissed('waive')} title="Let it go this time" desc="The student keeps the lesson. No pay for it." />
             </div>
             <div>
               <label htmlFor="mnotes" className="block text-sm font-bold text-slate-900 mb-2">Note <span className="font-medium text-slate-500">(optional)</span></label>

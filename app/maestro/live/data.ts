@@ -65,6 +65,9 @@ export type Report = {
   submitted_at: string
 }
 
+// Admin only (RLS): what a student pays per lesson, from the tracker's monthly figure
+export type Rate = { id: string; monthly_rate: number | null; lessons_per_month: number; lesson_rate: number; source: string | null }
+
 export type Recap = { id: string; student_id: string; sent_at: string; subject: string | null; body: string | null }
 
 // Teacher pay on the $2/min card at the fixed 70/30 split, rounded down (Nik, 2026-11-17).
@@ -84,13 +87,17 @@ export function lessonPay(l: Lesson, s: Student | undefined) {
 
 export async function loadAll(db: SupabaseClient) {
   const since = new Date(Date.now() - 45 * 864e5).toISOString()
-  const until = new Date(Date.now() + 15 * 864e5).toISOString()
-  const [students, lessons, reports, recaps, sync] = await Promise.all([
+  // Through the end of this month (for Earnings), and at least two weeks out (for Home)
+  const now = new Date()
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+  const until = new Date(Math.max(monthEnd.getTime(), Date.now() + 15 * 864e5)).toISOString()
+  const [students, lessons, reports, recaps, sync, rates] = await Promise.all([
     db.from('students').select('*').in('status', ['active', 'paused']).order('name'),
     db.from('lessons').select('*').eq('cancelled', false).gte('starts_at', since).lte('starts_at', until).order('starts_at'),
     db.from('lesson_reports').select('*').gte('lesson_starts_at', new Date(Date.now() - 70 * 864e5).toISOString()).order('lesson_starts_at', { ascending: false }),
     db.from('recaps').select('*').order('sent_at', { ascending: false }),
     db.from('sync_status').select('*').eq('id', 'tracker').maybeSingle(),
+    db.from('student_rates').select('*'), // empty for teachers; a missing table is not fatal
   ])
   const err = students.error || lessons.error || reports.error || recaps.error || sync.error
   if (err) throw err
@@ -100,6 +107,7 @@ export async function loadAll(db: SupabaseClient) {
     reports: (reports.data ?? []) as Report[],
     recaps: (recaps.data ?? []) as Recap[],
     syncedAt: (sync.data?.last_synced_at as string | undefined) ?? null,
+    rates: (rates.error ? [] : rates.data ?? []) as Rate[],
   }
 }
 export type Data = Awaited<ReturnType<typeof loadAll>>
