@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // The dev-only Next.js badge sat on top of the Maestro phone tab bar
+  devIndicators: false,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'i.ytimg.com' },
@@ -13,6 +15,8 @@ const nextConfig: NextConfig = {
       { source: '/pay/inhome', destination: '/pay?location=inhome', permanent: true },
       { source: '/pay/inhome-prepay', destination: '/pay?location=inhome&plan=monthly', permanent: true },
       // Old 7th chords PDF URL from before it moved; YouTube viewers get it free
+      // Maestro prototype moved under /maestro/demo when the real app took /maestro (2026-11-23)
+      { source: '/maestro/admin', destination: '/maestro/demo/admin', permanent: false },
       { source: '/downloads/ssm-7th-chords-x7q2mn.pdf', destination: '/yt-7th-chords-x7q2', permanent: false },
     ];
   },
