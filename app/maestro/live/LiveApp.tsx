@@ -315,8 +315,11 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
   const students = useMemo(() => data?.students ?? [], [data])
   const byId = useMemo(() => Object.fromEntries(students.map(s => [s.id, s])), [students])
-  // Intro prospects show on Home for their lesson, but join Students only once they're on the roster
-  const roster = useMemo(() => students.filter(s => s.status !== 'intro'), [students])
+  // Students lists active students only (Nik, 2026-11-24: paused Tatum "shouldn't be there").
+  // Intro prospects show on Home for their lesson, but join Students only once they're on the roster.
+  const roster = useMemo(() => students.filter(s => s.status === 'active'), [students])
+  // One card per account; a sibling on the same block counts as a student (Brock + Teller)
+  const studentCount = useMemo(() => roster.reduce((n, s) => n + 1 + (s.family_names?.length ?? 0), 0), [roster])
   const reportFor = useMemo(() => Object.fromEntries((data?.reports ?? []).map(r => [r.lesson_id, r])), [data])
   const lessons = useMemo(() => (data?.lessons ?? []).filter(l => byId[l.student_id]), [data, byId])
 
@@ -517,7 +520,14 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
         {data && tab === 'students' && (
           <div className="space-y-4">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-1">Your students</h1>
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-1">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Your students</h1>
+              {roster.length > 0 && (
+                <span className="text-sm font-bold text-slate-600">
+                  {studentCount} student{studentCount === 1 ? '' : 's'}{studentCount !== roster.length && `, ${roster.length} accounts`}
+                </span>
+              )}
+            </div>
             {roster.length === 0 && <Empty title="No students yet" text="Students show up here once your Mac syncs the roster." />}
             {roster.map(s => {
               const open = openStudent === s.id
@@ -526,10 +536,9 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
                   <button type="button" onClick={() => setOpenStudent(open ? null : s.id)} aria-expanded={open} className="w-full text-left p-4 flex items-center gap-3">
                     <Avatar name={s.name} />
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-slate-900 truncate">{s.name}</div>
-                      <div className="text-sm text-slate-600 truncate">{[s.instrument ?? s.inquiry_instrument, s.level].filter(Boolean).join(' · ') || 'Details not set'}</div>
+                      <div className="font-bold text-slate-900 truncate">{[s.name, ...(s.family_names ?? [])].join(' + ')}</div>
+                      <div className="text-sm text-slate-600 truncate">{[s.instrument ?? s.inquiry_instrument, s.level, s.family_names?.length ? `${s.family_names.length + 1} students` : null].filter(Boolean).join(' · ') || 'Details not set'}</div>
                     </div>
-                    {s.status === 'paused' && <Tag tone="slate">Paused</Tag>}
                     <span className={pill('outline')}>{open ? 'Close' : 'Open'}</span>
                   </button>
                   {open && (
@@ -595,9 +604,9 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
         {data && tab === 'messages' && (
           <div className="space-y-4">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
-            <div className="rounded-3xl bg-teal-50 border border-teal-200 p-4 text-sm text-teal-950 text-pretty">
-              Messaging inside Maestro comes later. For now these open your own email and texts.
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
+              <p className="mt-1 text-sm text-slate-600 text-pretty">Opens your own email or texts.</p>
             </div>
             <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
               {students.filter(s => s.status === 'active').map(s => (

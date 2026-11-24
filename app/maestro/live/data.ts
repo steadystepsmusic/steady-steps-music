@@ -38,6 +38,7 @@ export type Student = {
   city: string | null
   arrival: string | null
   contact_label: string | null
+  family_names?: string[] | null // siblings on this student's block, set in the tracker
 }
 export type StudentDetails = Pick<Student, 'instrument' | 'level' | 'age_group' | 'format' | 'default_minutes' | 'street' | 'city' | 'arrival' | 'contact_label'>
 
