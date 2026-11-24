@@ -25,11 +25,19 @@ type Overlay =
   | { kind: 'me' }
   | null
 type MapsApp = 'Apple Maps' | 'Google Maps'
+// Nik doesn't use Apple Mail (2026-11-24): the first Email tap asks which app, then it sticks.
+// Texts can open in Google Voice, which has no link to a specific thread, so the number is
+// copied too. Both are saved per teacher, like maps.
+const MAIL_APPS = ['Gmail', 'Apple Mail', 'Outlook', 'Spark', 'Yahoo Mail'] as const
+type MailApp = typeof MAIL_APPS[number]
+type TextApp = 'Messages' | 'Google Voice'
 
 const INSTRUMENTS = ['Guitar', 'Bass', 'Piano', 'Voice', 'Ukulele', 'Banjo', 'Songwriting']
 const LEVELS = ['Beginner', 'Intermediate', 'Advanced']
 const AGES = ['Kid', 'Teen', 'Adult']
 const MAPS_KEY = 'maestro-maps'
+const MAIL_KEY = 'maestro-mail'
+const TEXT_KEY = 'maestro-text'
 
 const money = (n: number) => `$${Number(n).toFixed(2)}`
 const time = (iso: string) => new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
@@ -57,6 +65,21 @@ const directions = (s: Student, app: MapsApp) => {
   const dest = encodeURIComponent([s.street, s.city].filter(Boolean).join(', '))
   return app === 'Apple Maps' ? `https://maps.apple.com/?daddr=${dest}` : `https://www.google.com/maps/dir/?api=1&destination=${dest}`
 }
+const onPhone = () => typeof navigator !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+const mailHref = (app: MailApp, to: string) => {
+  const e = encodeURIComponent(to)
+  switch (app) {
+    case 'Gmail': return onPhone() ? `googlegmail:///co?to=${e}` : `https://mail.google.com/mail/?view=cm&to=${e}`
+    case 'Outlook': return onPhone() ? `ms-outlook://compose?to=${e}` : `https://outlook.live.com/mail/0/deeplink/compose?to=${e}`
+    case 'Spark': return `readdle-spark://compose?recipient=${e}`
+    case 'Yahoo Mail': return `ymail://mail/compose?to=${e}`
+    default: return `mailto:${to}`
+  }
+}
+const e164 = (p: string) => { const d = p.replace(/\D/g, ''); return d.length === 10 ? `+1${d}` : `+${d}` }
+// Google Voice threads are addressed by number on voice.google.com; on the iPhone the app picks
+// the link up when it's installed. The number is copied as a backup either way.
+const voiceHref = (p: string) => `https://voice.google.com/u/0/messages?itemId=t.${encodeURIComponent(e164(p))}`
 const who = (s: Student) => (s.contact_label ? s.contact_label.replace(/^Parent:\s*/i, '') : s.name)
 const sub = (s: Student, minutes?: number) => [s.instrument ?? s.inquiry_instrument, minutes ? `${minutes} min` : s.default_minutes ? `${s.default_minutes} min` : null].filter(Boolean).join(' · ')
 const missingDetails = (s: Student) => !s.instrument || !s.format
@@ -276,6 +299,8 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
   const [toast, setToast] = useState<string | null>(null)
   const [openStudent, setOpenStudent] = useState<string | null>(null)
   const [maps, setMapsState] = useState<MapsApp>('Apple Maps')
+  const [mail, setMailState] = useState<MailApp | null>(null)
+  const [text, setTextState] = useState<TextApp>('Messages')
   const close = () => setOverlay(null)
 
   const refresh = useCallback(async () => {
@@ -293,6 +318,13 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
     let savedMaps = teacher.prefs?.maps
     try { savedMaps = savedMaps ?? localStorage.getItem(MAPS_KEY) ?? undefined } catch { /* private mode */ }
     if (savedMaps === 'Google Maps') setTimeout(() => setMapsState('Google Maps'), 0)
+    let savedMail = teacher.prefs?.mail, savedText = teacher.prefs?.text
+    try {
+      savedMail = savedMail ?? localStorage.getItem(MAIL_KEY) ?? undefined
+      savedText = savedText ?? localStorage.getItem(TEXT_KEY) ?? undefined
+    } catch { /* private mode */ }
+    if (savedMail && (MAIL_APPS as readonly string[]).includes(savedMail)) setTimeout(() => setMailState(savedMail as MailApp), 0)
+    if (savedText === 'Google Voice') setTimeout(() => setTextState('Google Voice'), 0)
     const t = setInterval(() => setNow(new Date()), 60000)
     return () => { clearTimeout(first); clearInterval(t) }
   }, [refresh, teacher])
@@ -311,6 +343,8 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
     return () => clearTimeout(t)
   }, [toast])
 
+  const setMail = (m: MailApp) => { setMailState(m); try { localStorage.setItem(MAIL_KEY, m) } catch { /* private mode */ } savePref('mail', m) }
+  const setText = (t: TextApp) => { setTextState(t); try { localStorage.setItem(TEXT_KEY, t) } catch { /* private mode */ } savePref('text', t) }
   const setMaps = (m: MapsApp) => { setMapsState(m); try { localStorage.setItem(MAPS_KEY, m) } catch { /* private mode */ } savePref('maps', m) }
 
   const students = useMemo(() => data?.students ?? [], [data])
@@ -647,7 +681,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
         <EditSheet s={byId[overlay.studentId]} onClose={close} onSave={saveDetails}
           next={needDetails.find(x => x.id !== overlay.studentId)} />
       )}
-      {overlay?.kind === 'contact' && byId[overlay.studentId] && <ContactSheet s={byId[overlay.studentId]} onClose={close} />}
+      {overlay?.kind === 'contact' && byId[overlay.studentId] && <ContactSheet s={byId[overlay.studentId]} onClose={close} mail={mail} setMail={setMail} text={text} onToast={setToast} />}
       {overlay?.kind === 'me' && (
         <Sheet title="You" onClose={close}>
           <div className="space-y-6">
@@ -665,6 +699,14 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
             <div>
               <Label>Directions open in</Label>
               <Chips options={['Apple Maps', 'Google Maps']} picked={[maps]} onToggle={o => setMaps(o as MapsApp)} />
+            </div>
+            <div>
+              <Label>Email opens in</Label>
+              <Chips options={[...MAIL_APPS]} picked={mail ? [mail] : []} onToggle={o => setMail(o as MailApp)} />
+            </div>
+            <div>
+              <Label>Texts open in</Label>
+              <Chips options={['Messages', 'Google Voice']} picked={[text]} onToggle={o => setText(o as TextApp)} />
             </div>
             <PasskeySetup onToast={setToast} />
             <PasswordSetup email={teacher.email} onToast={setToast} />
@@ -1095,8 +1137,16 @@ function EditSheet({ s, next, onClose, onSave }: { s: Student; next?: Student; o
   )
 }
 
-function ContactSheet({ s, onClose }: { s: Student; onClose: () => void }) {
+function ContactSheet({ s, onClose, mail, setMail, text, onToast }: {
+  s: Student; onClose: () => void; mail: MailApp | null; setMail: (m: MailApp) => void; text: TextApp; onToast: (m: string) => void
+}) {
   const digits = (p: string) => p.replace(/[^\d+]/g, '')
+  const [askFor, setAskFor] = useState<string | null>(null) // email address waiting on "which app?"
+  const openMail = (app: MailApp, to: string) => { window.location.assign(mailHref(app, to)) }
+  const voiceText = (p: string) => {
+    navigator.clipboard?.writeText(p).catch(() => {})
+    onToast('Number copied, in case Google Voice opens to your inbox.')
+  }
   return (
     <Sheet title={who(s)} onClose={onClose}>
       <div className="space-y-4">
@@ -1106,15 +1156,32 @@ function ContactSheet({ s, onClose }: { s: Student; onClose: () => void }) {
           <div key={p} className="flex items-center justify-between gap-3">
             <span className="font-semibold text-slate-900 whitespace-nowrap">{p}</span>
             <div className="flex gap-2">
-              <a href={`sms:${digits(p)}`} className={pill('action')}>Text</a>
+              {text === 'Google Voice'
+                ? <a href={voiceHref(p)} onClick={() => voiceText(p)} className={pill('action')}>Text</a>
+                : <a href={`sms:${digits(p)}`} className={pill('action')}>Text</a>}
               <a href={`tel:${digits(p)}`} className={pill('outline')}>Call</a>
             </div>
           </div>
         ))}
         {s.emails.map(e => (
-          <div key={e} className="flex items-center justify-between gap-3">
-            <span className="font-semibold text-slate-900 truncate min-w-0">{e}</span>
-            <a href={`mailto:${e}`} className={pill('action', 'shrink-0')}>Email</a>
+          <div key={e}>
+            <div className="flex items-center justify-between gap-3">
+              <span className="font-semibold text-slate-900 truncate min-w-0">{e}</span>
+              {mail
+                ? <a href={mailHref(mail, e)} className={pill('action', 'shrink-0')}>Email</a>
+                : <button type="button" onClick={() => setAskFor(askFor === e ? null : e)} aria-expanded={askFor === e} className={pill('action', 'shrink-0')}>Email</button>}
+            </div>
+            {askFor === e && (
+              <div className="mt-3 rounded-2xl border border-slate-200 p-3">
+                <p className="text-sm font-bold text-slate-900 mb-2">Which email app? Maestro will remember.</p>
+                <div className="flex flex-wrap gap-2">
+                  {MAIL_APPS.map(app => (
+                    <button key={app} type="button" onClick={() => { setMail(app); setAskFor(null); openMail(app, e) }} className={pill('outline')}>{app}</button>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-600 mt-2">Change it anytime from your name, top right.</p>
+              </div>
+            )}
           </div>
         ))}
         <p className="text-xs text-slate-600 text-pretty pt-2">Opens your own phone or email for now. Messaging through Maestro comes later.</p>

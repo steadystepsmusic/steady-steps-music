@@ -13,7 +13,7 @@ const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 export const supabase: SupabaseClient | null =
   url && key ? createClient(url, key, { auth: { persistSession: true, detectSessionInUrl: true, flowType: 'implicit' } }) : null
 
-export type Teacher = { id: string; email: string; name: string; is_admin: boolean; created_at: string; prefs?: { theme?: string; maps?: string } | null }
+export type Teacher = { id: string; email: string; name: string; is_admin: boolean; created_at: string; prefs?: { theme?: string; maps?: string; mail?: string; text?: string } | null }
 
 export type WorkingOn = {
   summary?: string
