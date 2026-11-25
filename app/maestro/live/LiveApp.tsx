@@ -683,7 +683,8 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
             <Empty title="Messages with families are coming to Maestro" text="You never need a family's number or email. Anything for a family, like running late or a question about a lesson, goes through Steady Steps for now." />
-            <a href="mailto:steadystepsmusic@gmail.com?subject=Maestro" className={pill('action', 'w-full')}>Message Steady Steps</a>
+            {/* Texts the Steady Steps business number (Nik, 2026-11-25): opens their own Messages with it filled in */}
+            <a href="sms:+12085469737" className={pill('action', 'w-full')}>Text Steady Steps</a>
           </div>
         )}
 
