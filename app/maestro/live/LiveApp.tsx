@@ -436,11 +436,26 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
     close(); setToast(`Saved ${s.name}.`); refresh()
   }
 
-  async function addTeacher(name: string, email: string) {
-    const { error } = await supabase!.rpc('add_teacher', { p_name: name, p_email: email })
-    if (error) { setToast(/function|schema cache/i.test(error.message) ? 'Run 009_admin_teachers.sql in Supabase first.' : error.message); return false }
+  // Puts them on the list and makes their sign-in with a temporary password (server route).
+  // If the server key isn't set up yet, it still adds them to the list and says so.
+  async function addTeacher(name: string, email: string): Promise<AddResult | null> {
+    const { data: { session } } = await supabase!.auth.getSession()
+    let res: Response | null = null
+    try {
+      res = await fetch('/api/maestro/add-teacher', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token ?? ''}` },
+        body: JSON.stringify({ name, email }),
+      })
+    } catch { setToast('Not saved. Check your connection and try again.'); return null }
+    const body = await res.json().catch(() => ({}))
+    if (res.status === 503) {
+      const { error } = await supabase!.rpc('add_teacher', { p_name: name, p_email: email })
+      if (error) { setToast(error.message); return null }
+      refresh(); return { manual: true }
+    }
+    if (!res.ok) { setToast(body.error ?? 'Not saved. Try again.'); return null }
     setToast(`Added ${name}.`); refresh()
-    return true
+    return { password: body.password, existing: !!body.existing }
   }
 
   async function assign(s: Student, t: Teacher | null) {
@@ -682,9 +697,9 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
         {data && tab === 'messages' && !me.is_admin && (
           <div className="space-y-4">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
-            <Empty title="Messages with families are coming to Maestro" text="You never need a family's number or email. Anything for a family, like running late or a question about a lesson, goes through Steady Steps for now." />
+            <Empty title="Questions about scheduling?" text="Text Nik at Steady Steps." />
             {/* Texts the Steady Steps business number (Nik, 2026-11-25): opens their own Messages with it filled in */}
-            <a href="sms:+12085469737" className={pill('action', 'w-full')}>Text Steady Steps</a>
+            <a href="sms:+12085469737" className={pill('action', 'w-full')}>Text Nik</a>
           </div>
         )}
 
@@ -800,14 +815,16 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
 // The enrollment email Nik sends by hand for now (2026-11-25). Brevo and a branded invite
 // come when a real teacher is close.
-const welcomeEmail = (name: string, email: string) => `Hi ${name.split(' ')[0]},
+type AddResult = { password?: string; existing?: boolean; manual?: boolean }
+
+const welcomeEmail = (name: string, email: string, password?: string) => `Hi ${name.split(' ')[0]},
 
 Welcome to Steady Steps! Maestro is where you'll see your lessons, your students and your pay, all in one place.
 
 Getting set up takes about two minutes:
 
 1. On your phone, open Safari and go to https://steadystepsmusic.com/maestro
-2. Sign in with ${email} and this temporary password: [PASSWORD]
+2. Sign in with ${email}${password ? ` and this temporary password: ${password}` : password === undefined ? ' and this temporary password: [PASSWORD]' : ''}
 3. A short welcome walks you through the rest, including making your own password and putting Maestro on your home screen.
 
 I book your lessons, and they show up in Maestro on their own. After each lesson, tap Finish lesson and add a quick note. That's how you get paid.
@@ -818,7 +835,7 @@ Nik`
 
 function AdminPanel({ teachers, students, onAdd, onAssign, onViewAs, onPreviewWelcome, onToast }: {
   teachers: Teacher[]; students: Student[]
-  onAdd: (name: string, email: string) => Promise<boolean>
+  onAdd: (name: string, email: string) => Promise<AddResult | null>
   onAssign: (s: Student, t: Teacher | null) => void
   onViewAs: (t: Teacher) => void
   onPreviewWelcome: () => void
@@ -827,7 +844,7 @@ function AdminPanel({ teachers, students, onAdd, onAssign, onViewAs, onPreviewWe
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [busy, setBusy] = useState(false)
-  const [added, setAdded] = useState<{ name: string; email: string } | null>(null)
+  const [added, setAdded] = useState<{ name: string; email: string } & AddResult | null>(null)
   const field = 'w-full min-h-11 rounded-2xl border-2 border-slate-300 focus:border-teal-500 outline-none px-4 text-slate-900'
 
   const roster = students.filter(s => s.status === 'active' || s.status === 'paused')
@@ -840,14 +857,17 @@ function AdminPanel({ teachers, students, onAdd, onAssign, onViewAs, onPreviewWe
   async function add(e: React.FormEvent) {
     e.preventDefault()
     setBusy(true)
-    const ok = await onAdd(name.trim(), email.trim())
+    const result = await onAdd(name.trim(), email.trim())
     setBusy(false)
-    if (ok) { setAdded({ name: name.trim(), email: email.trim().toLowerCase() }); setName(''); setEmail('') }
+    if (result) { setAdded({ name: name.trim(), email: email.trim().toLowerCase(), ...result }); setName(''); setEmail('') }
   }
 
   async function copyEmail() {
     if (!added) return
-    try { await navigator.clipboard.writeText(welcomeEmail(added.name, added.email)); onToast('Welcome email copied. Fill in the password before you send it.') }
+    try {
+      await navigator.clipboard.writeText(welcomeEmail(added.name, added.email, added.existing ? '' : added.password))
+      onToast(added.password || added.existing ? 'Welcome email copied. Paste it into Gmail and send.' : 'Welcome email copied. Fill in the password before you send it.')
+    }
     catch { onToast('Could not copy. Your browser blocked the clipboard.') }
   }
 
@@ -883,15 +903,20 @@ function AdminPanel({ teachers, students, onAdd, onAssign, onViewAs, onPreviewWe
         </form>
         {added && (
           <div className="mt-3 rounded-3xl bg-teal-50 border border-teal-200 p-4 space-y-3 text-sm text-slate-800">
-            <div className="font-bold text-slate-900">{added.name} is on the teacher list. Two steps left:</div>
-            <ol className="list-decimal pl-5 space-y-1.5 text-pretty">
-              <li>In Supabase, open Authentication, then Users, then Add user, then Create new user. Use {added.email}, make a temporary password, and leave Auto Confirm on.</li>
-              <li>Copy the welcome email, put the password in, and send it from your Steady Steps Gmail.</li>
-            </ol>
-            <div className="flex flex-wrap gap-3">
-              <Btn kind="action" onClick={copyEmail}>Copy welcome email</Btn>
-              <a href="https://supabase.com/dashboard/project/ezuykgvrcjsviiazolvd/auth/users" target="_blank" rel="noreferrer" className={pill('outline')}>Open Supabase users</a>
-            </div>
+            {added.manual ? (
+              <>
+                <div className="font-bold text-slate-900">{added.name} is on the teacher list, but their sign-in isn&apos;t made yet.</div>
+                <p className="text-pretty">Maestro&apos;s server key isn&apos;t set up, so this one needs Supabase: Authentication, Users, Add user, Create new user, with {added.email} and a temporary password. Then copy the email and put the password in.</p>
+              </>
+            ) : added.existing ? (
+              <div className="font-bold text-slate-900 text-pretty">{added.name} already had a sign-in, so their password didn&apos;t change. The email tells them to sign in with it.</div>
+            ) : (
+              <>
+                <div className="font-bold text-slate-900">{added.name} is ready to sign in.</div>
+                <p className="text-pretty">Temporary password <span className="font-mono font-bold text-slate-900 select-all">{added.password}</span>. It&apos;s already in the welcome email. The welcome walks them through making their own.</p>
+              </>
+            )}
+            <Btn kind="action" onClick={copyEmail}>Copy welcome email</Btn>
           </div>
         )}
       </section>
@@ -945,7 +970,7 @@ function Welcome({ name, onDone, onSetUp }: { name: string; onDone: () => void; 
     { title: 'Home is your week', icon: 'home', text: 'Every lesson for the next seven days, with Join Zoom or Directions right on it. When a lesson ends, tap Finish lesson, pick taught or missed, and add a quick note. That is how you get paid.' },
     { title: 'Students', icon: 'students', text: 'Who you teach, what each student is working on, and the notes from past lessons, so you always walk in knowing where they left off.' },
     { title: 'Earnings', icon: 'earnings', text: 'What every finished lesson pays you, plus travel for in-home lessons, adding up through the month. Pay goes out on the 5th of the month.' },
-    { title: 'Messages', icon: 'messages', text: "You never need a family's number or email. Everything about a lesson goes through Steady Steps, so you can just teach." },
+    { title: 'Messages', icon: 'messages', text: 'Questions about scheduling or a student? Text Nik at Steady Steps from the Messages tab.' },
     { title: 'Make it yours', text: standalone
       ? 'You are already using Maestro from your home screen. Last step: set up a passkey or your own password so signing in is one tap.'
       : 'Put Maestro on your home screen so it opens like an app. In Safari, tap the Share button, then Add to Home Screen. Then set up a passkey or your own password, so signing in is one tap.' },
