@@ -39,7 +39,17 @@ export type Student = {
   arrival: string | null
   contact_label: string | null
   family_names?: string[] | null // siblings on this student's block, set in the tracker
+  // Address on the student's newest calendar invite, set by the tracker (008). street/city
+  // below fall back to these when the teacher hasn't typed one; own_* keep what was typed.
+  calendar_street?: string | null
+  calendar_city?: string | null
+  own_street?: string | null
+  own_city?: string | null
+  address_from_calendar?: boolean
 }
+// In-home when the teacher said so, or when nobody has said and the invite has an address
+// (a teacher who picked Zoom wins over the calendar)
+export const inHome = (s: Student) => !!s.street && (s.format === 'In-home' || (!s.format && !!s.address_from_calendar))
 export type StudentDetails = Pick<Student, 'instrument' | 'level' | 'age_group' | 'format' | 'default_minutes' | 'street' | 'city' | 'arrival' | 'contact_label'>
 
 export type Lesson = {
@@ -87,6 +97,12 @@ export function lessonPay(l: Lesson, s: Student | undefined) {
   return { minutes, pay: TEACHER_PAY[minutes] + travel, label: `${minutes} min${travel ? ` + $${travel} travel` : ''}` }
 }
 
+function withCalendarAddress(s: Student): Student {
+  const own = { own_street: s.street, own_city: s.city }
+  if (s.street || !s.calendar_street) return { ...s, ...own, address_from_calendar: false }
+  return { ...s, ...own, street: s.calendar_street, city: s.calendar_city ?? null, address_from_calendar: true }
+}
+
 export async function loadAll(db: SupabaseClient) {
   const since = new Date(Date.now() - 45 * 864e5).toISOString()
   // Through the end of this month (for Earnings), and at least two weeks out (for Home)
@@ -105,7 +121,7 @@ export async function loadAll(db: SupabaseClient) {
   const err = students.error || lessons.error || reports.error || recaps.error || sync.error
   if (err) throw err
   return {
-    students: (students.data ?? []) as Student[],
+    students: ((students.data ?? []) as Student[]).map(withCalendarAddress),
     lessons: (lessons.data ?? []) as Lesson[],
     reports: (reports.data ?? []) as Report[],
     recaps: (recaps.data ?? []) as Recap[],

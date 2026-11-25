@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { Avatar, Btn, Chips, Choice, Label, Sheet, Stairs, Tag, pill } from '../ui'
 import {
-  supabase, loadAll, lessonPay, lessonMinutes,
+  supabase, loadAll, lessonPay, lessonMinutes, inHome as isInHome,
   type Data, type Lesson, type Money, type Outcome, type Rate, type Report, type Student, type StudentDetails, type Teacher,
 } from './data'
 
@@ -501,7 +501,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
                     const s = byId[l.student_id]
                     const [clock, ampm] = time(l.starts_at).split(' ')
                     const live = new Date(l.starts_at) <= now
-                    const inHome = s.format === 'In-home' && !!s.street
+                    const inHome = isInHome(s)
                     return (
                       <div key={l.id} className={`bg-white rounded-3xl border p-4 ${live ? 'border-teal-400 border-2' : 'border-slate-200'}`}>
                         <div className="flex items-center gap-3">
@@ -949,7 +949,7 @@ function StudentPanel({ s, reports, recaps, maps, onEdit, onContact }: {
         {missingDetails(s) && <Tag tone="amber">Needs details</Tag>}
       </div>
       {s.contact_label && <p className="text-sm font-semibold text-slate-900">{s.contact_label}</p>}
-      {s.format === 'In-home' && s.street && (
+      {isInHome(s) && (
         <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3.5 space-y-3">
           <Address s={s} />
           <a href={directions(s, maps)} target="_blank" rel="noreferrer" className={pill('action')}>Directions</a>
@@ -1089,7 +1089,7 @@ function EditSheet({ s, next, onClose, onSave }: { s: Student; next?: Student; o
   const guess = INSTRUMENTS.find(i => s.inquiry_instrument?.toLowerCase().includes(i.toLowerCase())) ?? null
   const [d, setD] = useState<StudentDetails>({
     instrument: s.instrument ?? guess, level: s.level, age_group: s.age_group, format: s.format,
-    default_minutes: s.default_minutes, street: s.street, city: s.city, arrival: s.arrival, contact_label: s.contact_label,
+    default_minutes: s.default_minutes, street: s.own_street ?? null, city: s.own_city ?? null, arrival: s.arrival, contact_label: s.contact_label,
   })
   const set = <K extends keyof StudentDetails>(k: K, v: StudentDetails[K]) => setD(x => ({ ...x, [k]: v }))
   const pick = <K extends keyof StudentDetails>(k: K, v: StudentDetails[K]) => set(k, d[k] === v ? null : v)
@@ -1121,8 +1121,8 @@ function EditSheet({ s, next, onClose, onSave }: { s: Student; next?: Student; o
         </div>
         {d.format === 'In-home' && (
           <div className="space-y-3">
-            <input className={field} placeholder="Street address" aria-label="Street address" autoComplete="off" value={d.street ?? ''} onChange={e => set('street', e.target.value || null)} />
-            <input className={field} placeholder="City, state, zip" aria-label="City" autoComplete="off" value={d.city ?? ''} onChange={e => set('city', e.target.value || null)} />
+            <input className={field} placeholder={s.calendar_street ? `${s.calendar_street} (from the calendar invite)` : 'Street address'} aria-label="Street address" autoComplete="off" value={d.street ?? ''} onChange={e => set('street', e.target.value || null)} />
+            <input className={field} placeholder={s.calendar_city ?? 'City, state, zip'} aria-label="City" autoComplete="off" value={d.city ?? ''} onChange={e => set('city', e.target.value || null)} />
             <textarea className={`${field} py-3`} rows={2} placeholder="Arrival notes (gate, parking, where the piano is)" aria-label="Arrival notes" value={d.arrival ?? ''} onChange={e => set('arrival', e.target.value || null)} />
           </div>
         )}
