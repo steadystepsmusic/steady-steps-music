@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description: 'The Steady Steps Music teacher app.',
   robots: { index: false, follow: false },
   appleWebApp: { capable: true, title: 'Maestro', statusBarStyle: 'black' },
+  // Home-screen app: opens on /maestro and stays inside it
+  manifest: '/maestro.webmanifest',
+  icons: { apple: '/apple-touch-icon.png' },
 }
 
 export default function MaestroPage() {

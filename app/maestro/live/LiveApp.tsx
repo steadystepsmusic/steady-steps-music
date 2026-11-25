@@ -17,12 +17,13 @@ import {
 // What is real: Home, Finish lesson, Students (+ details, notes, recaps), Earnings at the
 // teacher rate. Messages through Maestro come later; that tab opens your own email/texts.
 
-type Tab = 'home' | 'students' | 'earnings' | 'messages'
+type Tab = 'home' | 'students' | 'earnings' | 'messages' | 'admin'
 type Overlay =
   | { kind: 'finish'; lessonId: string }
   | { kind: 'edit'; studentId: string }
   | { kind: 'contact'; studentId: string }
   | { kind: 'me' }
+  | { kind: 'welcome' }
   | null
 type MapsApp = 'Apple Maps' | 'Google Maps'
 // Nik doesn't use Apple Mail (2026-11-24): the first Email tap asks which app, then it sticks.
@@ -176,6 +177,7 @@ function SignIn() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const field = 'w-full min-h-12 rounded-full border-2 border-slate-300 focus:border-teal-500 outline-none px-5 text-slate-900'
+  const standalone = useStandalone()
 
   async function withPassword(e: React.FormEvent) {
     e.preventDefault()
@@ -241,6 +243,7 @@ function SignIn() {
         <form onSubmit={sendLink} className="mt-5 space-y-4">
           <label className="block text-sm font-bold text-slate-900" htmlFor="email">Your email</label>
           <input id="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className={field} />
+          {standalone && <p className="text-sm text-slate-600 text-pretty">From the home-screen app, an emailed link opens in Safari instead of here. Sign in once in Safari, set a password under your profile, then use that password here.</p>}
           <button type="submit" disabled={busy || !email.trim()} className={pill('primary', 'w-full')}>{busy ? 'Sending…' : 'Email me a sign-in link'}</button>
           <div className="text-center"><Btn onClick={() => { setMode('password'); setError(null) }}>Back to password</Btn></div>
         </form>
@@ -301,6 +304,10 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
   const [maps, setMapsState] = useState<MapsApp>('Apple Maps')
   const [mail, setMailState] = useState<MailApp | null>(null)
   const [text, setTextState] = useState<TextApp>('Messages')
+  // Admin only: see Maestro exactly as one teacher sees it (their students, their pay, no
+  // contact info). Read-only, so nothing gets saved under the wrong person.
+  const [viewAs, setViewAs] = useState<Teacher | null>(null)
+  const me: Teacher = viewAs ? { ...viewAs, is_admin: false } : teacher
   const close = () => setOverlay(null)
 
   const refresh = useCallback(async () => {
@@ -337,6 +344,12 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
     return () => document.removeEventListener('visibilitychange', onVis)
   }, [overlay, refresh])
 
+  // First sign-in: a short welcome for a new teacher, once (saved to their account)
+  useEffect(() => {
+    if (!teacher.is_admin && !teacher.prefs?.welcomed) setTimeout(() => setOverlay({ kind: 'welcome' }), 0)
+  }, [teacher])
+  const finishWelcome = () => { if (!viewAs && !teacher.is_admin) savePref('welcomed', new Date().toISOString()); close() }
+
   useEffect(() => {
     if (!toast) return
     const t = setTimeout(() => setToast(null), 3500)
@@ -347,7 +360,10 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
   const setText = (t: TextApp) => { setTextState(t); try { localStorage.setItem(TEXT_KEY, t) } catch { /* private mode */ } savePref('text', t) }
   const setMaps = (m: MapsApp) => { setMapsState(m); try { localStorage.setItem(MAPS_KEY, m) } catch { /* private mode */ } savePref('maps', m) }
 
-  const students = useMemo(() => data?.students ?? [], [data])
+  const allStudents = useMemo(() => data?.students ?? [], [data])
+  // A teacher's data is already limited to their students by the database; viewing as one
+  // applies the same filter to the admin's data
+  const students = useMemo(() => (viewAs ? allStudents.filter(s => s.teacher_id === viewAs.id) : allStudents), [allStudents, viewAs])
   const byId = useMemo(() => Object.fromEntries(students.map(s => [s.id, s])), [students])
   // Students lists active students only (Nik, 2026-11-24: paused Tatum "shouldn't be there").
   // Intro prospects show on Home for their lesson, but join Students only once they're on the roster.
@@ -359,7 +375,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
 
   // Only lessons from the day this teacher started on Maestro ask to be wrapped up. Older ones
   // were already handled outside it (Nik's first day showed 34 of them, 2026-11-23).
-  const startedOn = new Date(teacher.created_at); startedOn.setHours(0, 0, 0, 0)
+  const startedOn = new Date(me.created_at); startedOn.setHours(0, 0, 0, 0)
   const wrapUp = lessons.filter(l => new Date(l.ends_at) <= now && !reportFor[l.id] && new Date(l.starts_at) >= startedOn && now.getTime() - new Date(l.starts_at).getTime() < 21 * 864e5)
   const weekAhead = new Date(now); weekAhead.setDate(weekAhead.getDate() + 7)
   const upcoming = lessons.filter(l => new Date(l.ends_at) > now && new Date(l.starts_at) < weekAhead)
@@ -383,22 +399,26 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
     { id: 'students', label: 'Students' },
     { id: 'earnings', label: 'Earnings' },
     { id: 'messages', label: 'Messages' },
+    ...(teacher.is_admin && !viewAs ? [{ id: 'admin' as Tab, label: 'Admin' }] : []),
   ]
 
   const rateOf = useMemo(() => Object.fromEntries((data?.rates ?? []).map(r => [r.id, r])), [data])
   // The owner keeps 100% (Nik, 2026-11-23: "i'm the 100% because im the owner"); teachers see their card pay
   const payFor = (l: Lesson) => {
     const base = lessonPay(l, byId[l.student_id])
-    if (!teacher.is_admin) return base
+    if (!me.is_admin) return base
     return { ...base, pay: l.is_intro ? 0 : priceOf(l, rateOf[l.student_id]) ?? 0 }
   }
 
+  const previewOnly = () => { setToast(`Preview only. Switch back to your own view to change anything.`); return viewAs !== null }
+
   async function submitReport(l: Lesson, outcome: Outcome, notes: string) {
+    if (viewAs && previewOnly()) return false
     const { minutes, pay } = payFor(l)
     const row = {
       lesson_id: l.id, student_id: l.student_id, lesson_starts_at: l.starts_at, outcome,
       notes: notes.trim() || null, minutes, teacher_pay: outcome === 'waive' ? 0 : pay,
-      submitted_by: teacher.id, updated_at: new Date().toISOString(),
+      submitted_by: me.id, updated_at: new Date().toISOString(),
     }
     const { error } = await supabase!.from('lesson_reports').upsert(row, { onConflict: 'lesson_id' })
     if (error) { setToast('Not saved. Check your connection and try again.'); return false } // the panel stays open, nothing is lost
@@ -410,9 +430,23 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
   }
 
   async function saveDetails(s: Student, d: StudentDetails) {
+    if (viewAs && previewOnly()) return
     const { error } = await supabase!.from('students').update({ ...d, maestro_updated_at: new Date().toISOString() }).eq('id', s.id)
     if (error) { setToast('Not saved. Check your connection and try again.'); return }
     close(); setToast(`Saved ${s.name}.`); refresh()
+  }
+
+  async function addTeacher(name: string, email: string) {
+    const { error } = await supabase!.rpc('add_teacher', { p_name: name, p_email: email })
+    if (error) { setToast(/function|schema cache/i.test(error.message) ? 'Run 009_admin_teachers.sql in Supabase first.' : error.message); return false }
+    setToast(`Added ${name}.`); refresh()
+    return true
+  }
+
+  async function assign(s: Student, t: Teacher | null) {
+    const { error } = await supabase!.rpc('assign_student', { p_student: s.id, p_teacher: t?.id ?? null })
+    if (error) { setToast(/function|schema cache/i.test(error.message) ? 'Run 009_admin_teachers.sql in Supabase first.' : 'Not saved. Check your connection and try again.'); return }
+    setToast(t ? `${s.name} is with ${t.name}.` : `${s.name} has no teacher.`); refresh()
   }
 
   return (
@@ -436,10 +470,19 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
             ))}
           </nav>
           <button type="button" onClick={() => setOverlay({ kind: 'me' })} className="rounded-full ring-2 ring-slate-500 hover:ring-teal-400 focus:outline-none focus:ring-teal-400" aria-label="You">
-            <Avatar name={teacher.name} tone="slate" />
+            <Avatar name={me.name} tone="slate" />
           </button>
         </div>
       </header>
+
+      {viewAs && (
+        <div className="maestro-keep sticky top-16 z-30 bg-teal-900">
+          <div className="max-w-3xl mx-auto px-5 py-2.5 flex items-center justify-between gap-3">
+            <div className="min-w-0 text-sm text-white text-pretty"><span className="font-bold">Seeing what {viewAs.name} sees.</span> Read-only.</div>
+            <button type="button" onClick={() => { setViewAs(null); setTab('admin') }} className={pill('outline', 'shrink-0')}>Back to admin</button>
+          </div>
+        </div>
+      )}
 
       {data && syncOld && (
         <div className="bg-amber-50 border-b border-amber-200">
@@ -467,7 +510,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
           <div className="space-y-7">
             <div>
               <p className="text-slate-600 text-sm font-medium">{now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{greeting}, {teacher.name}</h1>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{greeting}, {me.name}</h1>
             </div>
 
             {wrapUp.length > 0 && (
@@ -528,7 +571,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
                           <div className="mt-3 rounded-2xl bg-slate-50 border border-slate-100 p-3.5"><Address s={s} /></div>
                         )}
                         <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
-                          <Btn onClick={() => setOverlay({ kind: 'contact', studentId: s.id })}>Message</Btn>
+                          {me.is_admin ? <Btn onClick={() => setOverlay({ kind: 'contact', studentId: s.id })}>Message</Btn> : <span />}
                           <Btn onClick={() => { setTab('students'); setOpenStudent(s.id) }}>Notes</Btn>
                         </div>
                       </div>
@@ -582,7 +625,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
                       recaps={data.recaps.filter(r => r.student_id === s.id)}
                       maps={maps}
                       onEdit={() => setOverlay({ kind: 'edit', studentId: s.id })}
-                      onContact={() => setOverlay({ kind: 'contact', studentId: s.id })}
+                      onContact={me.is_admin ? () => setOverlay({ kind: 'contact', studentId: s.id }) : undefined}
                     />
                   )}
                 </div>
@@ -591,11 +634,11 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
           </div>
         )}
 
-        {data && tab === 'earnings' && teacher.is_admin && (
+        {data && tab === 'earnings' && me.is_admin && (
           <AdminEarnings lessons={lessons} byId={byId} reportFor={reportFor} rates={data.rates} money={data.money} now={now} />
         )}
 
-        {data && tab === 'earnings' && !teacher.is_admin && (
+        {data && tab === 'earnings' && !me.is_admin && (
           <div className="space-y-7">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Earnings</h1>
             <div className="maestro-keep rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-6 shadow-lg">
@@ -636,7 +679,21 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
           </div>
         )}
 
-        {data && tab === 'messages' && (
+        {data && tab === 'messages' && !me.is_admin && (
+          <div className="space-y-4">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
+            <Empty title="Messages with families are coming to Maestro" text="You never need a family's number or email. Anything for a family, like running late or a question about a lesson, goes through Steady Steps for now." />
+            <a href="mailto:steadystepsmusic@gmail.com?subject=Maestro" className={pill('action', 'w-full')}>Message Steady Steps</a>
+          </div>
+        )}
+
+        {data && tab === 'admin' && teacher.is_admin && !viewAs && (
+          <AdminPanel teachers={data.teachers} students={allStudents} onAdd={addTeacher} onAssign={assign}
+            onViewAs={t => { setViewAs(t); setTab('home'); setOpenStudent(null) }}
+            onPreviewWelcome={() => setOverlay({ kind: 'welcome' })} onToast={setToast} />
+        )}
+
+        {data && tab === 'messages' && me.is_admin && (
           <div className="space-y-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Messages</h1>
@@ -659,7 +716,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
       </main>
 
       {/* Phone tab bar */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 grid grid-cols-4 px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
+      <nav className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 grid ${tabs.length === 5 ? 'grid-cols-5' : 'grid-cols-4'} px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]`}>
         {tabs.map(t => (
           <button key={t.id} type="button" onClick={() => setTab(t.id)} aria-current={tab === t.id ? 'page' : undefined}
             className={`relative flex flex-col items-center gap-0.5 py-1.5 rounded-full text-[11px] font-bold ${tab === t.id ? 'bg-teal-50 text-teal-800' : 'text-slate-600'}`}>
@@ -675,7 +732,7 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
         if (!l) return null
         const s = byId[l.student_id]
         const lastNote = reports.find(r => r.student_id === s.id && r.lesson_id !== l.id && r.notes)
-        return <FinishSheet lesson={l} s={s} pay={payFor(l).pay} owner={teacher.is_admin} previous={reportFor[l.id]} lastNote={lastNote} onClose={close} onSubmit={submitReport} />
+        return <FinishSheet lesson={l} s={s} pay={payFor(l).pay} owner={me.is_admin} previous={reportFor[l.id]} lastNote={lastNote} onClose={close} onSubmit={submitReport} />
       })()}
       {overlay?.kind === 'edit' && byId[overlay.studentId] && (
         <EditSheet s={byId[overlay.studentId]} onClose={close} onSave={saveDetails}
@@ -686,10 +743,10 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
         <Sheet title="You" onClose={close}>
           <div className="space-y-6">
             <div className="flex items-center gap-4">
-              <Avatar name={teacher.name} tone="slate" />
+              <Avatar name={me.name} tone="slate" />
               <div className="min-w-0">
-                <div className="font-black text-slate-900 text-lg">{teacher.name}</div>
-                <div className="text-sm text-slate-600 truncate">{teacher.email}</div>
+                <div className="font-black text-slate-900 text-lg">{me.name}</div>
+                <div className="text-sm text-slate-600 truncate">{me.email}</div>
               </div>
             </div>
             <div>
@@ -700,14 +757,17 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
               <Label>Directions open in</Label>
               <Chips options={['Apple Maps', 'Google Maps']} picked={[maps]} onToggle={o => setMaps(o as MapsApp)} />
             </div>
-            <div>
+            {me.is_admin && <div>
+              <div>
               <Label>Email opens in</Label>
               <Chips options={[...MAIL_APPS]} picked={mail ? [mail] : []} onToggle={o => setMail(o as MailApp)} />
             </div>
-            <div>
+            <div className="mt-6">
               <Label>Texts open in</Label>
               <Chips options={['Messages', 'Google Voice']} picked={[text]} onToggle={o => setText(o as TextApp)} />
             </div>
+            </div>}
+            <HomeScreenTip />
             <PasskeySetup onToast={setToast} />
             <PasswordSetup email={teacher.email} onToast={setToast} />
             <div>
@@ -722,12 +782,205 @@ function App({ teacher, theme, setTheme }: { teacher: Teacher; theme: Theme; set
           </div>
         </Sheet>
       )}
+      {overlay?.kind === 'welcome' && (
+        <Welcome name={me.name.split(' ')[0]} onDone={finishWelcome} onSetUp={() => { finishWelcome(); setOverlay({ kind: 'me' }) }} />
+      )}
 
       {toast && (
         <div className="fixed bottom-28 md:bottom-8 inset-x-0 z-[60] flex justify-center px-5 pointer-events-none" role="status">
           <div className="bg-slate-900 text-white text-sm font-semibold px-5 py-3 rounded-3xl shadow-xl text-center text-balance">{toast}</div>
         </div>
       )}
+    </div>
+  )
+}
+
+// ---------- Admin ----------
+
+// The enrollment email Nik sends by hand for now (2026-11-25). Brevo and a branded invite
+// come when a real teacher is close.
+const welcomeEmail = (name: string, email: string) => `Hi ${name.split(' ')[0]},
+
+Welcome to Steady Steps! Maestro is where you'll see your lessons, your students and your pay, all in one place.
+
+Getting set up takes about two minutes:
+
+1. On your phone, open Safari and go to https://steadystepsmusic.com/maestro
+2. Sign in with ${email} and this temporary password: [PASSWORD]
+3. A short welcome walks you through the rest, including making your own password and putting Maestro on your home screen.
+
+I book your lessons, and they show up in Maestro on their own. After each lesson, tap Finish lesson and add a quick note. That's how you get paid.
+
+Any questions, just reply here.
+
+Nik`
+
+function AdminPanel({ teachers, students, onAdd, onAssign, onViewAs, onPreviewWelcome, onToast }: {
+  teachers: Teacher[]; students: Student[]
+  onAdd: (name: string, email: string) => Promise<boolean>
+  onAssign: (s: Student, t: Teacher | null) => void
+  onViewAs: (t: Teacher) => void
+  onPreviewWelcome: () => void
+  onToast: (m: string) => void
+}) {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [added, setAdded] = useState<{ name: string; email: string } | null>(null)
+  const field = 'w-full min-h-11 rounded-2xl border-2 border-slate-300 focus:border-teal-500 outline-none px-4 text-slate-900'
+
+  const roster = students.filter(s => s.status === 'active' || s.status === 'paused')
+  const label = (t: Teacher) => teachers.filter(x => x.name.split(' ')[0] === t.name.split(' ')[0]).length > 1 ? t.name : t.name.split(' ')[0]
+  const byLabel = Object.fromEntries(teachers.map(t => [label(t), t]))
+  const countFor = (t: Teacher) => roster.filter(s => s.status === 'active' && s.teacher_id === t.id).length
+  const ordered = [...roster].sort((a, b) => Number(!!a.teacher_id) - Number(!!b.teacher_id) || a.name.localeCompare(b.name))
+  const unassigned = roster.filter(s => !s.teacher_id).length
+
+  async function add(e: React.FormEvent) {
+    e.preventDefault()
+    setBusy(true)
+    const ok = await onAdd(name.trim(), email.trim())
+    setBusy(false)
+    if (ok) { setAdded({ name: name.trim(), email: email.trim().toLowerCase() }); setName(''); setEmail('') }
+  }
+
+  async function copyEmail() {
+    if (!added) return
+    try { await navigator.clipboard.writeText(welcomeEmail(added.name, added.email)); onToast('Welcome email copied. Fill in the password before you send it.') }
+    catch { onToast('Could not copy. Your browser blocked the clipboard.') }
+  }
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900">Admin</h1>
+        <p className="mt-1 text-sm text-slate-600 text-pretty">Teachers, and who teaches whom. Only you see this.</p>
+      </div>
+
+      <section>
+        <Label>Teachers</Label>
+        <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
+          {teachers.map(t => (
+            <div key={t.id} className="p-4 flex items-center gap-3">
+              <Avatar name={t.name} />
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-slate-900 truncate flex items-center gap-2">{t.name}{t.is_admin && <Tag tone="slate">Admin</Tag>}</div>
+                <div className="text-sm text-slate-600 truncate">{countFor(t)} {countFor(t) === 1 ? 'student' : 'students'} · {t.email}</div>
+              </div>
+              <Btn className="shrink-0" onClick={() => onViewAs(t)}>See what they see</Btn>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <Label>Add a teacher</Label>
+        <form onSubmit={add} className="bg-white rounded-3xl border border-slate-200 p-4 space-y-3">
+          <input className={field} placeholder="Name" aria-label="Teacher name" autoComplete="off" value={name} onChange={e => setName(e.target.value)} />
+          <input className={field} type="email" placeholder="Email they'll sign in with" aria-label="Teacher email" autoComplete="off" value={email} onChange={e => setEmail(e.target.value)} />
+          <button type="submit" disabled={busy || !name.trim() || !email.trim()} className={pill('primary', 'w-full')}>{busy ? 'Adding…' : 'Add teacher'}</button>
+        </form>
+        {added && (
+          <div className="mt-3 rounded-3xl bg-teal-50 border border-teal-200 p-4 space-y-3 text-sm text-slate-800">
+            <div className="font-bold text-slate-900">{added.name} is on the teacher list. Two steps left:</div>
+            <ol className="list-decimal pl-5 space-y-1.5 text-pretty">
+              <li>In Supabase, open Authentication, then Users, then Add user, then Create new user. Use {added.email}, make a temporary password, and leave Auto Confirm on.</li>
+              <li>Copy the welcome email, put the password in, and send it from your Steady Steps Gmail.</li>
+            </ol>
+            <div className="flex flex-wrap gap-3">
+              <Btn kind="action" onClick={copyEmail}>Copy welcome email</Btn>
+              <a href="https://supabase.com/dashboard/project/ezuykgvrcjsviiazolvd/auth/users" target="_blank" rel="noreferrer" className={pill('outline')}>Open Supabase users</a>
+            </div>
+          </div>
+        )}
+      </section>
+
+      <section>
+        <Label>Who teaches whom</Label>
+        {unassigned > 0 && <p className="text-sm text-slate-600 mb-3 text-pretty">{unassigned} {unassigned === 1 ? 'student has' : 'students have'} no teacher yet. A teacher only sees the students you give them.</p>}
+        <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100">
+          {ordered.map(s => {
+            const t = teachers.find(x => x.id === s.teacher_id)
+            return (
+              <div key={s.id} className="p-4 space-y-2.5">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="font-bold text-slate-900 truncate">{s.name}{s.family_names?.length ? ` + ${s.family_names.join(', ')}` : ''}</div>
+                  {!t && <Tag tone="amber">No teacher</Tag>}
+                  {s.status === 'paused' && <Tag tone="slate">Paused</Tag>}
+                </div>
+                <Chips options={teachers.map(label)} picked={t ? [label(t)] : []}
+                  onToggle={o => onAssign(s, t && label(t) === o ? null : byLabel[o])} />
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      <section>
+        <Label>New teacher welcome</Label>
+        <p className="text-sm text-slate-600 mb-3 text-pretty">What a teacher sees the first time they sign in.</p>
+        <Btn onClick={onPreviewWelcome}>Preview the welcome</Btn>
+      </section>
+    </div>
+  )
+}
+
+// ---------- First sign-in ----------
+
+const isStandalone = () => typeof window !== 'undefined' &&
+  (window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true)
+
+function useStandalone() {
+  const [on, setOn] = useState(false)
+  useEffect(() => { setTimeout(() => setOn(isStandalone()), 0) }, [])
+  return on
+}
+
+function Welcome({ name, onDone, onSetUp }: { name: string; onDone: () => void; onSetUp: () => void }) {
+  const [step, setStep] = useState(0)
+  const standalone = useStandalone()
+  const steps: { title: string; text: string; icon?: Tab }[] = [
+    { title: `Welcome to Maestro, ${name}`, text: 'Your lessons, your students and your pay, all in one place. Steady Steps books your lessons, and they show up here on their own.' },
+    { title: 'Home is your week', icon: 'home', text: 'Every lesson for the next seven days, with Join Zoom or Directions right on it. When a lesson ends, tap Finish lesson, pick taught or missed, and add a quick note. That is how you get paid.' },
+    { title: 'Students', icon: 'students', text: 'Who you teach, what each student is working on, and the notes from past lessons, so you always walk in knowing where they left off.' },
+    { title: 'Earnings', icon: 'earnings', text: 'What every finished lesson pays you, plus travel for in-home lessons, adding up through the month. Pay goes out on the 5th of the month.' },
+    { title: 'Messages', icon: 'messages', text: "You never need a family's number or email. Everything about a lesson goes through Steady Steps, so you can just teach." },
+    { title: 'Make it yours', text: standalone
+      ? 'You are already using Maestro from your home screen. Last step: set up a passkey or your own password so signing in is one tap.'
+      : 'Put Maestro on your home screen so it opens like an app. In Safari, tap the Share button, then Add to Home Screen. Then set up a passkey or your own password, so signing in is one tap.' },
+  ]
+  const s = steps[step]
+  const last = step === steps.length - 1
+  return (
+    <Sheet title="Welcome" onClose={onDone}>
+      <div className="space-y-6">
+        <div className="flex gap-1.5" aria-hidden="true">
+          {steps.map((_, i) => <span key={i} className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-teal-500' : 'bg-slate-200'}`} />)}
+        </div>
+        <div className="min-h-48">
+          {s.icon ? <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-800 flex items-center justify-center mb-4"><Icon name={s.icon} /></div> : <div className="mb-4"><Stairs size={36} /></div>}
+          <h2 className="text-2xl font-black text-slate-900 text-balance">{s.title}</h2>
+          <p className="mt-3 text-slate-700 text-pretty">{s.text}</p>
+        </div>
+        <div className="flex items-center justify-between gap-3">
+          {step > 0 ? <Btn onClick={() => setStep(step - 1)}>Back</Btn> : <Btn onClick={onDone}>Skip</Btn>}
+          {last
+            ? <div className="flex gap-3"><Btn onClick={onDone}>Later</Btn><Btn kind="primary" onClick={onSetUp}>Set up sign-in</Btn></div>
+            : <Btn kind="primary" onClick={() => setStep(step + 1)}>Next</Btn>}
+        </div>
+      </div>
+    </Sheet>
+  )
+}
+
+// On the You panel: how to get the app icon, until it is there
+function HomeScreenTip() {
+  const standalone = useStandalone()
+  if (standalone) return null
+  return (
+    <div>
+      <Label>Home screen</Label>
+      <p className="text-sm text-slate-700 text-pretty">To open Maestro like an app, tap Share in Safari, then Add to Home Screen. Sign in there once with your password or passkey and it stays signed in.</p>
     </div>
   )
 }
@@ -897,6 +1150,7 @@ function Icon({ name }: { name: Tab }) {
     students: 'M16 19v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V19M9.5 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM21 19v-1.5a4 4 0 0 0-3-3.85M15.5 3.2a3.5 3.5 0 0 1 0 6.6',
     earnings: 'M12 3v18M16.5 7.5c-.6-1.4-2.2-2.2-4.5-2.2-2.6 0-4.3 1.2-4.3 3.1 0 4.5 9.1 2.1 9.1 6.8 0 2-1.9 3.3-4.8 3.3-2.6 0-4.4-1-5-2.7',
     messages: 'M4 5h16v11H9l-5 4V5Z',
+    admin: 'M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6L12 3ZM9 12l2 2 4-4',
   }
   return (
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -930,7 +1184,7 @@ function Empty({ title, text }: { title: string; text: string }) {
 }
 
 function StudentPanel({ s, reports, recaps, maps, onEdit, onContact }: {
-  s: Student; reports: Report[]; recaps: Data['recaps']; maps: MapsApp; onEdit: () => void; onContact: () => void
+  s: Student; reports: Report[]; recaps: Data['recaps']; maps: MapsApp; onEdit: () => void; onContact?: () => void
 }) {
   const [allNotes, setAllNotes] = useState(false)
   const notes = [
@@ -984,7 +1238,7 @@ function StudentPanel({ s, reports, recaps, maps, onEdit, onContact }: {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Btn kind="action" onClick={onContact}>Message {who(s)}</Btn>
+        {onContact && <Btn kind="action" onClick={onContact}>Message {who(s)}</Btn>}
         <Btn onClick={onEdit}>Edit details</Btn>
       </div>
     </div>
